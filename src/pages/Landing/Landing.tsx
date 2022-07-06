@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Landing.module.css";
 import { useSpring, animated } from "react-spring";
 
