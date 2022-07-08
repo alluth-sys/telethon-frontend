@@ -10,7 +10,11 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
+// Router
+import { useNavigate } from "react-router-dom";
+
 export default function SignIn() {
+  const navigate = useNavigate();
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -41,7 +45,7 @@ export default function SignIn() {
           <Button variant="contained" style={{ width: "60%" }} disabled>
             Send Code
           </Button>
-          <Spacer height={"30%"} />
+          <Spacer height={"25%"} />
           <TextField
             label="Code"
             InputProps={{
@@ -53,7 +57,13 @@ export default function SignIn() {
             }}
           />
           <Spacer height={"5%"} />
-          <Button variant="contained" style={{ width: "60%" }} disabled>
+          <Button
+            variant="contained"
+            style={{ width: "60%" }}
+            onClick={() => {
+              navigate("/home", { replace: true });
+            }}
+          >
             Verify
           </Button>
         </div>
