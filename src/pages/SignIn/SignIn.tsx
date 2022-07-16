@@ -17,6 +17,10 @@ import SendIcon from "@mui/icons-material/Send";
 // Restful
 import axios from "axios";
 
+//Redux
+import { useDispatch } from "react-redux";
+import { setUserAuthed } from "../../states/user/userSlice";
+
 // Router
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +29,8 @@ const base = "http://127.0.0.1:5000";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState("");
   const [onSuccess, setOnSuccess] = useState(false);
@@ -56,6 +62,7 @@ export default function SignIn() {
       .then((res) => {
         console.log(res);
         setCodeLoading(false);
+        dispatch(setUserAuthed());
         navigate("/home");
       });
   };
@@ -77,6 +84,7 @@ export default function SignIn() {
       <div className={styles.right}>
         <div className={styles["input-form"]}>
           <TextField
+            className="w-56"
             label="Phone Number"
             value={phoneNumber}
             onChange={(e) => {
@@ -110,6 +118,7 @@ export default function SignIn() {
 
           <Spacer height={"25%"} />
           <TextField
+            className="w-56"
             label="Code"
             value={code}
             onChange={(e) => {
