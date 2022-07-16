@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="flex">
       <SideBar />
-      <div className="w-full">Home</div>
+      <div className="w-full">Chat</div>
     </div>
   );
 }

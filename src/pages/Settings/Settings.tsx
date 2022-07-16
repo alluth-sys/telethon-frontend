@@ -1,10 +1,10 @@
 import SideBar from "../../components/SideBar";
 
-export default function Home() {
+export default function Settings() {
   return (
     <div className="flex">
       <SideBar />
-      <div className="w-full">Home</div>
+      <div className="w-full">Settings</div>
     </div>
   );
 }

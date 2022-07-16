@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing/Landing";
 import SignIn from "./pages/SignIn/SignIn";
 import Home from "./pages/Home/Home";
+import Chat from "./pages/Chat/Chat";
+import Priority from "./pages/Priority/Priority";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/priority" element={<Priority />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
   );
