@@ -10,20 +10,23 @@ import Priority from "@/pages/Priority/Priority";
 import Settings from "@/pages/Settings/Settings";
 
 // Routes
-import PrivateRoute from "./routes/PrivateRoute";
+import PrivateRoute from "@/routes/PrivateRoute";
 
 // State
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/app/hooks";
+
+// Types
+import { RootState } from "@/app/store";
 
 function App() {
-  const isLogin = useSelector((state: any) => state.user.isLogin);
+  const { isLogin, data } = useAppSelector((state: RootState) => state.user);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route element={<PrivateRoute isLogin={isLogin} />}>
+        <Route element={<PrivateRoute isLogin={isLogin} data={data} />}>
           <Route path="/home" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/priority" element={<Priority />} />

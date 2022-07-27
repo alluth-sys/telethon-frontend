@@ -18,8 +18,8 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 
 //Redux
-import { useDispatch } from "react-redux";
-import { setUserAuthed } from "../../states/user/userSlice";
+import { setUserAuthed, setUserData } from "@/states/user/userSlice";
+import { useAppDispatch } from "@/app/hooks";
 
 // Router
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const base = "http://127.0.0.1:5000";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState("");
@@ -60,9 +60,10 @@ export default function SignIn() {
         code: code,
       })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         setCodeLoading(false);
         dispatch(setUserAuthed());
+        dispatch(setUserData(res.data));
         navigate("/home");
       });
   };

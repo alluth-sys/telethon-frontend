@@ -1,16 +1,14 @@
-import React from "react";
 // Router
 import { Navigate, Outlet } from "react-router-dom";
 
 // Side Bar
-import SideBar from "../components/SideBar";
+import SideBar from "@/components/SideBar";
 
-interface Props {
-  isLogin: Boolean;
-}
+// Types
+import { IUser } from "@/states/user/userSlice";
 
-export default function PrivateRoute({ isLogin }: Props) {
-  if (!isLogin) {
+export default function PrivateRoute({ isLogin, data }: IUser) {
+  if (!isLogin && data === null) {
     return <Navigate to="/signin" replace />;
   }
   return (
