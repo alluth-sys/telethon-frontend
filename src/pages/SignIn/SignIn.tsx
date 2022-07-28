@@ -19,6 +19,7 @@ import axios from "axios";
 
 //Redux
 import { setUserAuthed, setUserData } from "@/states/user/userSlice";
+import { onConnection } from "@/states/socket/socketSlice";
 import { useAppDispatch } from "@/app/hooks";
 
 // Router
@@ -44,7 +45,6 @@ export default function SignIn() {
         phone: phoneNumber,
       })
       .then((res) => {
-        console.log(res);
         setOnLoading(false);
         if (res.data.code === 200) {
           setOnSuccess(true);
@@ -60,10 +60,11 @@ export default function SignIn() {
         code: code,
       })
       .then((res) => {
-        console.log(res.data);
         setCodeLoading(false);
         dispatch(setUserAuthed());
         dispatch(setUserData(res.data));
+        dispatch(onConnection());
+
         navigate("/home");
       });
   };

@@ -1,8 +1,20 @@
 import { useAppSelector } from "@/app/hooks";
 import { RootState } from "@/app/store";
+import { Button } from "@mui/material";
 
 export default function Home() {
-  const data = useAppSelector((state: RootState) => state.user.data);
-  console.log(data);
-  return <div className="w-full">Home</div>;
+  const ws = useAppSelector((state: RootState) => state.socket.websocket);
+
+  return (
+    <div className="w-full">
+      <div>home</div>
+      <Button
+        onClick={() => {
+          ws?.emit("test");
+        }}
+      >
+        test
+      </Button>
+    </div>
+  );
 }
