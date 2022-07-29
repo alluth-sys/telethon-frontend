@@ -64,6 +64,7 @@ export default function SignIn() {
         dispatch(setUserAuthed());
         dispatch(setUserData(res.data));
         dispatch(onConnection());
+        console.log(res.data);
 
         navigate("/home");
       });
