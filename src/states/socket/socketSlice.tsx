@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import io from "socket.io-client";
 import { Socket } from "socket.io-client";
 
@@ -19,9 +19,7 @@ export const socketSlice = createSlice({
     onConnection: (state: any) => {
       state.websocket = io(endpoint, {
         transports: ["websocket", "polling", "flashsocket"],
-      }).on("connect", () => {
-        console.log("socket connected");
-      });
+      }).on("connect", () => {});
     },
   },
 });
