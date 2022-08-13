@@ -11,6 +11,7 @@ export default function PrivateRoute({ isLogin, data }: IUser) {
   if (!isLogin && data === null) {
     return <Navigate to="/signin" replace />;
   }
+
   return (
     <div className="flex">
       <SideBar />

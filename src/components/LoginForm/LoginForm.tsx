@@ -17,7 +17,6 @@ import SendIcon from "@mui/icons-material/Send";
 
 //Redux
 import { setUserAuthed } from "@/states/user/userSlice";
-import { onConnection } from "@/states/socket/socketSlice";
 import { useAppDispatch } from "@/app/hooks";
 
 // Router
@@ -60,10 +59,12 @@ export default function LoginForm() {
       .then((res) => {
         setCodeLoading(false);
         dispatch(setUserAuthed(res.data));
-        dispatch(onConnection());
         console.log(res.data);
-
         navigate("/home");
+      })
+      .catch((e) => {
+        setCodeLoading(false);
+        console.log(e);
       });
   };
 
