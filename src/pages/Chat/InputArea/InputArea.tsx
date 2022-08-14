@@ -62,7 +62,6 @@ export default function InputArea() {
         <div className="flex justify-center content-center ">
           <AddPhotoAlternateIcon
             className="my-8 mx-5 navigate"
-            onClick={importD}
           />
           <InputEmoji
             value={text}

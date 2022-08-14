@@ -7,6 +7,7 @@ export interface IData {
   first_name: String;
   last_name: String;
   phone: String;
+  profile_pic: String;
 }
 
 export interface IUser {
@@ -23,16 +24,17 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserAuthed: (state: IUser) => {
+    setUserAuthed: (state: IUser, action: PayloadAction<IData>) => {
       state.isLogin = true;
-    },
-    setUserData: (state: IUser, action: PayloadAction<IData>) => {
       state.data = action.payload;
+    },
+    setUserLoggedOut: (state: IUser) => {
+      state.isLogin = false;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserAuthed, setUserData } = userSlice.actions;
+export const { setUserAuthed, setUserLoggedOut } = userSlice.actions;
 
 export default userSlice.reducer;
