@@ -39,7 +39,8 @@ export default function Home() {
       <div>home</div>
       <Button
         onClick={() => {
-          ws?.emit("test");
+          //ws?.emit("test");
+          ws?.emit("conn", "5145920656");
         }}
       >
         test

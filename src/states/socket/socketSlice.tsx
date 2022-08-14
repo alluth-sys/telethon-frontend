@@ -19,9 +19,18 @@ export const socketSlice = createSlice({
     onConnection: (state: any) => {
       state.websocket = io(endpoint, {
         transports: ["websocket", "polling", "flashsocket"],
-      }).on("connect", () => {
-        console.log("socket connected");
-      });
+      })
+        .on("connect", () => {
+          console.log("socket connected");
+        })
+        .on("message", (message) => {
+          console.log(message);
+        })
+        .on("disconnect", () => {
+          alert("disconnect");
+          console.log("disconnect");
+          location.reload();
+        });
     },
   },
 });

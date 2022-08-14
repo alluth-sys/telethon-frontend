@@ -46,8 +46,16 @@ export default function SignIn() {
       })
       .then((res) => {
         setOnLoading(false);
+        console.log(res);
         if (res.data.code === 200) {
           setOnSuccess(true);
+        } else if (res.data.code === 202) {
+          dispatch(setUserAuthed());
+          dispatch(setUserData(res.data));
+          dispatch(onConnection());
+          console.log(res.data);
+
+          navigate("/home");
         }
       });
   };

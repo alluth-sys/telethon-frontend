@@ -1,0 +1,6 @@
+.chatInputWrapper {
+  display: grid;
+  background-color: gray;
+  grid-row-start: 190;
+  grid-row-end: 190;
+}
