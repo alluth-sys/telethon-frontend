@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 const base = "http://127.0.0.1:5000";
 
 export default function LoginForm() {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState<String | null>("");
   const [code, setCode] = React.useState("");
 
   const [onSuccess, setOnSuccess] = React.useState(false);
@@ -34,6 +34,29 @@ export default function LoginForm() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    let retrievedNumber = localStorage.getItem("phone");
+    if (retrievedNumber) {
+      retrievedNumber = JSON.parse(retrievedNumber);
+      setPhoneNumber(retrievedNumber);
+      axios
+        .post(`${base}/checkConnection`, {
+          phone: retrievedNumber,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            dispatch(setUserAuthed(res.data));
+            navigate("/home");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      console.log(retrievedNumber);
+    }
+  }, []);
 
   const signInHandler = () => {
     setOnLoading(true);
@@ -59,7 +82,8 @@ export default function LoginForm() {
       .then((res) => {
         setCodeLoading(false);
         dispatch(setUserAuthed(res.data));
-        console.log(res.data);
+        localStorage.setItem("phone", JSON.stringify(phoneNumber));
+        console.log(res);
         navigate("/home");
       })
       .catch((e) => {
