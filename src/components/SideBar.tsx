@@ -5,6 +5,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
+import axios from "axios";
+import { setUserLoggedOut } from "@/states/user/userSlice";
 
 // Router
 import { useNavigate } from "react-router-dom";
@@ -12,6 +17,26 @@ import { useNavigate } from "react-router-dom";
 type SideBarIconProps = { icon: any; text: String; path: String };
 
 export default function SideBar() {
+  const UserData = useAppSelector((state: RootState) => state.user.data);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const SignOutHandler = () => {
+    axios
+      .post("http://127.0.0.1:5000/logout", {
+        phone: "+" + UserData?.phone,
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(setUserLoggedOut());
+        navigate("/signin");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div
       className="static top-0 left-0 h-screen w-16 flex flex-col
@@ -35,7 +60,9 @@ export default function SideBar() {
         transition-all duration-300 ease-linear
         cursor-pointer shadow-lg "
       >
-        <LogoutIcon />
+        <div onClick={SignOutHandler}>
+          <LogoutIcon />
+        </div>
       </div>
     </div>
   );
