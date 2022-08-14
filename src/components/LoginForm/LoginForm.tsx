@@ -69,6 +69,11 @@ export default function LoginForm() {
         if (res.data.code === 200) {
           setOnSuccess(true);
         }
+        else if(res.data.code === 202){
+          dispatch(setUserAuthed(res.data))
+          navigate("/home")
+
+        }
       });
   };
 
