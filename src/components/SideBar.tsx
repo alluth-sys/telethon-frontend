@@ -14,6 +14,9 @@ import { setUserLoggedOut } from "@/states/user/userSlice";
 // Router
 import { useNavigate } from "react-router-dom";
 
+// Endpoint
+import { BASE } from "@/constants/endpoints";
+
 type SideBarIconProps = { icon: any; text: String; path: String };
 
 export default function SideBar() {
@@ -24,7 +27,7 @@ export default function SideBar() {
 
   const SignOutHandler = () => {
     axios
-      .post("http://127.0.0.1:5000/logout", {
+      .post(`${BASE}/logout`, {
         phone: "+" + UserData?.phone,
       })
       .then((res) => {

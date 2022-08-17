@@ -6,20 +6,12 @@ import { SocketContext } from "@/service/Socket";
 
 export default function Home() {
   const socket = React.useContext(SocketContext);
-
-  React.useEffect(() => {
-    socket.on("ping", (res) => {
-      console.log(res);
-    });
-    //console.log(socket.connected);
-  }, [socket]);
-
   return (
     <div className="w-full">
       <div>home</div>
       <Button
         onClick={() => {
-          socket.emit("test");
+          socket.emit("ping");
         }}
       >
         test

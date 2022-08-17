@@ -22,7 +22,8 @@ import { useAppDispatch } from "@/app/hooks";
 // Router
 import { useNavigate } from "react-router-dom";
 
-const base = "http://127.0.0.1:5000";
+// Constant
+import { BASE } from "@/constants/endpoints";
 
 export default function LoginForm() {
   const [phoneNumber, setPhoneNumber] = React.useState<String | null>("");
@@ -35,32 +36,10 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    let uid = localStorage.getItem("uid");
-    if (uid) {
-      uid = JSON.parse(uid);
-      axios
-        .post(`${base}/checkConnection`, {
-          uid: uid,
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            dispatch(setUserAuthed(res.data));
-            navigate("/home");
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      console.log(uid);
-    }
-  }, []);
-
   const signInHandler = () => {
     setOnLoading(true);
     axios
-      .post(`${base}/login`, {
+      .post(`${BASE}/login`, {
         phone: phoneNumber,
       })
       .then((res) => {
@@ -77,7 +56,7 @@ export default function LoginForm() {
   const codeVerificationHandler = () => {
     setCodeLoading(true);
     axios
-      .post(`${base}/verify`, {
+      .post(`${BASE}/verify`, {
         phone: phoneNumber,
         code: code,
       })
