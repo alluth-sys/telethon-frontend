@@ -36,13 +36,12 @@ export default function LoginForm() {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    let retrievedNumber = localStorage.getItem("phone");
-    if (retrievedNumber) {
-      retrievedNumber = JSON.parse(retrievedNumber);
-      setPhoneNumber(retrievedNumber);
+    let uid = localStorage.getItem("uid");
+    if (uid) {
+      uid = JSON.parse(uid);
       axios
         .post(`${base}/checkConnection`, {
-          phone: retrievedNumber,
+          uid: uid,
         })
         .then((res) => {
           console.log(res);
@@ -54,7 +53,7 @@ export default function LoginForm() {
         .catch((e) => {
           console.log(e);
         });
-      console.log(retrievedNumber);
+      console.log(uid);
     }
   }, []);
 
@@ -68,11 +67,9 @@ export default function LoginForm() {
         setOnLoading(false);
         if (res.data.code === 200) {
           setOnSuccess(true);
-        }
-        else if(res.data.code === 202){
-          dispatch(setUserAuthed(res.data))
-          navigate("/home")
-
+        } else if (res.data.code === 202) {
+          dispatch(setUserAuthed(res.data));
+          navigate("/home");
         }
       });
   };
@@ -86,9 +83,8 @@ export default function LoginForm() {
       })
       .then((res) => {
         setCodeLoading(false);
-        dispatch(setUserAuthed(res.data));
-        localStorage.setItem("phone", JSON.stringify(phoneNumber));
-        console.log(res);
+        dispatch(setUserAuthed(res.data)); // Set User Data
+        localStorage.setItem("uid", JSON.stringify(res.data.id)); // Set User Id for Persistent Login
         navigate("/home");
       })
       .catch((e) => {

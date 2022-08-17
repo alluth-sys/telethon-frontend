@@ -30,6 +30,7 @@ export default function SideBar() {
       .then((res) => {
         console.log(res);
         dispatch(setUserLoggedOut());
+        localStorage.clear();
         navigate("/signin");
       })
       .catch((e) => {

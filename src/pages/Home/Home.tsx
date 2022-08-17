@@ -11,6 +11,7 @@ export default function Home() {
     socket.on("ping", (res) => {
       console.log(res);
     });
+    //console.log(socket.connected);
   }, [socket]);
 
   return (
