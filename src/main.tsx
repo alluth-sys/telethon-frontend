@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 // Socket Context
 import { SocketContext, socket } from "@/service/Socket";
 
+import "@/i18n";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <SocketContext.Provider value={socket}>
     <Provider store={store}>
