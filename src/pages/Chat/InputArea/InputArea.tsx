@@ -6,6 +6,7 @@ import "./InputArea.css";
 import InputEmoji from "react-input-emoji";
 import { useState } from "react";
 import axios from "axios";
+import { useAppSelector } from "@/app/hooks";
 
 export default function InputArea() {
   // state need to be organized :
@@ -14,12 +15,12 @@ export default function InputArea() {
   //  select:
   //    channel_id
   const [text, setText] = useState("");
-
+  const { data } = useAppSelector((state) => state.user);
   function handleOnEnter(text) {
-    console.log(text);
+    console.log(data);
     axios
       .post("http://localhost:5000/send", {
-        user_id: "5145920656",
+        user_id: data.id,
         channel_id: "5145920656",
         message: text,
       })
@@ -27,30 +28,30 @@ export default function InputArea() {
       .catch((error) => console.log(error));
   }
 
-  function uploadFile(formData,user_id,channel_id) {
-    axios.post(
-      "http://localhost:5000/sendFile",
-      formData,
-      { params:{
+  function uploadFile(formData, user_id, channel_id) {
+    axios
+      .post("http://localhost:5000/sendFile", formData, {
+        params: {
           user_id,
-          channel_id
-      },headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    } 
-    ).then((response) => console.log(response))
-    .catch((error) => console.log(error));
+          channel_id,
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
   }
 
   function importD() {
     let input = document.createElement("input");
     input.type = "file";
     input.onchange = (_this) => {
-      var data = new FormData()
-      data.append('file',input.files[0])
-      data.append('user_id',"5145920656")
-      data.append('channel_id',"5145920656")
-      uploadFile(data,"5145920656","5145920656");
+      var file = new FormData();
+      file.append("file", input.files[0]);
+      file.append("user_id", data.id);
+      file.append("channel_id", "5145920656");
+      uploadFile(file, data.id, "5145920656");
     };
     input.click();
   }

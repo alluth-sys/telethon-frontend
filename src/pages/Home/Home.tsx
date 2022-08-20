@@ -10,17 +10,18 @@ import { Socket } from "socket.io-client";
 
 export default function Home() {
   const socket = React.useContext(SocketContext);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector((state) => state.user);
 
   React.useEffect(() => {
-    socket.on("ping", (res) => {
-      console.log(res);
+    console.log("use Effect")
+    if(socket!==null){
+    socket.on("initial", (res) => {
+      dispatch(setUserFriendList(res));
     });
-  }, [socket]);
-
-  React.useEffect(()=>{
-    socket.on("initial",(res) => {dispatch(setUserFriendList(res))})
-  },[])
+    socket.off('message').on('message', msg=>console.log(msg));
+  }
+  }, []);
 
   return (
     <div className="w-full">
@@ -28,6 +29,7 @@ export default function Home() {
       <Button
         onClick={() => {
           socket.emit("ping");
+          socket.emit("conn", data.id);
         }}
       >
         test

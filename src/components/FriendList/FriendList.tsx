@@ -1,9 +1,10 @@
 import "./FriendList.css";
 import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./car.jpg";
-import {useAppSelector} from "@/app/hooks"
+import { useAppSelector } from "@/app/hooks";
 import { RootState } from "@/app/store";
-import React from "react"
+import React from "react";
+import { Typography } from "@mui/material";
 
 function wordsFilter(words) {
   if (words.length > 16) {
@@ -13,67 +14,74 @@ function wordsFilter(words) {
 }
 
 export default function FriendList() {
-  const {friendList,data} = useAppSelector((state:RootState)=>state.user)
+  const { friendList, data } = useAppSelector((state: RootState) => state.user);
 
-  React.useEffect(()=>{
-    console.log("AAA",friendList)
-  },[])
+  var arr = ["A", "B", "C"];
 
   return (
     <div className="flex flex-col grow w-full">
-     
-        <div style={{ maxHeight: "100vh",overflow:"scroll"}} className="container-snap">
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-          <FriendBlock />
-        </div>
-     
+      <div
+        style={{ maxHeight: "100vh", overflow: "scroll" }}
+        className="container-snap"
+      >
+        {Object.entries(friendList).map(([key, value]) => (
+          <FriendBlock key={key} value={value} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function FriendBlock() {
+const FriendBlock = (key) => {
+  var value = key["value"];
   return (
     <>
       <div
         className="flex grow bg-slate-500  h-20 items-center navigate"
         style={{ overflowWrap: "break-word" }}
-        onClick={() => console.log("navigate to ")}
+        onClick={() => console.log(`navigate to ${value["userid"]}`)}
       >
-        <div style={{padding:"0px 5px"}}>
-        <Profile />
+        <div style={{ padding: "0px 5px" }}>
+          <Profile b64={value["profile_b64"]} />
         </div>
-        <div
-          className="flex ml-4 "
-          style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
-        >
-          {wordsFilter("sample text111111111")}
+        <div className="grid ml-4 grow">
+          <div>{value.username}</div>
+         
+            <div
+              className="flex justify-between items-center grow"
+              style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
+            >
+              <Message
+                tag={value["last_message_tag"]}
+                message={value["last_message"]}
+              />
+              <div className="mr-8">{value["unread_count"]}</div>
+            
+          </div>
         </div>
       </div>
       <hr />
     </>
   );
+};
+
+function Profile(b64) {
+  if (b64["b64"] !== "no profile") {
+    return (
+      <img
+        src={`data:image/jpeg;base64,${b64["b64"]}`}
+        className="w-15 h-15 rounded-full"
+      />
+    );
+  }
+  return;
 }
 
-function Profile() {
-  return (
-    <ReactRoundedImage
-      image={MyPhoto}
-      roundedColor="#321124"
-      imageWidth="50"
-      imageHeight="50"
-      roundedSize="0"
-      borderRadius="50"
-      style={{minWidth:"50px"}}
-    />
-  );
-}
+const Message = ({ tag, message }) => {
+  if (tag === "message") {
+    return <Typography>{wordsFilter(message)}</Typography>;
+  } else if (tag === "gif") {
+    return <Typography>{wordsFilter("Send a gif")}</Typography>;
+  }
+  return;
+};

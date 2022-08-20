@@ -22,7 +22,7 @@ export default function chat() {
 
   return (
     <div className="flex grow justify-start">
-      <div className="flex" style={{width:"200px"}}>
+      <div className="flex" style={{ width: "320px" }}>
         <FriendList />
       </div>
       <div className="grow grid content-end ">
