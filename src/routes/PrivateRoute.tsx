@@ -15,6 +15,9 @@ import { SocketContext } from "@/service/Socket";
 import ConnectionSnackBar from "@/components/ConnectionSnackBar";
 
 export default function PrivateRoute({ isLogin, data }: IUser) {
+  const socket = React.useContext(SocketContext);
+  
+
   if (!isLogin && data === null) {
     return <Navigate to="/signin" replace />;
   }
