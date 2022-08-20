@@ -27,18 +27,17 @@ export default function InputArea() {
       .catch((error) => console.log(error));
   }
 
-  function uploadFile(formData) {
-    var json_data = JSON.stringify(formData)
-    console.log(json_data)
+  function uploadFile(formData,user_id,channel_id) {
     axios.post(
-      "http://localhost:5000/send",
-      { formData,
-      },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      "http://localhost:5000/sendFile",
+      formData,
+      { params:{
+          user_id,
+          channel_id
+      },headers: {
+        "Content-Type": "multipart/form-data",
       }
+    } 
     ).then((response) => console.log(response))
     .catch((error) => console.log(error));
   }
@@ -47,9 +46,11 @@ export default function InputArea() {
     let input = document.createElement("input");
     input.type = "file";
     input.onchange = (_this) => {
-      let files = Array.from(input.files);
-      console.log(files[0]);
-      uploadFile(files[0]);
+      var data = new FormData()
+      data.append('file',input.files[0])
+      data.append('user_id',"5145920656")
+      data.append('channel_id',"5145920656")
+      uploadFile(data,"5145920656","5145920656");
     };
     input.click();
   }
@@ -62,6 +63,7 @@ export default function InputArea() {
         <div className="flex justify-center content-center ">
           <AddPhotoAlternateIcon
             className="my-8 mx-5 navigate"
+            onClick={importD}
           />
           <InputEmoji
             value={text}

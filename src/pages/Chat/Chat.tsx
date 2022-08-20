@@ -3,7 +3,6 @@ import InputArea from "@/pages/Chat/InputArea/InputArea";
 import MessageBox from "@/components/MessageBox/MessageBox";
 
 import WebFont from "webfontloader";
-
 import { useEffect } from "react";
 
 export default function chat() {
@@ -23,10 +22,10 @@ export default function chat() {
 
   return (
     <div className="flex grow justify-start">
-      <div className="flex w-2/12">
+      <div className="flex" style={{width:"200px"}}>
         <FriendList />
       </div>
-      <div className="grow grid content-end w-10/12">
+      <div className="grow grid content-end ">
         <MessageBox message="100" />
         <MessageBox message="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
         <div className="grid h-24">

@@ -1,7 +1,8 @@
 import "./FriendList.css";
 import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./car.jpg";
-import ScrollArea from "@xico2k/react-scroll-area";
+import {useAppSelector} from "@/app/hooks"
+import { RootState } from "@/app/store";
 
 function wordsFilter(words) {
   if (words.length > 16) {
@@ -11,10 +12,16 @@ function wordsFilter(words) {
 }
 
 export default function FriendList() {
+  const {UserFriendList,data} = useAppSelector((state:RootState)=>state.user)
+
+  React.useEffect(()=>{
+    console.log("AAA",UserFriendList)
+  },[])
+
   return (
-    <div className="flex flex-col grow ">
-      <ScrollArea>
-        <div style={{ maxHeight: "50px" }}>
+    <div className="flex flex-col grow w-full">
+     
+        <div style={{ maxHeight: "100vh",overflow:"scroll"}} className="container-snap">
           <FriendBlock />
           <FriendBlock />
           <FriendBlock />
@@ -28,7 +35,7 @@ export default function FriendList() {
           <FriendBlock />
           <FriendBlock />
         </div>
-      </ScrollArea>
+     
     </div>
   );
 }
@@ -41,9 +48,11 @@ function FriendBlock() {
         style={{ overflowWrap: "break-word" }}
         onClick={() => console.log("navigate to ")}
       >
+        <div style={{padding:"0px 5px"}}>
         <Profile />
+        </div>
         <div
-          className="flex ml-4 w-8/12"
+          className="flex ml-4 "
           style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
         >
           {wordsFilter("sample text111111111")}
@@ -61,8 +70,9 @@ function Profile() {
       roundedColor="#321124"
       imageWidth="50"
       imageHeight="50"
-      roundedSize="5"
-      borderRadius="70"
+      roundedSize="0"
+      borderRadius="50"
+      style={{minWidth:"50px"}}
     />
   );
 }
