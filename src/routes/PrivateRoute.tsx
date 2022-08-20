@@ -1,3 +1,4 @@
+import React from "react";
 // Router
 import { Navigate, Outlet } from "react-router-dom";
 
@@ -6,6 +7,12 @@ import SideBar from "@/components/SideBar";
 
 // Types
 import { IUser } from "@/states/user/userSlice";
+
+// Socket
+import { SocketContext } from "@/service/Socket";
+
+// SnackBar
+import ConnectionSnackBar from "@/components/ConnectionSnackBar";
 
 export default function PrivateRoute({ isLogin, data }: IUser) {
   if (!isLogin && data === null) {
@@ -16,6 +23,7 @@ export default function PrivateRoute({ isLogin, data }: IUser) {
     <div className="flex">
       <SideBar />
       <Outlet />
+      <ConnectionSnackBar />
     </div>
   );
 }

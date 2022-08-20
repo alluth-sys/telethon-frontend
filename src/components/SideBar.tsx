@@ -14,22 +14,30 @@ import { setUserLoggedOut } from "@/states/user/userSlice";
 // Router
 import { useNavigate } from "react-router-dom";
 
+// Endpoint
+import { BASE } from "@/constants/endpoints";
+
+// i18n
+import { useTranslation } from "react-i18next";
+
 type SideBarIconProps = { icon: any; text: String; path: String };
 
 export default function SideBar() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const SignOutHandler = () => {
     axios
-      .post("http://127.0.0.1:5000/logout", {
+      .post(`${BASE}/logout`, {
         phone: "+" + UserData?.phone,
       })
       .then((res) => {
         console.log(res);
         dispatch(setUserLoggedOut());
+        localStorage.clear();
         navigate("/signin");
       })
       .catch((e) => {
@@ -47,10 +55,14 @@ export default function SideBar() {
         fontSize="large"
       />
       <hr className="sidebar-hr" />
-      <SideBarIcon icon={<HomeIcon />} text="Home" path="/home" />
-      <SideBarIcon icon={<ChatBubbleIcon />} text="Chat" path="/chat" />
-      <SideBarIcon icon={<EditIcon />} text="Priority" path="/priority" />
-      <SideBarIcon icon={<SettingsIcon />} text="Settings" path="/settings" />
+      <SideBarIcon icon={<HomeIcon />} text={t("Home")} path="/home" />
+      <SideBarIcon icon={<ChatBubbleIcon />} text={t("Chat")} path="/chat" />
+      <SideBarIcon icon={<EditIcon />} text={t("Priority")} path="/priority" />
+      <SideBarIcon
+        icon={<SettingsIcon />}
+        text={t("Settings")}
+        path="/settings"
+      />
       <hr className="sidebar-hr" />
       <div
         className="relative flex items-center justify-center h-12 w-12 mt-96 mx-auto 

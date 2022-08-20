@@ -10,12 +10,24 @@ import FormLabel from "@mui/material/FormLabel";
 import Link from "@mui/material/Link";
 import EditIcon from "@mui/icons-material/Edit";
 import Spacer from "react-spacer";
+import { useTranslation } from "react-i18next";
 
 export default function Settings() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
   const [language, setLanguage] = React.useState("English");
+  const { i18n } = useTranslation();
 
-  const setLanguageHandler = () => {};
+  const setLanguageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLanguage(event.target.value);
+  };
+
+  React.useEffect(() => {
+    if (language === "English") {
+      i18n.changeLanguage("en");
+    } else if (language === "Chinese") {
+      i18n.changeLanguage("zh");
+    }
+  }, [language]);
 
   return (
     <div className="w-full">
@@ -51,9 +63,7 @@ export default function Settings() {
             aria-labelledby="language-buttons-group-label"
             defaultValue="English"
             name="radio-buttons-group"
-            onChange={(event) => {
-              setLanguage(event.target.value);
-            }}
+            onChange={setLanguageHandler}
           >
             <FormControlLabel
               value="English"

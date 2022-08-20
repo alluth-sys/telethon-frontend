@@ -22,7 +22,8 @@ import { useAppDispatch } from "@/app/hooks";
 // Router
 import { useNavigate } from "react-router-dom";
 
-const base = "http://127.0.0.1:5000";
+// Constant
+import { BASE } from "@/constants/endpoints";
 
 export default function LoginForm() {
   const [phoneNumber, setPhoneNumber] = React.useState<String | null>("");
@@ -35,44 +36,19 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    let retrievedNumber = localStorage.getItem("phone");
-    if (retrievedNumber) {
-      retrievedNumber = JSON.parse(retrievedNumber);
-      setPhoneNumber(retrievedNumber);
-      axios
-        .post(`${base}/checkConnection`, {
-          phone: retrievedNumber,
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            dispatch(setUserAuthed(res.data));
-            navigate("/home");
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      console.log(retrievedNumber);
-    }
-  }, []);
-
   const signInHandler = () => {
     setOnLoading(true);
     axios
-      .post(`${base}/login`, {
+      .post(`${BASE}/login`, {
         phone: phoneNumber,
       })
       .then((res) => {
         setOnLoading(false);
         if (res.data.code === 200) {
           setOnSuccess(true);
-        }
-        else if(res.data.code === 202){
-          dispatch(setUserAuthed(res.data))
-          navigate("/home")
-
+        } else if (res.data.code === 202) {
+          dispatch(setUserAuthed(res.data));
+          navigate("/home");
         }
       });
   };
@@ -80,15 +56,14 @@ export default function LoginForm() {
   const codeVerificationHandler = () => {
     setCodeLoading(true);
     axios
-      .post(`${base}/verify`, {
+      .post(`${BASE}/verify`, {
         phone: phoneNumber,
         code: code,
       })
       .then((res) => {
         setCodeLoading(false);
-        dispatch(setUserAuthed(res.data));
-        localStorage.setItem("phone", JSON.stringify(phoneNumber));
-        console.log(res);
+        dispatch(setUserAuthed(res.data)); // Set User Data
+        localStorage.setItem("uid", JSON.stringify(res.data.id)); // Set User Id for Persistent Login
         navigate("/home");
       })
       .catch((e) => {
