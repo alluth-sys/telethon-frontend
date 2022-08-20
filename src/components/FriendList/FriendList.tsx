@@ -3,6 +3,7 @@ import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./car.jpg";
 import {useAppSelector} from "@/app/hooks"
 import { RootState } from "@/app/store";
+import React from "react"
 
 function wordsFilter(words) {
   if (words.length > 16) {
@@ -12,10 +13,10 @@ function wordsFilter(words) {
 }
 
 export default function FriendList() {
-  const {UserFriendList,data} = useAppSelector((state:RootState)=>state.user)
+  const {friendList,data} = useAppSelector((state:RootState)=>state.user)
 
   React.useEffect(()=>{
-    console.log("AAA",UserFriendList)
+    console.log("AAA",friendList)
   },[])
 
   return (

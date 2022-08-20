@@ -11,9 +11,9 @@ export interface IData {
 }
 
 export interface IUser {
-  isLogin: Boolean;
+  
   data: IData | null;
-  friendList : Object;
+  friendList: Object;
 }
 
 const initialState: IUser = {
