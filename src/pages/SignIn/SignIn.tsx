@@ -23,7 +23,8 @@ export default function SignIn() {
           uid: uid,
         })
         .then((res) => {
-          if (res.data.code === 200) {
+          console.log(res);
+          if (res.status === 200) {
             dispatch(setUserAuthed(res.data));
             navigate("/home");
           }

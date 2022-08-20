@@ -44,6 +44,7 @@ export default function LoginForm() {
       })
       .then((res) => {
         setOnLoading(false);
+        console.log(res);
         if (res.data.code === 200) {
           setOnSuccess(true);
         }
