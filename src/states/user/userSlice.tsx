@@ -13,11 +13,13 @@ export interface IData {
 export interface IUser {
   isLogin: Boolean;
   data: IData | null;
+  friendList : Object;
 }
 
 const initialState: IUser = {
   isLogin: false,
   data: null,
+  friendList : {},
 };
 
 export const userSlice = createSlice({
@@ -31,10 +33,14 @@ export const userSlice = createSlice({
     setUserLoggedOut: (state: IUser) => {
       state.isLogin = false;
     },
+    setUserFriendList: (state:IUser, action)=>{
+      console.log(action.payload)
+      state.friendList[action.payload.channel] = action.payload.count
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserAuthed, setUserLoggedOut } = userSlice.actions;
+export const { setUserAuthed, setUserLoggedOut,setUserFriendList } = userSlice.actions;
 
 export default userSlice.reducer;
