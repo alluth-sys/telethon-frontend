@@ -32,7 +32,7 @@ export default function SideBar() {
   const SignOutHandler = () => {
     axios
       .post(`${BASE}/logout`, {
-        phone: "+" + UserData?.phone,
+        uid: UserData?.id,
       })
       .then((res) => {
         console.log(res);
