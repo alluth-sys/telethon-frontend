@@ -14,13 +14,11 @@ export default function Home() {
   const { data } = useAppSelector((state) => state.user);
 
   React.useEffect(() => {
-    console.log("use Effect")
-    if(socket!==null){
-    socket.on("initial", (res) => {
-      dispatch(setUserFriendList(res));
-    });
-    socket.off('message').on('message', msg=>console.log(msg));
-  }
+    if (socket !== null) {
+      socket.on("initial", (res) => {
+        dispatch(setUserFriendList(res));
+      });
+    }
   }, []);
 
   return (

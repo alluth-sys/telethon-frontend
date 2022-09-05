@@ -3,7 +3,8 @@ import InputArea from "@/pages/Chat/InputArea/InputArea";
 import MessageBox from "@/components/MessageBox/MessageBox";
 
 import WebFont from "webfontloader";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
+import { SocketContext } from "@/service/Socket";
 
 export default function chat() {
   // state need to be organized :
@@ -18,7 +19,7 @@ export default function chat() {
         families: ["Inter"],
       },
     });
-  });
+  },[]);
 
   return (
     <div className="flex grow justify-start">

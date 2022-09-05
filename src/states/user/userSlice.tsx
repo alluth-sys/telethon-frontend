@@ -42,7 +42,6 @@ export const userSlice = createSlice({
       state.isLogin = false;
     },
     setUserFriendList: (state: IUser, action) => {
-      console.log(action.payload);
       let obj = {
         userid: action.payload.id,
         username: action.payload.name,

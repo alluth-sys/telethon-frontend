@@ -15,9 +15,9 @@ import "@/i18n";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <SocketContext.Provider value={socket}>
     <Provider store={store}>
-      <React.StrictMode>
+      
         <App />
-      </React.StrictMode>
+      
     </Provider>
   </SocketContext.Provider>
 );

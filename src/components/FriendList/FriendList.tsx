@@ -7,8 +7,10 @@ import React from "react";
 import { Typography } from "@mui/material";
 
 function wordsFilter(words) {
+  if(words!== null){
   if (words.length > 16) {
     return words.slice(0, 16) + "...";
+  }
   }
   return words;
 }
@@ -16,7 +18,7 @@ function wordsFilter(words) {
 export default function FriendList() {
   const { friendList, data } = useAppSelector((state: RootState) => state.user);
 
-  var arr = ["A", "B", "C"];
+  
 
   return (
     <div className="flex flex-col grow w-full">
@@ -46,17 +48,16 @@ const FriendBlock = (key) => {
         </div>
         <div className="grid ml-4 grow">
           <div>{value.username}</div>
-         
-            <div
-              className="flex justify-between items-center grow"
-              style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
-            >
-              <Message
-                tag={value["last_message_tag"]}
-                message={value["last_message"]}
-              />
-              <div className="mr-8">{value["unread_count"]}</div>
-            
+
+          <div
+            className="flex justify-between items-center grow"
+            style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
+          >
+            <Message
+              tag={value["last_message_tag"]}
+              message={value["last_message"]}
+            />
+            <div className="mr-8">{value["unread_count"]}</div>
           </div>
         </div>
       </div>
