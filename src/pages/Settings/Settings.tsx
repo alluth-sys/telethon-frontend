@@ -1,7 +1,9 @@
 import React from "react";
 import { useAppSelector } from "@/app/hooks";
 import { RootState } from "@/app/store";
-import { Typography } from "@mui/material";
+
+import { Typography, Button } from "@mui/material";
+
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,13 +11,15 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Link from "@mui/material/Link";
 import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+
 import Spacer from "react-spacer";
 import { useTranslation } from "react-i18next";
 
 export default function Settings() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
   const [language, setLanguage] = React.useState("English");
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const setLanguageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLanguage(event.target.value);
@@ -58,7 +62,9 @@ export default function Settings() {
       </div>
       <div className="m-8 flex">
         <FormControl>
-          <FormLabel id="language-buttons-group-label">Language</FormLabel>
+          <FormLabel id="language-buttons-group-label">
+            {t("Language")}
+          </FormLabel>
           <RadioGroup
             aria-labelledby="language-buttons-group-label"
             defaultValue="English"
@@ -68,18 +74,20 @@ export default function Settings() {
             <FormControlLabel
               value="English"
               control={<Radio />}
-              label="English"
+              label={t("English")}
             />
             <FormControlLabel
               value="Chinese"
               control={<Radio />}
-              label="Chinese"
+              label={t("Chinese")}
             />
           </RadioGroup>
         </FormControl>
         <Spacer width={"10%"} />
         <FormControl>
-          <FormLabel id="fontsize-buttons-group-label">Font Size</FormLabel>
+          <FormLabel id="fontsize-buttons-group-label">
+            {t("FontSize")}
+          </FormLabel>
           <RadioGroup
             aria-labelledby="fontsize-buttons-group-label"
             defaultValue="1"
@@ -95,13 +103,16 @@ export default function Settings() {
       </div>
       <div className="m-8">
         <Link href="#">
-          <Typography style={{ color: "grey" }}>FAQ</Typography>
+          <Typography style={{ color: "grey" }}>{t("FAQ")}</Typography>
         </Link>
         <Link href="#">
-          <Typography style={{ color: "grey" }}>
-            Developer Information
-          </Typography>
+          <Typography style={{ color: "grey" }}>{t("DevInfo")}</Typography>
         </Link>
+      </div>
+      <div className="flex m-8">
+        <Button>
+          <SaveIcon fontSize="large" />
+        </Button>
       </div>
     </div>
   );

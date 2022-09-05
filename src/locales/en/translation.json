@@ -2,5 +2,11 @@
   "Home": "Home",
   "Chat": "Chat",
   "Priority": "Priority",
-  "Settings": "Settings"
+  "Settings": "Settings",
+  "English": "English",
+  "Chinese": "Chinese",
+  "Language": "Language",
+  "FontSize": "Font Size",
+  "FAQ": "FAQ",
+  "DevInfo": "Developer Information"
 }

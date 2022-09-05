@@ -2,5 +2,11 @@
   "Home": "首頁",
   "Chat": "聊天室",
   "Priority": "排序",
-  "Settings": "設定"
+  "Settings": "設定",
+  "English": "英文",
+  "Chinese": "中文",
+  "Language": "語言",
+  "FontSize": "字體大小",
+  "FAQ": "常問問題",
+  "DevInfo": "開發者資訊"
 }
