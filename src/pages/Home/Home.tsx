@@ -27,7 +27,6 @@ export default function Home() {
       <Button
         onClick={() => {
           socket.emit("ping");
-          socket.emit("conn", data.id);
         }}
       >
         test

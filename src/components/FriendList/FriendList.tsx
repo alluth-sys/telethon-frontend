@@ -1,24 +1,43 @@
 import "./FriendList.css";
 import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./car.jpg";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import React from "react";
 import { Typography } from "@mui/material";
+import { setUserFocus } from "@/states/user/userSlice";
+import axios from "axios";
+import {setFriendChatHistory} from "@/states/user/userSlice"
 
-function wordsFilter(words) {
-  if(words!== null){
-  if (words.length > 16) {
-    return words.slice(0, 16) + "...";
-  }
+function wordsFilter(words: string) {
+  if (words !== null) {
+    if (words.length > 16) {
+      return words.slice(0, 16) + "...";
+    }
   }
   return words;
 }
 
-export default function FriendList() {
-  const { friendList, data } = useAppSelector((state: RootState) => state.user);
+function getChatHistory(
+  target_channel_id: number,
+  user_id: number,
+  dispatch,
+  message_id = 0
+) {
+  axios
+    .get("http://localhost:5000/getMessage", {
+      params: {
+        user_id: user_id,
+        channel_id: target_channel_id,
+        message_id: message_id,
+      },
+    })
+    .then((res) => dispatch(setFriendChatHistory(res)))
+    .catch((e) => console.log(e));
+}
 
-  
+export default function FriendList() {
+  const { friendList } = useAppSelector((state: RootState) => state.user);
 
   return (
     <div className="flex flex-col grow w-full">
@@ -35,13 +54,19 @@ export default function FriendList() {
 }
 
 const FriendBlock = (key) => {
+  const { data } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   var value = key["value"];
+  
   return (
     <>
       <div
         className="flex grow bg-slate-500  h-20 items-center navigate"
         style={{ overflowWrap: "break-word" }}
-        onClick={() => console.log(`navigate to ${value["userid"]}`)}
+        onClick={() => {
+          dispatch(setUserFocus(value["channel_id"]));
+          getChatHistory(value["channel_id"], data.id,dispatch);
+        }}
       >
         <div style={{ padding: "0px 5px" }}>
           <Profile b64={value["profile_b64"]} />
@@ -75,7 +100,7 @@ function Profile(b64) {
       />
     );
   }
-  return;
+  return <></>;
 }
 
 const Message = ({ tag, message }) => {
@@ -84,5 +109,5 @@ const Message = ({ tag, message }) => {
   } else if (tag === "gif") {
     return <Typography>{wordsFilter("Send a gif")}</Typography>;
   }
-  return;
+  return <></>;
 };

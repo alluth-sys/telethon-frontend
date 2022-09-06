@@ -16,7 +16,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SendIcon from "@mui/icons-material/Send";
 
 //Redux
-import { setUserAuthed } from "@/states/user/userSlice";
+import { setUserAuthed, setFriendLatestMessage } from "@/states/user/userSlice";
 import { useAppDispatch } from "@/app/hooks";
 
 // Router
@@ -25,6 +25,8 @@ import { useNavigate } from "react-router-dom";
 // Constant
 import { BASE } from "@/constants/endpoints";
 
+import { SocketContext } from "@/service/Socket";
+
 export default function LoginForm() {
   const [phoneNumber, setPhoneNumber] = React.useState<String | null>("");
   const [code, setCode] = React.useState("");
@@ -32,6 +34,8 @@ export default function LoginForm() {
   const [onSuccess, setOnSuccess] = React.useState(false);
   const [onLoading, setOnLoading] = React.useState(false);
   const [codeLoading, setCodeLoading] = React.useState(false);
+
+  const socket = React.useContext(SocketContext);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -48,8 +52,13 @@ export default function LoginForm() {
           setOnSuccess(true);
           console.log(res.data);
         } else if (res.status === 202) {
+          console.log(res.data);
           dispatch(setUserAuthed(res.data));
           navigate("/home");
+          socket.emit("conn", res.data.context.id);
+          socket.on("message", (msg) => {
+            dispatch(setFriendLatestMessage(msg));
+          });
         }
       });
   };
