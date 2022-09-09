@@ -29,7 +29,7 @@ export default function SignIn() {
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
-            dispatch(setUserAuthed(res.data));
+            dispatch(setUserAuthed(res.data.context));
             navigate("/home");
             socket.emit("conn", res.data.context.id);
             socket.on("message", (msg) => {
