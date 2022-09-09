@@ -4,8 +4,13 @@ import MessageBox from "@/components/MessageBox/MessageBox";
 
 import WebFont from "webfontloader";
 import { useEffect } from "react";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import React from "react";
+
+import {setUserSet} from "@/states/user/userSlice"
+
+
+import axios from "axios";
 
 export default function chat() {
   // state need to be organized :
@@ -14,20 +19,21 @@ export default function chat() {
   //  dispatch:
   //    channel_id
 
-  const { friendList, focus } = useAppSelector((state) => state.user);
-  const [chatFlag, setChatFlag] = React.useState(false);
+  const { friendList, focus, data , set } = useAppSelector((state) => state.user);
   const [chatHistory, setChatHistory] = React.useState({});
+  const [chatFlag,setChatFlag] = React.useState(false)
+  const dispatch = useAppDispatch()
   React.useEffect(() => {
-    setChatHistory({});
     try{
-      console.log("try")
+      console.log("curr", chatHistory);
+      
+      setChatHistory({});
       setChatHistory(friendList[focus].chat_history);
-      Object(chatHistory)
-      setChatFlag(true)
+      Object.entries(chatHistory)
     }catch{
-      console.log("ERR")
-      setChatFlag(false)
+      console.log("err")
     }
+    
   }, [friendList[focus]]);
 
   useEffect(() => {
@@ -38,24 +44,53 @@ export default function chat() {
     });
   }, []);
 
+  useEffect(() => {
+    
+  }, [chatHistory]);
+
+  const handleOnScroll = () => {
+    var curr = document.getElementById("messageArea")
+    if(curr?.scrollTop === 0){
+      console.log("Top")
+    }
+  };
+  
+
+  class MessageArea extends React.Component {
+    curr = document.getElementById("messageArea")
+
+    componentDidMount(): void {
+        this.curr?.scrollTo(0,this.curr?.scrollHeight)
+    }
+
+    messagesEndRef = React.createRef()
+
+    render(){
+    return (
+      <div className="flex flex-col grow w-full">
+        <div
+          style={{ maxHeight: "85vh", overflow: "scroll" }}
+          className="container-snap content-end"
+          id="messageArea"
+          onScroll={handleOnScroll}
+        >
+          {Object.entries(chatHistory).map(([key, index]) => {
+            return <MessageBox message={index} key={key}/>;
+          })}
+         <div ref={this.messagesEndRef} />
+        </div>
+      </div>
+    );}
+  };
+
   return (
     <div className="flex grow justify-start">
       <div className="flex" style={{ width: "320px" }}>
         <FriendList />
       </div>
       <div className="grow grid content-end ">
-        <div className="flex flex-col grow w-full">
-          <div
-          style={{ maxHeight: "90vh", overflow: "scroll" }}
-          className="container-snap"
-          >
-        {Object.entries(chatHistory).map(([key, index])=> {
-          return <MessageBox message={index}/>
-        })}
-          </div>
-       </div>
-        
-        <div className="grid" >
+          <MessageArea />
+        <div className="grid h-15vh">
           <InputArea />
         </div>
       </div>

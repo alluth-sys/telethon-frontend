@@ -7,7 +7,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
-import {setFriendChatHistory} from "@/states/user/userSlice"
+import { setFriendChatHistory } from "@/states/user/userSlice";
 
 function wordsFilter(words: string) {
   if (words !== null) {
@@ -57,7 +57,10 @@ const FriendBlock = (key) => {
   const { data } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   var value = key["value"];
-  
+  if(value.channel_id===undefined)
+  {
+    return <></>
+  }
   return (
     <>
       <div
@@ -65,7 +68,7 @@ const FriendBlock = (key) => {
         style={{ overflowWrap: "break-word" }}
         onClick={() => {
           dispatch(setUserFocus(value["channel_id"]));
-          getChatHistory(value["channel_id"], data.id,dispatch);
+          getChatHistory(value["channel_id"], data.id, dispatch);
         }}
       >
         <div style={{ padding: "0px 5px" }}>
