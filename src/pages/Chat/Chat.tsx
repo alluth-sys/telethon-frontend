@@ -29,7 +29,8 @@ export default function chat() {
       
       setChatHistory({});
       setChatHistory(friendList[focus].chat_history);
-      Object.entries(chatHistory)
+      Object.entries(friendList[focus].chat_history)
+      setChatFlag(true)
     }catch{
       console.log("err")
     }
@@ -51,7 +52,7 @@ export default function chat() {
   const handleOnScroll = () => {
     var curr = document.getElementById("messageArea")
     if(curr?.scrollTop === 0){
-      console.log("Top")
+      console.log(friendList[focus].oldest_message_id)
     }
   };
   
@@ -74,7 +75,7 @@ export default function chat() {
           id="messageArea"
           onScroll={handleOnScroll}
         >
-          {Object.entries(chatHistory).map(([key, index]) => {
+          {chatFlag&&Object.entries(chatHistory).map(([key, index]) => {
             return <MessageBox message={index} key={key}/>;
           })}
          <div ref={this.messagesEndRef} />

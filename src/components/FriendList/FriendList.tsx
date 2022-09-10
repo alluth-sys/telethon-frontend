@@ -36,18 +36,23 @@ function getChatHistory(
     .catch((e) => console.log(e));
 }
 
-export default function FriendList() {
+export default function FriendList({limit=0}) {
   const { friendList } = useAppSelector((state: RootState) => state.user);
-
+  var i = 0
   return (
     <div className="flex flex-col grow w-full">
       <div
         style={{ maxHeight: "100vh", overflow: "scroll" }}
         className="container-snap"
       >
-        {Object.entries(friendList).map(([key, value]) => (
-          <FriendBlock key={key} value={value} />
-        ))}
+        {Object.entries(friendList).map(([key, value]) => {
+          if(limit!=0&&i>limit){
+            return <></>
+          }
+          i++
+          return <FriendBlock key={key} value={value} />
+  
+        })}
       </div>
     </div>
   );
@@ -57,7 +62,8 @@ const FriendBlock = (key) => {
   const { data } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   var value = key["value"];
-  if(value.channel_id===undefined)
+  
+  if(key=="0" || value.channel_id===undefined || value.channel_id===null)
   {
     return <></>
   }

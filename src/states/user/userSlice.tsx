@@ -18,10 +18,28 @@ export interface IUser {
   focus: number;
 }
 
+export interface Friend {
+  channel_id : number,
+  username: string,
+  profile_b64 : string,
+  unread_count : number,
+  last_message_tag : string,
+  last_message : string,
+  last_message_timestamp : string,
+  chat_history : object,
+  oldest_message_id: number
+} 
+
 const initialState: IUser = {
   isLogin: false,
   data: null,
-  friendList: {0:{0:"dummy"}},
+  friendList: {
+    "0":{
+    channel_id:null,
+    username:null,
+    profile_b64:null,
+    }
+  },
   set: true,
   focus: 0,
 };
@@ -30,7 +48,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserAuthed: (state: IUser, action: PayloadAction<IData>) => {
+    setUserAuthed: (state: IUser, action) => {
       state.isLogin = true;
       state.data = action.payload.context;
       console.log(state.data);
@@ -40,7 +58,7 @@ export const userSlice = createSlice({
       state.isLogin = false;
     },
     setUserFriendList: (state: IUser, action) => {
-      let friend = {
+      let friend : Friend = {
         channel_id: action.payload.channel,
         username: action.payload.name,
         profile_b64: action.payload.b64,
