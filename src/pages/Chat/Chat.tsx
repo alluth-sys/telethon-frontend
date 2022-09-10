@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import React from "react";
 
-import {setUserSet} from "@/states/user/userSlice"
+import {setFriendChatHistory} from "@/states/user/userSlice"
 
 
 import axios from "axios";
@@ -53,6 +53,16 @@ export default function chat() {
     var curr = document.getElementById("messageArea")
     if(curr?.scrollTop === 0){
       console.log(friendList[focus].oldest_message_id)
+      axios
+      .get("http://localhost:5000/getMessage", {
+      params: {
+        user_id: data.id,
+        channel_id: focus,
+        message_id: friendList[focus].oldest_message_id,
+      },
+    })
+    .then((res) => dispatch(setFriendChatHistory(res)))
+    .catch((e) => console.log(e));
     }
   };
   

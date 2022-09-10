@@ -93,7 +93,7 @@ export const userSlice = createSlice({
         state.friendList[action.payload.data.context[0].channel].chat_history[
           action.payload.data.context[i].message_id
         ] = action.payload.data.context[i];
-        if (i == action.payload.data.context[0].length - 1) {
+        if (i == action.payload.data.context.length - 1) {
           state.friendList[
             action.payload.data.context[0].channel
           ].oldest_message_id = action.payload.data.context[i].message_id;
