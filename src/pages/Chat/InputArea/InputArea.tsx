@@ -6,7 +6,8 @@ import "./InputArea.css";
 import InputEmoji from "react-input-emoji";
 import { useState } from "react";
 import axios from "axios";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { setFriendLatestMessage } from "@/states/user/userSlice";
 
 export default function InputArea() {
   // state need to be organized :
@@ -15,16 +16,17 @@ export default function InputArea() {
   //  select:
   //    channel_id
   const [text, setText] = useState("");
-  const { data } = useAppSelector((state) => state.user);
+  const { data, focus } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   function handleOnEnter(text) {
     console.log(data);
     axios
       .post("http://localhost:5000/send", {
         user_id: data.id,
-        channel_id: "5145920656",
+        channel_id: focus,
         message: text,
       })
-      .then((response) => console.log(response))
+      .then((response) => dispatch(setFriendLatestMessage(response)))
       .catch((error) => console.log(error));
   }
 
