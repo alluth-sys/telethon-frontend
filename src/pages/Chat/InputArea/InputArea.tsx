@@ -19,7 +19,9 @@ export default function InputArea() {
   const { data, focus } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   function handleOnEnter(text) {
-    console.log(data);
+    if (text.length <= 0) {
+      return;
+    }
     axios
       .post("http://localhost:5000/send", {
         user_id: data.id,

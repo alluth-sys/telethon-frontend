@@ -6,6 +6,7 @@ import WebFont from "webfontloader";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import React from "react";
+import ReactDOM from "react-dom";
 
 import { setFriendChatHistory } from "@/states/user/userSlice";
 import "./Chat.css";
@@ -19,27 +20,29 @@ export default function chat() {
   //  dispatch:
   //    channel_id
 
-  const { friendList, focus, data, set } = useAppSelector(
-    (state) => state.user
-  );
+  const { friendList, focus, data ,set} = useAppSelector((state) => state.user);
   const [chatHistory, setChatHistory] = React.useState({});
   const [chatFlag, setChatFlag] = React.useState(false);
   const dispatch = useAppDispatch();
 
   var scrollTimer = -1;
 
-  React.useEffect(() => {
+  useEffect(() => {
     try {
-      console.log("curr", chatHistory);
-
-      setChatHistory({});
-      setChatHistory(friendList[focus].chat_history);
+      console.log("curr", friendList[focus].chat_history);
       Object.entries(friendList[focus].chat_history);
+      try {
+        setChatHistory([...chatHistory, friendList[focus].chat_history]);
+      } catch (e) {
+        console.log(e);
+        setChatHistory(friendList[focus].chat_history);
+      }
       setChatFlag(true);
-    } catch {
+    } catch (e) {
+      console.log(e);
       console.log("err");
     }
-  }, [friendList[focus]]);
+  }, [focus]);
 
   useEffect(() => {
     WebFont.load({
@@ -74,42 +77,41 @@ export default function chat() {
             message_id: friendList[focus].oldest_message_id,
           },
         })
-        .then((res) => dispatch(setFriendChatHistory(res)))
+        .then((res) => {
+          curr.className = "scrolling-class"
+          dispatch(setFriendChatHistory(res))
+          setTimeout(()=>{
+            curr.className = "message-area-scrollbar"
+          },1000)
+        })
         .catch((e) => console.log(e));
     }
   };
 
-  class MessageArea extends React.Component {
-    curr = document.getElementById("messageArea");
+  // it will trigger rerender upexpectly if I use this?
+  function MessageArea() {
+    const messages = Object.entries(friendList[focus].chat_history).map(
+      ([key, index]) => {
+        return <MessageBox message={index} key={key.toString()} />;
+      }
+    )
 
-    componentDidMount(): void {
-      this.curr?.scrollTo(0, this.curr?.scrollHeight);
-    }
-
-    messagesEndRef = React.createRef();
-
-    render() {
-      return (
-        <div className="flex flex-col grow w-full">
-          <div
-            style={{
-              maxHeight: "85vh",
-              overflowY: "scroll",
-              overflowX: "hidden",
-            }}
-            className="message-area-scrollbar content-end"
-            id="messageArea"
-            onScroll={handleOnScroll}
-          >
-            {chatFlag &&
-              Object.entries(chatHistory).map(([key, index]) => {
-                return <MessageBox message={index} key={key} />;
-              })}
-            <div ref={this.messagesEndRef} />
-          </div>
+    return (
+      <div className="flex flex-col grow w-full">
+        <div
+          style={{
+            maxHeight: "85vh",
+            overflowY: "scroll",
+            overflowX: "hidden",
+          }}
+          className="message-area-scrollbar content-end"
+          id="messageArea"
+          onScroll={handleOnScroll}
+        >
+          {messages}
         </div>
-      );
-    }
+      </div>
+    );
   }
 
   return (
@@ -117,8 +119,25 @@ export default function chat() {
       <div className="flex" style={{ width: "320px" }}>
         <FriendList />
       </div>
-      <div className="grow grid content-end ">
-        <MessageArea />
+      <div className="grow grid content-end ">    
+          <div className="flex flex-col grow w-full">
+            <div
+              style={{
+                maxHeight: "85vh",
+                overflowY: "scroll",
+                overflowX: "hidden",
+              }}
+              className="message-area-scrollbar content-end"
+              id="messageArea"
+              onScroll={handleOnScroll}
+            >
+              {Object.entries(friendList[focus].chat_history).map(
+          ([key, index]) => {
+            return <MessageBox message={index} key={key.toString()} />;
+          }
+        )}
+            </div>
+          </div>
         <div className="grid h-15vh">
           <InputArea />
         </div>

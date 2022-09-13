@@ -9,10 +9,10 @@ import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
 
-function wordsFilter(words: string) {
+function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
-    if (words.length > 16) {
-      return words.slice(0, 16) + "...";
+    if (words.length > limit) {
+      return words.slice(0, limit) + "...";
     }
   }
   return words;
@@ -59,7 +59,6 @@ const FriendBlock = (Friend) => {
   const { data } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   var value = Friend["Friend"];
-
   if (value.channel_id === undefined || value.channel_id === null) {
     return <></>;
   }
@@ -77,15 +76,15 @@ const FriendBlock = (Friend) => {
           <Profile b64={value["profile_b64"]} />
         </div>
         <div className="grid ml-4 grow">
-          <div>{value.username}</div>
+          <div>{wordsFilter(value.username, 8)}</div>
 
           <div
             className="flex justify-between items-center grow"
             style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
           >
             <Message
-              tag={value["last_message_tag"]}
-              message={value["last_message"]}
+              tag={value.last_message.tag}
+              message={value.last_message.data}
             />
             <div className="mr-8">{value["unread_count"]}</div>
           </div>
