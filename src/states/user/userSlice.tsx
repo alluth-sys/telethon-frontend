@@ -4,7 +4,7 @@ export interface IData {
   id: Number;
   username: String;
   access_hash: Number;
-  first_name: String;
+  first_name: string;
   last_name: String;
   phone: String;
   profile_pic: String;
@@ -21,7 +21,7 @@ export interface IUser {
 const initialState: IUser = {
   isLogin: false,
   data: null,
-  friendList: {0:{0:"dummy"}},
+  friendList: { 0: { 0: "dummy" } },
   set: true,
   focus: 0,
 };
@@ -32,9 +32,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserAuthed: (state: IUser, action: PayloadAction<IData>) => {
       state.isLogin = true;
-      state.data = action.payload.context;
-      console.log(state.data);
-      
+      state.data = action.payload;
     },
     setUserLoggedOut: (state: IUser) => {
       state.isLogin = false;
@@ -67,7 +65,7 @@ export const userSlice = createSlice({
       state.friendList[action.payload.channel].last_message_tag =
         action.payload.tag;
 
-      state.set = true
+      state.set = true;
     },
     setFriendChatHistory: (state: IUser, action) => {
       // append in chat history
@@ -82,16 +80,15 @@ export const userSlice = createSlice({
         }
       }
 
-      state.set = true
-
+      state.set = true;
     },
     setUserFocus: (state: IUser, action) => {
       state.focus = action.payload;
     },
-    setUserSet : (state: IUser, action)=>{
-      console.log("set set to " , action.payload)
-      state.set = action.payload
-    }
+    setUserSet: (state: IUser, action) => {
+      console.log("set set to ", action.payload);
+      state.set = action.payload;
+    },
   },
 });
 

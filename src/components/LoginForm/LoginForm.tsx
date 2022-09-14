@@ -49,11 +49,14 @@ export default function LoginForm() {
       .then((res) => {
         setOnLoading(false);
         if (res.data.code === 200) {
+          // Set User Data when signed in without existing sessions
           setOnSuccess(true);
-          console.log(res.data);
         } else if (res.status === 202) {
-          console.log(res.data);
-          dispatch(setUserAuthed(res.data));
+          // Set User Data when signed in with existing sessions
+          setOnSuccess(true);
+          dispatch(setUserAuthed(res.data.context));
+          localStorage.setItem("uid", JSON.stringify(res.data.context.id)); // Set User Id for Persistent Login
+
           navigate("/home");
           socket.emit("conn", res.data.context.id);
           socket.on("message", (msg) => {
@@ -72,8 +75,8 @@ export default function LoginForm() {
       })
       .then((res) => {
         setCodeLoading(false);
-        dispatch(setUserAuthed(res.data)); // Set User Data
-        localStorage.setItem("uid", JSON.stringify(res.data.id)); // Set User Id for Persistent Login
+        dispatch(setUserAuthed(res.data.context)); // Set User Data
+        localStorage.setItem("uid", JSON.stringify(res.data.context.id)); // Set User Id for Persistent Login
         navigate("/home");
       })
       .catch((e) => {
