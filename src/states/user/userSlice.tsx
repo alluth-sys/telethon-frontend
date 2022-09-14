@@ -16,7 +16,6 @@ export interface IUser {
   friendList: Object;
   timeList: Array<Friend>;
   timeListIndex: number;
-  set: Boolean;
   focus: number;
 }
 
@@ -49,11 +48,11 @@ const initialState: IUser = {
       username: null,
       profile_b64: null,
       chat_history: { "0": "dummy" },
+      oldest_message_id : 0
     },
   },
   timeList: [],
   timeListIndex: 0,
-  set: true,
   focus: 0,
 };
 
@@ -82,13 +81,13 @@ export const userSlice = createSlice({
         priority: action.payload.priority,
       };
       state.friendList[action.payload.channel] = friend;
+
       state.timeList[state.timeListIndex] = friend;
       state.timeListIndex++;
 
       return state;
     },
     setFriendLatestMessage: (state: IUser, action) => {
-      console.log("incoming msg", action.payload);
       if (action.payload.data.context !== undefined) {
         action.payload = action.payload.data.context;
       }
@@ -115,47 +114,30 @@ export const userSlice = createSlice({
       state.friendList[action.payload.channel].last_message =
         action.payload.data;
 
-      if(action.payload.channl === state.focus){
-        console.log(action.payload.channel , state.focus)
-        state.set = true;
-      }
-
       return state;
     },
     setFriendChatHistory: (state: IUser, action) => {
       // append in chat history
       for (let i = 0; i < action.payload.data.context.length; i++) {
-        // state.friendList[action.payload.data.context[0].channel].chat_history[
-        //   action.payload.data.context[i].message_id
-        // ] = action.payload.data.context[i];
-        // if (i == action.payload.data.context.length - 1) {
-        //   state.friendList[
-        //     action.payload.data.context[0].channel
-        //   ].oldest_message_id = action.payload.data.context[i].message_id;
-        // }
-        const newhistory = {...state.friendList[action.payload.data.context[0].channel].chat_history,[action.payload.data.context[i].message_id]:action.payload.data.context[i]}
-        console.log(newhistory)
-        state.friendList[action.payload.data.context[0].channel].chat_history = newhistory
+        const newhistory = {
+          ...state.friendList[action.payload.data.context[0].channel]
+            .chat_history,
+          [action.payload.data.context[i].message_id]:
+            action.payload.data.context[i],
+        };
+        state.friendList[action.payload.data.context[0].channel].chat_history =
+          newhistory;
         if (i == action.payload.data.context.length - 1) {
-            state.friendList[
-              action.payload.data.context[0].channel
-            ].oldest_message_id = action.payload.data.context[i].message_id;
-          }
+          state.friendList[
+            action.payload.data.context[0].channel
+          ].oldest_message_id = action.payload.data.context[i].message_id;
+        }
       }
-
-      
-
-      state.set = true;
 
       return state;
     },
     setUserFocus: (state: IUser, action) => {
       state.focus = action.payload;
-      return state;
-    },
-    setUserSet: (state: IUser, action) => {
-      console.log("set set to ", action.payload);
-      state.set = action.payload;
       return state;
     },
   },
@@ -169,7 +151,6 @@ export const {
   setFriendLatestMessage,
   setFriendChatHistory,
   setUserFocus,
-  setUserSet,
 } = userSlice.actions;
 
 export default userSlice.reducer;
