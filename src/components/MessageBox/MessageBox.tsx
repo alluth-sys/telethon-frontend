@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import "./MessageBox.css";
 
 export default function MessageBox({ message }) {
-  // console.log(message , "mount")
   if (message.tag == "message") {
     return (
       <div className="mb-5 mx-10 justify-end">
@@ -13,6 +12,7 @@ export default function MessageBox({ message }) {
           <Typography
             style={{ color: "white" }}
             className="font-loader pl-5 pr-5"
+            id={message.message_id}
           >
             {message.data}
           </Typography>
@@ -29,6 +29,7 @@ export default function MessageBox({ message }) {
           <Typography
             style={{ color: "white" }}
             className="font-loader pl-5 pr-5"
+            id={message.message_id}
           >
             {message.tag}
           </Typography>

@@ -4,3 +4,18 @@
   grid-row-start: 190;
   grid-row-end: 190;
 }
+
+.message-area-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scrolling-class::-webkit-scrollbar {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 50vw;
+  border: 20rem;
+  width: 1px;
+}

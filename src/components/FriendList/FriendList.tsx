@@ -1,5 +1,4 @@
 import "./FriendList.css";
-import ReactRoundedImage from "react-rounded-image";
 import MyPhoto from "./car.jpg";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { RootState } from "@/app/store";
@@ -8,19 +7,39 @@ import { Typography } from "@mui/material";
 import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
+import {scrollBarAnimation} from "@/pages/Chat/Chat"
 
-function wordsFilter(words: string) {
+function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
-    if (words.length > 16) {
-      return words.slice(0, 16) + "...";
+    if (words.length > limit) {
+      return words.slice(0, limit) + "...";
     }
   }
   return words;
 }
 
-function getChatHistory(
+export default function FriendList({ limit = 0 }) {
+  const {  timeList } = useAppSelector(
+    (state: RootState) => state.user
+  );
+  var i = 0;
+  return (
+    <div className="flex flex-col grow w-full">
+      <div
+        style={{ maxHeight: "100vh", overflow: "scroll" }}
+        className="container-snap"
+      >
+        {timeList.map((Friend, index) => {
+          return <FriendBlock Friend={Friend} key={index} />;
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function getChatHistory(
   target_channel_id: number,
-  user_id: number,
+  user_id: number|Null,
   dispatch,
   message_id = 0
 ) {
@@ -32,34 +51,26 @@ function getChatHistory(
         message_id: message_id,
       },
     })
-    .then((res) => dispatch(setFriendChatHistory(res)))
+    .then((res) => {
+      dispatch(setFriendChatHistory(res));
+      scrollBarAnimation()
+    })
     .catch((e) => console.log(e));
 }
 
-export default function FriendList() {
-  const { friendList } = useAppSelector((state: RootState) => state.user);
-
-  return (
-    <div className="flex flex-col grow w-full">
-      <div
-        style={{ maxHeight: "100vh", overflow: "scroll" }}
-        className="container-snap"
-      >
-        {Object.entries(friendList).map(([key, value]) => (
-          <FriendBlock key={key} value={value} />
-        ))}
-      </div>
-    </div>
+const FriendBlock = (Friend) => {
+  const { friendList,data } = useAppSelector(
+    (state) => state.user
   );
-}
 
-const FriendBlock = (key) => {
-  const { data } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
-  var value = key["value"];
-  if(value.channel_id===undefined)
-  {
-    return <></>
+  var value = Friend["Friend"];
+
+
+
+  if (value.channel_id === undefined || value.channel_id === null) {
+    return <></>;
   }
   return (
     <>
@@ -67,23 +78,25 @@ const FriendBlock = (key) => {
         className="flex grow bg-slate-500  h-20 items-center navigate"
         style={{ overflowWrap: "break-word" }}
         onClick={() => {
-          dispatch(setUserFocus(value["channel_id"]));
-          getChatHistory(value["channel_id"], data.id, dispatch);
+          dispatch(setUserFocus(value["channel_id"]))
+          if (Object.keys(friendList[value["channel_id"]].chat_history).length == 0){
+            getChatHistory(value["channel_id"], data.id, dispatch);
+          }
         }}
       >
         <div style={{ padding: "0px 5px" }}>
           <Profile b64={value["profile_b64"]} />
         </div>
         <div className="grid ml-4 grow">
-          <div>{value.username}</div>
+          <div>{wordsFilter(value.username, 8)}</div>
 
           <div
             className="flex justify-between items-center grow"
             style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
           >
             <Message
-              tag={value["last_message_tag"]}
-              message={value["last_message"]}
+              tag={value.last_message.tag}
+              message={value.last_message.data}
             />
             <div className="mr-8">{value["unread_count"]}</div>
           </div>
