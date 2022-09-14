@@ -18,7 +18,6 @@ export default function SignIn() {
   const socket = React.useContext(SocketContext);
 
   React.useEffect(() => {
-    console.log("signin page");
     let uid = localStorage.getItem("uid");
     if (uid) {
       uid = JSON.parse(uid);

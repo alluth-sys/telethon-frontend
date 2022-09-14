@@ -45,7 +45,7 @@ export function getChatHistory(
   dispatch: Function,
   message_id = 0
 ) {
-  if(target_channel_id==-1){
+  if(target_channel_id==0){
     return 
   }
   axios
