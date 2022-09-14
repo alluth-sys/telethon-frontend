@@ -1,25 +1,25 @@
-import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current, Dictionary } from "@reduxjs/toolkit";
 
 export interface IData {
-  id: Number;
-  username: String;
-  access_hash: Number;
-  first_name: String;
-  last_name: String;
-  phone: String;
-  profile_pic: String;
+  id: number;
+  username: string;
+  access_hash: number;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  profile_pic: string;
 }
 
 export interface IUser {
   isLogin: Boolean;
   data: IData | null;
-  friendList: Object;
+  friendList: FriendList;
   timeList: Array<Friend>;
   timeListIndex: number;
   focus: number;
 }
 
-export interface Messaege {
+export type Message =  {
   tag: string;
   channel: number;
   from: string;
@@ -28,27 +28,34 @@ export interface Messaege {
   time_stamp: string;
 }
 
-export interface Friend {
+export type Friend =  {
   channel_id: number;
   username: string;
   profile_b64: string;
   unread_count: number;
-  last_message: object;
-  chat_history: object;
+  last_message: Message|null;
+  chat_history: Dictionary<Message>;
   oldest_message_id: number;
   priority: number;
+}
+
+export type FriendList = {
+  [id :number]: Friend
 }
 
 const initialState: IUser = {
   isLogin: false,
   data: null,
   friendList: {
-    "0": {
-      channel_id: null,
-      username: null,
-      profile_b64: null,
-      chat_history: { "0": "dummy" },
-      oldest_message_id : 0
+    0: {
+      channel_id: 0,
+      username: "-1",
+      profile_b64: "-1",
+      unread_count: -1,
+      last_message: null,
+      chat_history: { "0": {tag:"null",channel:-1,from:"null",data:"null",message_id:-1,time_stamp:"null"} },
+      oldest_message_id : -1,
+      priority: -1
     },
   },
   timeList: [],
@@ -106,8 +113,10 @@ export const userSlice = createSlice({
       state.timeList[0] = timeList0;
 
       // append in chat history
-      state.friendList[action.payload.channel].chat_history[
-        action.payload.message_id
+      const channel : number = action.payload.channel
+      const message_id : number = action.payload.message_id
+      state.friendList[channel].chat_history[
+        message_id
       ] = action.payload;
 
       // update the latest message

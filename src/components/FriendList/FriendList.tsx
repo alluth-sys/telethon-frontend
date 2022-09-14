@@ -8,6 +8,8 @@ import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
 import {scrollBarAnimation} from "@/pages/Chat/Chat"
+import { Friend , Message} from "@/states/user/userSlice"
+import { Dictionary } from "@reduxjs/toolkit";
 
 function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
@@ -30,7 +32,7 @@ export default function FriendList({ limit = 0 }) {
         className="container-snap"
       >
         {timeList.map((Friend, index) => {
-          return <FriendBlock Friend={Friend} key={index} />;
+          return <FriendBlock Friend={Friend} key={index.toString()} />;
         })}
       </div>
     </div>
@@ -39,10 +41,13 @@ export default function FriendList({ limit = 0 }) {
 
 export function getChatHistory(
   target_channel_id: number,
-  user_id: number|Null,
-  dispatch,
+  user_id: number | undefined,
+  dispatch: Function,
   message_id = 0
 ) {
+  if(target_channel_id==-1){
+    return 
+  }
   axios
     .get("http://localhost:5000/getMessage", {
       params: {
@@ -58,18 +63,16 @@ export function getChatHistory(
     .catch((e) => console.log(e));
 }
 
-const FriendBlock = (Friend) => {
+const FriendBlock = (Friend:any) => {
   const { friendList,data } = useAppSelector(
     (state) => state.user
   );
 
 
   const dispatch = useAppDispatch();
-  var value = Friend["Friend"];
+  var value:Friend|undefined = Friend["Friend"];
 
-
-
-  if (value.channel_id === undefined || value.channel_id === null) {
+  if (value?.channel_id === undefined || value.channel_id === null) {
     return <></>;
   }
   return (
@@ -78,9 +81,9 @@ const FriendBlock = (Friend) => {
         className="flex grow bg-slate-500  h-20 items-center navigate"
         style={{ overflowWrap: "break-word" }}
         onClick={() => {
-          dispatch(setUserFocus(value["channel_id"]))
-          if (Object.keys(friendList[value["channel_id"]].chat_history).length == 0){
-            getChatHistory(value["channel_id"], data.id, dispatch);
+          dispatch(setUserFocus(value!["channel_id"]))
+          if (Object.keys(friendList[value!["channel_id"]].chat_history).length == 0){
+            getChatHistory(value!["channel_id"], data?.id, dispatch);
           }
         }}
       >
@@ -94,9 +97,8 @@ const FriendBlock = (Friend) => {
             className="flex justify-between items-center grow"
             style={{ overflowWrap: "break-word", whiteSpace: "nowrap" }}
           >
-            <Message
-              tag={value.last_message.tag}
-              message={value.last_message.data}
+            <MessageProfile
+              {...value!.last_message!}
             />
             <div className="mr-8">{value["unread_count"]}</div>
           </div>
@@ -107,7 +109,7 @@ const FriendBlock = (Friend) => {
   );
 };
 
-function Profile(b64) {
+function Profile(b64:Dictionary<string>) {
   if (b64["b64"] !== "no profile") {
     return (
       <img
@@ -119,9 +121,9 @@ function Profile(b64) {
   return <></>;
 }
 
-const Message = ({ tag, message }) => {
+const MessageProfile = ({ tag, data }:Message) => {
   if (tag === "message") {
-    return <Typography>{wordsFilter(message)}</Typography>;
+    return <Typography>{wordsFilter(data)}</Typography>;
   } else if (tag === "gif") {
     return <Typography>{wordsFilter("Send a gif")}</Typography>;
   }

@@ -17,9 +17,9 @@ import axios from "axios";
 
 export function scrollBarAnimation(){
   var curr = document.getElementById("messageArea");
-  curr.className = "scrolling-class";
+  curr!.className = "scrolling-class";
   setTimeout(() => {
-    curr.className = "message-area-scrollbar";
+    curr!.className = "message-area-scrollbar";
   }, 1000);
 }
 
@@ -42,8 +42,8 @@ export default function chat() {
 
   useEffect(()=>{
     if (
-      document.getElementById("messageArea")?.clientHeight <
-        document.getElementById("messageAreaWrapper")?.clientHeight && oldest_message_id!=0
+      document.getElementById("messageArea")!.clientHeight <
+        document.getElementById("messageAreaWrapper")!.clientHeight && oldest_message_id!=0
     ) {
       getChatHistory(focus,data?.id,dispatch,oldest_message_id)
     }
@@ -51,14 +51,14 @@ export default function chat() {
 
   useEffect(()=>{
     if(focus==0){
-      return 
+      return  
     }
     const curr = document.getElementById("messageArea")
-    if(curr?.scrollTop!=0){
-      curr.scrollTop = curr?.scrollHeight
+    if(curr!.scrollTop!=0){
+      curr!.scrollTop = curr!.scrollHeight
       scrollBarAnimation()
     }else{
-      console.log("scrollTop = " , curr.scrollTop)
+      console.log("scrollTop = " , curr!.scrollTop)
       scrollBarAnimation()
     }
   },[friendList[focus].chat_history])
@@ -77,14 +77,14 @@ export default function chat() {
   const handleOnScroll = () => {
     var curr = document.getElementById("messageArea");
 
-    curr.className = "scrolling-class";
+    curr!.className = "scrolling-class";
 
     if (scrollTimer != -1) {
       clearTimeout(scrollTimer);
     }
 
     scrollTimer = window.setTimeout(() => {
-      curr.className = "message-area-scrollbar";
+      curr!.className = "message-area-scrollbar";
     }, 1000);
 
     if (curr?.scrollTop === 0) {
