@@ -18,13 +18,14 @@ export default function InputArea() {
   const [text, setText] = useState("");
   const { data, focus } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  function handleOnEnter(text) {
+
+  function handleOnEnter() {
     if (text.length <= 0) {
       return;
     }
     axios
       .post("http://localhost:5000/send", {
-        user_id: data.id,
+        user_id: data!.id,
         channel_id: focus,
         message: text,
       })
@@ -32,7 +33,7 @@ export default function InputArea() {
       .catch((error) => console.log(error));
   }
 
-  function uploadFile(formData, user_id, channel_id) {
+  function uploadFile(formData: FormData, user_id: number, channel_id: number) {
     axios
       .post("http://localhost:5000/sendFile", formData, {
         params: {
@@ -52,10 +53,8 @@ export default function InputArea() {
     input.type = "file";
     input.onchange = (_this) => {
       var file = new FormData();
-      file.append("file", input.files[0]);
-      file.append("user_id", data.id);
-      file.append("channel_id", "5145920656");
-      uploadFile(file, data.id, "5145920656");
+      file.append("file", input!.files![0]);
+      uploadFile(file, data!.id, focus);
     };
     input.click();
   }
@@ -65,7 +64,10 @@ export default function InputArea() {
       <div className="grid grow ">
         <hr className="border-black border-t-4" />
 
-        <div className="flex justify-center content-center ">
+        <div
+          className="flex  content-center "
+          style={{ width: "70%", justifySelf: "center" }}
+        >
           <AddPhotoAlternateIcon
             className="my-8 mx-5 navigate"
             onClick={importD}

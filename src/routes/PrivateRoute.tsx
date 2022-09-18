@@ -15,7 +15,14 @@ import { SocketContext } from "@/service/Socket";
 import ConnectionSnackBar from "@/components/ConnectionSnackBar";
 import { useAppSelector } from "@/app/hooks";
 
-export default function PrivateRoute({ isLogin, data , friendList,timeList,timeListIndex , focus }: IUser) {
+export default function PrivateRoute({
+  isLogin,
+  data,
+  friendList,
+  timeList,
+  timeListIndex,
+  focus,
+}: IUser) {
   const socket = React.useContext(SocketContext);
   // const {data} = useAppSelector(state=>state.user)
 

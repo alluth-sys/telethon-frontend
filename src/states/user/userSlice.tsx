@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, current, Dictionary } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  current,
+  Dictionary,
+} from "@reduxjs/toolkit";
 
 export interface IData {
   id: number;
@@ -11,37 +16,41 @@ export interface IData {
 }
 
 export interface IUser {
-  isLogin: Boolean;
+  isLogin: boolean;
   data: IData | null;
   friendList: FriendList;
   timeList: Array<Friend>;
   timeListIndex: number;
   focus: number;
+  showContextMenu: boolean;
+  contextMenuAnchorPoint: Dictionary<number>;
 }
 
-export type Message =  {
+export type Message = {
   tag: string;
   channel: number;
   from: string;
+  sender_id: number;
   data: string;
   message_id: number;
   time_stamp: string;
-}
+};
 
-export type Friend =  {
+export type Friend = {
   channel_id: number;
   username: string;
   profile_b64: string;
   unread_count: number;
-  last_message: Message|null;
+  last_message: Message | null;
   chat_history: Dictionary<Message>;
   oldest_message_id: number;
   priority: number;
-}
+  initialized_chat: Boolean;
+};
 
 export type FriendList = {
-  [id :number]: Friend
-}
+  [id: number]: Friend;
+};
 
 const initialState: IUser = {
   isLogin: false,
@@ -53,14 +62,27 @@ const initialState: IUser = {
       profile_b64: "-1",
       unread_count: -1,
       last_message: null,
-      chat_history: { "0": {tag:"null",channel:-1,from:"null",data:"null",message_id:-1,time_stamp:"null"} },
-      oldest_message_id : -1,
-      priority: -1
+      chat_history: {
+        "0": {
+          tag: "null",
+          channel: -1,
+          from: "null",
+          sender_id: -1,
+          data: "null",
+          message_id: -1,
+          time_stamp: "null",
+        },
+      },
+      oldest_message_id: -1,
+      priority: -1,
+      initialized_chat: false,
     },
   },
   timeList: [],
   timeListIndex: 0,
   focus: 0,
+  showContextMenu: false,
+  contextMenuAnchorPoint: { x: 0, y: 0 },
 };
 
 export const userSlice = createSlice({
@@ -86,6 +108,7 @@ export const userSlice = createSlice({
         chat_history: {},
         oldest_message_id: 0,
         priority: action.payload.priority,
+        initialized_chat: false,
       };
       state.friendList[action.payload.channel] = friend;
 
@@ -95,6 +118,7 @@ export const userSlice = createSlice({
       return state;
     },
     setFriendLatestMessage: (state: IUser, action) => {
+      console.log("incoming msg", action.payload);
       if (action.payload.data.context !== undefined) {
         action.payload = action.payload.data.context;
       }
@@ -113,11 +137,9 @@ export const userSlice = createSlice({
       state.timeList[0] = timeList0;
 
       // append in chat history
-      const channel : number = action.payload.channel
-      const message_id : number = action.payload.message_id
-      state.friendList[channel].chat_history[
-        message_id
-      ] = action.payload;
+      const channel: number = action.payload.channel;
+      const message_id: number = action.payload.message_id;
+      state.friendList[channel].chat_history[message_id] = action.payload;
 
       // update the latest message
       state.friendList[action.payload.channel].last_message =
@@ -149,6 +171,19 @@ export const userSlice = createSlice({
       state.focus = action.payload;
       return state;
     },
+    setUserFreindListInitialized: (state, { payload }) => {
+      state.friendList[payload].initialized_chat = true;
+      return state;
+    },
+    setUserShowContextMenu: (state, action) => {
+      state.showContextMenu = action.payload;
+      return state;
+    },
+    setUserContextMenuAnchorPoint: (state, action) => {
+      state.contextMenuAnchorPoint.x = action.payload.x;
+      state.contextMenuAnchorPoint.y = action.payload.y;
+      return state;
+    },
   },
 });
 
@@ -160,6 +195,9 @@ export const {
   setFriendLatestMessage,
   setFriendChatHistory,
   setUserFocus,
+  setUserFreindListInitialized,
+  setUserShowContextMenu,
+  setUserContextMenuAnchorPoint,
 } = userSlice.actions;
 
 export default userSlice.reducer;

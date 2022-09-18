@@ -13,13 +13,30 @@ import Settings from "@/pages/Settings/Settings";
 import PrivateRoute from "@/routes/PrivateRoute";
 
 // State
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+
+import { setUserShowContextMenu } from "./states/user/userSlice";
 
 // Types
 import { RootState } from "@/app/store";
 
+import React from "react";
+
 function App() {
-  const { isLogin, data } = useAppSelector((state: RootState) => state.user);
+  const { isLogin, data, showContextMenu } = useAppSelector(
+    (state: RootState) => state.user
+  );
+  const dispatch = useAppDispatch();
+
+  const handleClickOut = () => {
+    console.log("app click", showContextMenu);
+    showContextMenu ? dispatch(setUserShowContextMenu(false)) : null;
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("click", handleClickOut);
+    return document.removeEventListener("click", () => {});
+  }, []);
 
   return (
     <Router>
