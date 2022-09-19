@@ -44,7 +44,9 @@ export default function InputArea() {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((response) => console.log(response))
+      .then((response) => {
+        dispatch(setFriendLatestMessage(response));
+      })
       .catch((error) => console.log(error));
   }
 

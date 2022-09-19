@@ -48,6 +48,8 @@ export default function Settings() {
             <ProfilePicture
               uid={UserData?.first_name}
               imgSrc={`data:image/jpeg;base64,${UserData?.profile_pic}`}
+              width = {144}
+              height = {144}
             />
           </div>
           {/* User Data */}

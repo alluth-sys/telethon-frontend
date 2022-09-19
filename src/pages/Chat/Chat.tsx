@@ -53,13 +53,14 @@ export default function chat() {
     }
     const curr = document.getElementById("messageArea");
     if (curr!.scrollTop != 0) {
-      curr!.scrollTop = curr!.scrollHeight;
+      setTimeout(() => {
+        curr!.scrollTop = curr!.scrollHeight;
+      }, 100);
       scrollBarAnimation();
     } else if (initialized_chat == false) {
       curr!.scrollTop = curr!.scrollHeight;
       scrollBarAnimation();
     } else {
-      console.log("scrollTop = ", curr!.scrollTop);
       scrollBarAnimation();
     }
   }, [friendList[focus].chat_history]);
@@ -119,7 +120,6 @@ export default function chat() {
     }, 1000);
 
     if (curr?.scrollTop === 0) {
-      console.log(oldest_message_id);
       getChatHistory(focus, data?.id, dispatch, oldest_message_id);
     }
   };

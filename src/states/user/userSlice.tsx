@@ -33,7 +33,7 @@ export type Message = {
   sender_id: number;
   data: string;
   message_id: number;
-  time_stamp: string;
+  timestamp: string;
 };
 
 export type Friend = {
@@ -70,7 +70,7 @@ const initialState: IUser = {
           sender_id: -1,
           data: "null",
           message_id: -1,
-          time_stamp: "null",
+          timestamp: "null",
         },
       },
       oldest_message_id: -1,

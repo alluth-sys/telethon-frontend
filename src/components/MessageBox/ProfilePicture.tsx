@@ -35,16 +35,16 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-type TProps = { uid: string | undefined; imgSrc: string };
+type TProps = { uid: string | undefined; imgSrc: string ; width:number ; height : number };
 
-export default function ProfilePicture({ uid, imgSrc }: TProps) {
+export default function ProfilePicture({ uid, imgSrc,width,height }: TProps) {
   return (
     <StyledBadge
       overlap="circular"
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       variant="dot"
     >
-      <Avatar alt={uid} src={imgSrc} sx={{ width: 144, height: 144 }} />
+      <Avatar alt={uid} src={imgSrc} sx={{ width: width, height: height }} />
     </StyledBadge>
   );
 }
