@@ -23,9 +23,10 @@ import { RootState } from "@/app/store";
 import React from "react";
 
 function App() {
-  const { isLogin, data, showContextMenu } = useAppSelector(
-    (state: RootState) => state.user
-  );
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+  const data = useAppSelector((state) => state.user.data);
+  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
+
   const dispatch = useAppDispatch();
 
   const handleClickOut = () => {

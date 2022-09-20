@@ -12,6 +12,8 @@ import { setUserFreindListInitialized } from "@/states/user/userSlice";
 import { getChatHistory } from "@/components/FriendList/FriendList";
 import "./Chat.css";
 
+import { isEqual } from "loadsh";
+
 export function scrollBarAnimation() {
   var curr = document.getElementById("messageArea");
   curr!.className = "scrolling-class grid";
@@ -20,32 +22,13 @@ export function scrollBarAnimation() {
   }, 1000);
 }
 
-export default function chat() {
-  // state need to be organized :
-  //  select:
-  //    userid
-  //  dispatch:
-  //    channel_id
-
-  const { friendList, focus, data, showContextMenu, contextMenuAnchorPoint } =
-    useAppSelector((state) => state.user);
-  const { oldest_message_id, initialized_chat } = useAppSelector(
-    (state) => state.user.friendList[focus]
+const MessageArea = ({ focus }: any) => {
+  const initialized_chat = useAppSelector(
+    (state) => state.user.friendList[focus].initialized_chat
   );
-  const dispatch = useAppDispatch();
-
-  var scrollTimer = -1;
-
-  useEffect(() => {
-    if (
-      document.getElementById("messageArea")!.clientHeight <
-      document.getElementById("messageAreaWrapper")!.clientHeight
-    ) {
-      getChatHistory(focus, data?.id, dispatch, oldest_message_id);
-    } else {
-      dispatch(setUserFreindListInitialized(focus));
-    }
-  }, [oldest_message_id]);
+  const chat_history = useAppSelector(
+    (state) => state.user.friendList[focus].chat_history
+  );
 
   useEffect(() => {
     if (focus == 0) {
@@ -63,7 +46,51 @@ export default function chat() {
     } else {
       scrollBarAnimation();
     }
-  }, [friendList[focus].chat_history]);
+  }, [chat_history]);
+
+  console.log("A");
+
+  return (
+    <>
+      {Object.entries(chat_history).map(([key, index]) => {
+        console.log(key);
+        return <MessageBox message={index} key={key.toString()} />;
+      })}
+    </>
+  );
+};
+
+export default function chat() {
+  // state need to be organized :
+  //  select:
+  //    userid
+  //  dispatch:
+  //    channel_id
+
+  const focus = useAppSelector((state) => state.user.focus);
+  const data = useAppSelector((state) => state.user.data);
+  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
+  const contextMenuAnchorPoint = useAppSelector(
+    (state) => state.user.contextMenuAnchorPoint
+  );
+  const oldest_message_id = useAppSelector(
+    (state) => state.user.friendList[focus].oldest_message_id
+  );
+
+  const dispatch = useAppDispatch();
+
+  var scrollTimer = -1;
+
+  useEffect(() => {
+    if (
+      document.getElementById("messageArea")!.clientHeight <
+      document.getElementById("messageAreaWrapper")!.clientHeight
+    ) {
+      getChatHistory(focus, data?.id, dispatch, oldest_message_id);
+    } else {
+      dispatch(setUserFreindListInitialized(focus));
+    }
+  }, [oldest_message_id]);
 
   const handleClickOut = useCallback(() => {
     console.log("chat click", showContextMenu);
@@ -124,35 +151,6 @@ export default function chat() {
     }
   };
 
-  // it will trigger rerender unexpectly if I use this?
-  function MessageArea() {
-    const messages = Object.entries(friendList[focus].chat_history).map(
-      ([key, index]) => {
-        return <MessageBox message={index} key={key.toString()} />;
-      }
-    );
-
-    return (
-      <div
-        className="flex flex-col grow w-full "
-        style={{ height: "85vh", justifyContent: "end" }}
-      >
-        <div
-          style={{
-            height: "85vh",
-            overflowY: "scroll",
-            overflowX: "hidden",
-          }}
-          className="message-area-scrollbar grid"
-          id="messageArea"
-          onScroll={handleOnScroll}
-        >
-          {messages}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className="flex grow justify-start"
@@ -182,11 +180,7 @@ export default function chat() {
               style={{ justifySelf: "center", width: "70%" }}
               className="grid"
             >
-              {Object.entries(friendList[focus].chat_history).map(
-                ([key, index]) => {
-                  return <MessageBox message={index} key={key.toString()} />;
-                }
-              )}
+              <MessageArea focus={focus} />
             </div>
           </div>
           <OptionalCard />

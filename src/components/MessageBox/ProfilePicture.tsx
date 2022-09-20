@@ -35,9 +35,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-type TProps = { uid: string | undefined; imgSrc: string ; width:number ; height : number };
+type TProps = {
+  uid: string | undefined;
+  imgSrc: string;
+  width: number;
+  height: number;
+};
 
-export default function ProfilePicture({ uid, imgSrc,width,height }: TProps) {
+export default function ProfilePicture({ uid, imgSrc, width, height }: TProps) {
   return (
     <StyledBadge
       overlap="circular"

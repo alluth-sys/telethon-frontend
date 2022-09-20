@@ -10,22 +10,22 @@ import {
   setUserContextMenuAnchorPoint,
 } from "@/states/user/userSlice";
 
-
-
-
 export function timeHandler(timestamp: string | undefined) {
-  const time = moment(timestamp)
-  const isToday = time.isSame(new Date(),"day");
-  if(isToday){
-  return time.format("HH:mm");
-  }else {
-    return time.format("MMM d")
+  const time = moment(timestamp);
+  const isToday = time.isSame(new Date(), "day");
+  if (isToday) {
+    return time.format("HH:mm");
+  } else {
+    return time.format("MMM d");
   }
 }
 
 export function messageHandler(msg: string) {
   try {
+    console.log("origin message : ", msg);
+    msg = msg.replace("\\\\", "\\");
     var result = msg.replace('\\"', '"');
+    console.log("result message : ", result);
     return result;
   } catch (e) {
     console.log(e);
@@ -34,7 +34,7 @@ export function messageHandler(msg: string) {
 }
 
 export default function MessageBox({ message }: any) {
-  const { data } = useAppSelector((state) => state.user);
+  const data = useAppSelector((state) => state.user.data);
 
   const dispatch = useAppDispatch();
 
