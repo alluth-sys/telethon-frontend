@@ -6,26 +6,14 @@ import { Navigate, Outlet } from "react-router-dom";
 import SideBar from "@/components/SideBar";
 
 // Types
-import { IUser } from "@/states/user/userSlice";
-
-// Socket
-import { SocketContext } from "@/service/Socket";
+import { IData } from "@/states/user/userSlice";
 
 // SnackBar
 import ConnectionSnackBar from "@/components/ConnectionSnackBar";
-import { useAppSelector } from "@/app/hooks";
 
-export default function PrivateRoute({
-  isLogin,
-  data,
-  friendList,
-  timeList,
-  timeListIndex,
-  focus,
-}: IUser) {
-  const socket = React.useContext(SocketContext);
-  // const {data} = useAppSelector(state=>state.user)
+type TProps = { data: IData | null; isLogin: boolean };
 
+export default function PrivateRoute({ isLogin, data }: TProps) {
   if (!isLogin && data === null) {
     return <Navigate to="/signin" replace />;
   }
