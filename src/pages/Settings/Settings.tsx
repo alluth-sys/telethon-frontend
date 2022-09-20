@@ -10,12 +10,16 @@ import {
   FormLabel,
   FormControlLabel,
   Link,
+  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import AdvanceSettings from "@/components/AdvanceSettings";
 import Spacer from "react-spacer";
+
+// Modal
+import NameEditModal from "@/components/NameEditModal";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -24,6 +28,12 @@ export default function Settings() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
   const [language, setLanguage] = React.useState("English");
   const { t, i18n } = useTranslation();
+
+  // Modal States
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleExit = () => setOpen(false);
 
   const setLanguageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLanguage(event.target.value);
@@ -48,27 +58,51 @@ export default function Settings() {
             <ProfilePicture
               uid={UserData?.first_name}
               imgSrc={`data:image/jpeg;base64,${UserData?.profile_pic}`}
-              width = {144}
-              height = {144}
+              width={144}
+              height={144}
             />
           </div>
           {/* User Data */}
           <div className="flex justify-center items-center ">
             <div>
-              <Typography variant="h4" style={{ fontWeight: 400 }}>
-                {UserData?.last_name} {UserData?.first_name}
-              </Typography>
-              <Typography style={{ color: "grey" }}>
-                {UserData?.username}
-              </Typography>
-              <Typography
-                style={{ color: "grey" }}
-              >{`+${UserData?.phone}`}</Typography>
+              <div className="flex">
+                <Typography variant="h4" style={{ fontWeight: 400 }}>
+                  {UserData?.last_name} {UserData?.first_name}
+                </Typography>
+                <Spacer width={"10px"} />
+                <IconButton
+                  className="hover:opacity-100 opacity-0"
+                  onClick={handleOpen}
+                >
+                  <EditIcon style={{ color: "#3b82f6" }} fontSize={"small"} />
+                </IconButton>
+                <NameEditModal
+                  isOpen={open}
+                  handleClose={handleClose}
+                  handleClickClose={handleExit}
+                  FName={UserData?.first_name}
+                  LName={UserData?.last_name}
+                />
+              </div>
+              <div className="flex items-center">
+                <Typography style={{ color: "grey" }}>
+                  {UserData?.username}
+                </Typography>
+                <Spacer width={"10px"} />
+                <IconButton className="hover:opacity-100 opacity-0">
+                  <EditIcon style={{ color: "#3b82f6" }} fontSize={"small"} />
+                </IconButton>
+              </div>
+              <div className="flex items-center">
+                <Typography style={{ color: "grey" }}>
+                  {`+${UserData?.phone}`}
+                </Typography>
+                <Spacer width={"10px"} />
+                <IconButton className="hover:opacity-100 opacity-0">
+                  <EditIcon style={{ color: "#3b82f6" }} fontSize={"small"} />
+                </IconButton>
+              </div>
             </div>
-          </div>
-          {/* Edit Button */}
-          <div className="flex justify-end items-end pl-12">
-            <EditIcon style={{ color: "#3b82f6" }} />
           </div>
         </div>
         {/* Language & Font */}
