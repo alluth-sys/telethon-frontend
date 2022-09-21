@@ -4,7 +4,7 @@ import { BASE } from "@/constants/endpoints";
 import styles from "./SignIn.module.css";
 import LoginForm from "@/components/LoginForm/LoginForm";
 import LoginBanner from "@/components/LoginBanner/LoginBanner";
-import CheckConnectionBackdrop from "@/components/CheckConnectionBackdrop";
+import CheckConnectionBackdrop from "@/components/Connection/CheckConnectionBackdrop";
 import { setUserAuthed, setFriendLatestMessage } from "@/states/user/userSlice";
 import { useAppDispatch } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";

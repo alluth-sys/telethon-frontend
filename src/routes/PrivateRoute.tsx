@@ -9,7 +9,7 @@ import SideBar from "@/components/SideBar";
 import { IData } from "@/states/user/userSlice";
 
 // SnackBar
-import ConnectionSnackBar from "@/components/ConnectionSnackBar";
+import ConnectionSnackBar from "@/components/Connection/ConnectionSnackBar";
 
 type TProps = { data: IData | null; isLogin: boolean };
 
