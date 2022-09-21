@@ -93,9 +93,13 @@ export const userSlice = createSlice({
       state.isLogin = false;
       return state;
     },
-    updateUserInfo: (state: IUser, action) => {
+    updateUserName: (state: IUser, action) => {
       state.data!.first_name = action.payload.firstname;
       state.data!.last_name = action.payload.lastname;
+      return state;
+    },
+    updateUsername: (state: IUser, action) => {
+      state.data!.username = action.payload.uname;
       return state;
     },
 
@@ -192,7 +196,8 @@ export const userSlice = createSlice({
 export const {
   setUserAuthed,
   setUserLoggedOut,
-  updateUserInfo,
+  updateUserName,
+  updateUsername,
   setUserFriendList,
   setFriendLatestMessage,
   setFriendChatHistory,
