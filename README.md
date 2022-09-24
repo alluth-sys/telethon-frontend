@@ -4,7 +4,7 @@
 - Styled using Tailwind css
 - MUI as UI library
 
-# Introduction
+## Introduction
 - This project is a chatting app that aims to eliminate the current chatting app's issues and is built on top of telegram api
 
 ## Initialization of project
