@@ -102,6 +102,10 @@ export const userSlice = createSlice({
       state.data!.username = action.payload.uname;
       return state;
     },
+    updateUserProfile: (state: IUser, action) => {
+      state.data!.profile_pic = action.payload.image;
+      return state;
+    },
 
     setUserFriendList: (state: IUser, action) => {
       let friend: Friend = {
@@ -198,6 +202,7 @@ export const {
   setUserLoggedOut,
   updateUserName,
   updateUsername,
+  updateUserProfile,
   setUserFriendList,
   setFriendLatestMessage,
   setFriendChatHistory,
