@@ -7,12 +7,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import PhoneIcon from "@mui/icons-material/Phone";
 
-import ProfilePicture from "@/components/MessageBox/ProfilePicture";
+import ProfileAvatar from "./ProfileAvatar";
 import Spacer from "react-spacer";
 
 // Modal
 import NameEditModal from "@/components/SettingsComponents/NameEditModal";
 import UsernameEditModal from "./UsernameEditModal";
+import PhoneEditModal from "./PhoneEditModal";
 
 export default function UserInfo() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
@@ -23,17 +24,23 @@ export default function UserInfo() {
   const handleNameEditClose = () => setNameModalOpen(false);
   const handleNameEditClickClose = () => setNameModalOpen(false);
 
-  // Usernmae Edit Modal States
+  // Usernmae Edit Modal States TODO: Execption Handling
   const [unameModalOpen, setUnameModalOpen] = React.useState(false);
   const handleUnameEditOpen = () => setUnameModalOpen(true);
   const handleUnameEditClose = () => setUnameModalOpen(false);
   const handleUnameEditClickClose = () => setUnameModalOpen(false);
 
+  // Phone Number Edit Modal States
+  const [phoneModalOpen, setPhoneModalOpen] = React.useState(false);
+  const handlePhoneModalOpen = () => setPhoneModalOpen(true);
+  const handlePhoneModalClose = () => setPhoneModalOpen(false);
+  const handlePhoneModalClickClose = () => setPhoneModalOpen(false);
+
   return (
     <div className="m-8 flex w-fit p-8 rounded-xl shadow-xl">
       {/* User Image */}
       <div className="m-4">
-        <ProfilePicture
+        <ProfileAvatar
           uid={UserData?.first_name}
           imgSrc={`data:image/jpeg;base64,${UserData?.profile_pic}`}
           width={144}
@@ -89,9 +96,18 @@ export default function UserInfo() {
               {`+${UserData?.phone}`}
             </Typography>
             <Spacer width={"10px"} />
-            <IconButton className="hover:opacity-100 opacity-0">
+            <IconButton
+              className="hover:opacity-100 opacity-0"
+              onClick={handlePhoneModalOpen}
+            >
               <EditIcon style={{ color: "#3b82f6" }} fontSize={"small"} />
             </IconButton>
+            <PhoneEditModal
+              isOpen={phoneModalOpen}
+              handleClose={handlePhoneModalClose}
+              handleClickClose={handlePhoneModalClickClose}
+              phoneNumber={`+${UserData?.phone}`}
+            />
           </div>
         </div>
       </div>
