@@ -15,6 +15,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { BASE } from "@/constants/endpoints";
 
+import Skeleton from "@mui/material/Skeleton";
+
 import axios, { AxiosError } from "axios";
 
 const client = axios.create({
@@ -236,24 +238,8 @@ export default function AdvanceSettings() {
           <Typography color={"gray"} fontSize="small">
             Whether people will be able to see your phone number
           </Typography>
-          {/* <FormControlLabel
-            control={
-              <Switch
-                checked={checked.indexOf("AddedByPhone") != -1}
-                onChange={() => {
-                  handleToggle("AddedByPhone");
-                }}
-              />
-            }
-            label="Added By Phone"
-            className="p-2 w-fit"
-          />
-          <Typography color={"gray"} fontSize="small">
-            Whether people can add you to their contact list by your phone
-            number
-          </Typography> */}
         </FormGroup>
-        <div className="flex w-full items-end justify-items-end flex-col">
+        <div className="flex w-full items-end justify-items-end flex-col mt-8">
           <Fab color="primary" onClick={onSave}>
             {success ? (
               <CheckIcon />
@@ -268,7 +254,7 @@ export default function AdvanceSettings() {
     );
   } else {
     return (
-      <div className="flex h-full w-2/4 items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <CircularProgress />
       </div>
     );

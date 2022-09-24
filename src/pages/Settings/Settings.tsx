@@ -8,12 +8,12 @@ export default function Settings() {
   return (
     <div className="w-full flex">
       {/* Left */}
-      <div className="m-8 w-2/4">
+      <div className="m-8 w-fit">
         <UserInfo />
         <LanguageSettings />
       </div>
       {/* Right */}
-      <div className="m-8 w-2/4">
+      <div className="m-8 w-2/5 p-8">
         <AdvanceSettings />
       </div>
     </div>
