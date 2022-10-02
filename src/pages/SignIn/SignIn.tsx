@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE } from "@/constants/endpoints";
 import styles from "./SignIn.module.css";
 import LoginForm from "@/components/LoginForm/LoginForm";
@@ -18,31 +18,36 @@ export default function SignIn() {
   const socket = React.useContext(SocketContext);
 
   React.useEffect(() => {
+    checkConnection();
+  }, []);
+
+  const checkConnection = async () => {
+    setOpen(true);
     let uid = localStorage.getItem("uid");
     if (uid) {
-      uid = JSON.parse(uid);
-      axios
-        .post(`${BASE}/checkConnection`, {
+      try {
+        const response = await axios.post(`${BASE}/checkConnection`, {
           uid: uid,
-        })
-        .then((res) => {
-          console.log(res.data);
-          if (res.status === 200) {
-            dispatch(setUserAuthed(res.data.context));
-            navigate("/home");
-            socket.emit("conn", res.data.context.id);
-            socket.on("message", (msg) => {
-              dispatch(setFriendLatestMessage(msg));
-            });
-          }
-        })
-        .catch((e) => {
-          setOpen(false);
-          console.log(e);
         });
+        if (response.data.code == 200) {
+          dispatch(setUserAuthed(response.data.context));
+          navigate("/home");
+          socket.emit("conn", response.data.context.id);
+          socket.on("message", (msg) => {
+            dispatch(setFriendLatestMessage(msg));
+          });
+        }
+      } catch (error) {
+        const errors = error as Error | AxiosError;
+        if (axios.isAxiosError(errors)) {
+          Promise.reject(errors.toJSON());
+        } else {
+          Promise.reject(Error);
+        }
+      }
     }
     setOpen(false);
-  }, []);
+  };
 
   return (
     <div className={styles.container}>

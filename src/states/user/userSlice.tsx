@@ -91,6 +91,7 @@ export const userSlice = createSlice({
     },
     setUserLoggedOut: (state: IUser) => {
       state.isLogin = false;
+      state.data = null;
       return state;
     },
     updateUserName: (state: IUser, action) => {
