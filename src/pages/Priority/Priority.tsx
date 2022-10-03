@@ -26,7 +26,6 @@ import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 
 const getItemStyle = (isDragging: boolean,provided:DraggableProvided, style: object) => {
-  console.log("in style : isdragging?" , isDragging)
   if(!style){
     return provided
   }
@@ -37,27 +36,23 @@ const getItemStyle = (isDragging: boolean,provided:DraggableProvided, style: obj
     background: isDragging ? "lightgreen" : "grey",
     overflowWrap: "break-word",
     position: "relative",
+    width:"320px",
     // styles we need to apply on draggables
     ...provided,
     ...style,
   };
 };
 
-// const move = (source, destination, droppableSource, droppableDestination) => {
-//   const sourceClone = Array.from(source);
-//   const destClone = Array.from(destination);
-//   const [removed] = sourceClone.splice(droppableSource.index, 1);
+const move = (src:Friend[],des:Friend[],startIndex : number,endIndex :number)=>{
+  const result_src = Array.from(src)
+  const result_des = Array.from(des)
+  const [removed] = result_src.splice(startIndex,1)
+  result_des.splice(endIndex,0,removed)
+  const res = [result_src,result_des]
+  return res
+}
 
-//   destClone.splice(droppableDestination.index, 0, removed);
-
-//   const result = {};
-//   result[0] = sourceClone;
-//   result[1] = destClone;
-
-//   return result;
-// };
-
-const reorder = (list, startIndex: number, endIndex: number) => {
+const reorder = (list:Friend[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -69,10 +64,10 @@ export default function priority() {
 
   const [list, setList] = React.useState([]);
   const [priList, setPriList] = React.useState([]);
+  const [cacheName , setCacheName] = React.useState("")
 
   React.useEffect(() => {
     setList(timeList);
-    setPriList(timeList);
   }, [timeList]);
 
   const handleDrag = (result: dragResult) => {
@@ -81,7 +76,7 @@ export default function priority() {
       return;
     }
 
-    console.log(source.droppableId, destination.droppableId);
+    console.log(result);
 
     if (
       destination.droppableId == "timeList" &&
@@ -94,10 +89,22 @@ export default function priority() {
     }
 
     if (
+      source.droppableId == "timeList" &&
+      destination.droppableId == "priList"
+    ) {
+      const res = move(list,priList,source.index,destination.index)
+      const newList = res[0]
+      const newPri = res[1]
+      setList(newList)
+      setPriList(newPri)
+
+    }
+
+    if (
       destination.droppableId == "priList" &&
       source.droppableId == "priList"
     ) {
-      const items = reorder(list, source.index, destination.index);
+      const items = reorder(priList, source.index, destination.index);
       const newState = items;
       setPriList(newState);
     }
@@ -105,7 +112,63 @@ export default function priority() {
 
   const Encapsulated = (props: any) => {
     const { value,isDragging, provided, style, index } = props;
-    console.log("provided : " , provided)
+    if (value?.channel_id === undefined || value.channel_id === null) {
+      return (
+      <div
+        className="flex grow bg-slate-500  h-20 items-center navigate"
+        index={index}
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        style={getItemStyle(isDragging,provided.draggableProps.style, style)}
+      >
+        <div style={{ padding: "0px 5px" }}>
+          <ProfilePicture
+            uid={cacheName}
+            imgSrc={`data:image/jpeg;base64,${null}`}
+            width={64}
+            height={64}
+          />
+        </div>
+        <div className="grid ml-4 grow " style={{ height: "60px" }}>
+          <div style={{ height: "20px", minHeight: "20px" }}>
+            {wordsFilter("", 8)}
+          </div>
+
+          <div
+            className="flex "
+            style={{
+              overflowWrap: "break-word",
+              whiteSpace: "nowrap",
+              height: "20px",
+              minHeight: "20px",
+            }}
+          >
+          </div>
+        </div>
+        <div
+          className="w-fit"
+          style={{
+            position: "absolute",
+            right: "3px",
+            top: "11px",
+            borderRadius: "20px",
+          }}
+        >
+          <Typography
+            className="px-2"
+            style={{
+              color: "black",
+              minWidth: "20px",
+              fontSize: "13px",
+              fontWeight: "bold",
+            }}
+          >
+          </Typography>
+        </div>
+      </div>
+      )
+    }
     return (
       <div
         className="flex grow bg-slate-500  h-20 items-center navigate"
@@ -115,7 +178,72 @@ export default function priority() {
         {...provided.dragHandleProps}
         style={getItemStyle(isDragging,provided.draggableProps.style, style)}
       >
-        YI
+        <div style={{ padding: "0px 5px" }}>
+          <ProfilePicture
+            uid={value!.username}
+            imgSrc={`data:image/jpeg;base64,${value!.profile_b64}`}
+            width={64}
+            height={64}
+          />
+        </div>
+        <div className="grid ml-4 grow " style={{ height: "60px" }}>
+          <div style={{ height: "20px", minHeight: "20px" }}>
+            {wordsFilter(value.username, 8)}
+          </div>
+
+          <div
+            className="flex "
+            style={{
+              overflowWrap: "break-word",
+              whiteSpace: "nowrap",
+              height: "20px",
+              minHeight: "20px",
+            }}
+          >
+            <MessageProfile {...value!.last_message!} />
+          </div>
+        </div>
+        <div
+          className="w-fit"
+          style={{
+            position: "absolute",
+            right: "3px",
+            top: "11px",
+            borderRadius: "20px",
+          }}
+        >
+          <Typography
+            className="px-2"
+            style={{
+              color: "black",
+              minWidth: "20px",
+              fontSize: "13px",
+              fontWeight: "bold",
+            }}
+          >
+            {timeHandler(value!.last_message?.timestamp)}
+          </Typography>
+        </div>
+        {value!.unread_count != 0 && (
+          <div
+            className="w-fit"
+            style={{
+              position: "absolute",
+              right: "7px",
+              top: "40px",
+              backgroundColor: "green",
+              borderRadius: "20px",
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              className="px-2"
+              style={{ color: "white", minWidth: "43px" }}
+            >
+              {value!.unread_count > 99 ? "99+" : value!.unread_count}
+            </Typography>
+          </div>
+        )}
       </div>
     )
   };
@@ -126,7 +254,6 @@ export default function priority() {
     (list: Friend[]) =>
     ({ index, style }: any) => {
       const value: Friend = list[index];
-      console.log("STYE: " , style)
       return (
         <Draggable
           draggableId={value.channel_id.toString()}
@@ -144,8 +271,10 @@ export default function priority() {
     <div className="flex grow justify-start">
       <DragDropContext
         onDragEnd={handleDrag}
-        onDragStart={(e) => {
-          console.log(e);
+        onDragStart={(e:any) => {
+          if(e!.source.droppableId=="timeList"){
+            setCacheName(list[e!.source.index].username)
+          }
         }}
       >
         <div className="flex" style={{ width: "320px" }}>
@@ -170,6 +299,7 @@ export default function priority() {
                             {...provided.dragHandleProps}
                             style={getItemStyle(
                               snapshot.isDragging,
+                              null,
                               provided.draggableProps.style
                             )}
                           >
@@ -200,12 +330,12 @@ export default function priority() {
           >
             {(droppableProvided: DroppableProvided) => (
               <List
-                height={window.screen.height}
-                rowCount={timeList.length}
-                rowHeight={110}
-                width={300}
+                height={window.innerHeight-1}
+                rowCount={list.length}
+                rowHeight={80}
+                width={320}
                 className="container-snap"
-                ref={(ref) => {
+                ref={(ref:any) => {
                   // react-virtualized has no way to get the list's ref that I can so
                   // So we use the `ReactDOM.findDOMNode(ref)` escape hatch to get the ref
                   if (ref) {
@@ -216,7 +346,8 @@ export default function priority() {
                     }
                   }
                 }}
-                rowRenderer={getRowRender(timeList)}
+                rowRenderer={getRowRender(list)}
+                data={Math.random()}
               />
             )}
           </Droppable>
