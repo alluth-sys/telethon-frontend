@@ -48,8 +48,6 @@ const MessageArea = ({ focus }: any) => {
     }
   }, [chat_history]);
 
-  console.log("A");
-
   return (
     <>
       {Object.entries(chat_history).map(([key, index]) => {
@@ -177,7 +175,7 @@ export default function chat() {
             onScroll={handleOnScroll}
           >
             <div
-              style={{ justifySelf: "center", width: "70%" }}
+              style={{ justifySelf: "center", width: "72%" }}
               className="grid"
             >
               <MessageArea focus={focus} />

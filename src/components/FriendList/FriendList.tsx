@@ -12,7 +12,7 @@ import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 
 import { isEqual } from "loadsh";
 
-function wordsFilter(words: string, limit: number = 14) {
+export function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
     if (words.length > limit) {
       return words.slice(0, limit) + "...";
@@ -66,7 +66,7 @@ export function getChatHistory(
 }
 
 export function FriendBlock(Friend: any) {
-  const { friendList, data } = useAppSelector((state) => state.user);
+  const { data } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
   var value: Friend | undefined = Friend["Friend"];
@@ -159,7 +159,7 @@ export function FriendBlock(Friend: any) {
   );
 }
 
-const MessageProfile = ({ tag, data }: Message) => {
+export const MessageProfile = ({ tag, data }: Message) => {
   if (tag === "message") {
     return <Typography>{wordsFilter(data)}</Typography>;
   } else if (tag === "image") {

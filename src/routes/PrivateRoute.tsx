@@ -6,7 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import SideBar from "@/components/SideBar";
 
 // Types
-import { IUser } from "@/states/user/userSlice";
+import { IData, IUser } from "@/states/user/userSlice";
 
 // Socket
 import { SocketContext } from "@/service/Socket";
@@ -15,14 +15,9 @@ import { SocketContext } from "@/service/Socket";
 import ConnectionSnackBar from "@/components/ConnectionSnackBar";
 import { useAppSelector } from "@/app/hooks";
 
-export default function PrivateRoute({
-  isLogin,
-  data,
-  friendList,
-  timeList,
-  timeListIndex,
-  focus,
-}: IUser) {
+type LoginUser = { isLogin: boolean; data: IData | null };
+
+export default function PrivateRoute({ isLogin, data }: LoginUser) {
   const socket = React.useContext(SocketContext);
   // const {data} = useAppSelector(state=>state.user)
 

@@ -16,19 +16,20 @@ export function timeHandler(timestamp: string | undefined) {
   if (isToday) {
     return time.format("HH:mm");
   } else {
-    return time.format("MMM d");
+    return time.format("MMM DD");
   }
 }
 
+// TODO : fix escaping char
 export function messageHandler(msg: string) {
   try {
-    console.log("origin message : ", msg);
+    //console.log("origin message : ", msg);
     msg = msg.replace("\\\\", "\\");
     var result = msg.replace('\\"', '"');
-    console.log("result message : ", result);
+    //console.log("result message : ", result);
     return result;
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     return msg;
   }
 }
@@ -52,6 +53,14 @@ export default function MessageBox({ message }: any) {
     return <></>;
   }
 
+  console.log(
+    "sender_id ",
+    message.sender_id,
+    "data_id : ",
+    data!.id,
+    "message ",
+    message.data
+  );
   if (message.sender_id == data!.id) {
     if (message.tag == "message") {
       return (
@@ -98,6 +107,26 @@ export default function MessageBox({ message }: any) {
           >
             <img
               src={`data:image/jpeg;base64,${message.data}`}
+              style={{ borderRadius: 10 }}
+            />
+            <div className="overlay">{timeHandler(message.timestamp)}</div>
+          </div>
+        </div>
+      );
+    } else if (message.tag == "gif") {
+      return (
+        <div className="mb-5 mx-10 grid" style={{ justifySelf: "end" }}>
+          <div
+            style={{
+              whiteSpace: "pre-wrap",
+              overflowWrap: "break-word",
+              position: "relative",
+            }}
+            className=" w-fit max-w-sm h-fit rounded-xl grid"
+            onContextMenu={handleContextMenu}
+          >
+            <img
+              src={`data:image/gif;base64,${message.data}`}
               style={{ borderRadius: 10 }}
             />
             <div className="overlay">{timeHandler(message.timestamp)}</div>
