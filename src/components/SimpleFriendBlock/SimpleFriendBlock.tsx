@@ -6,8 +6,6 @@ import { Typography } from "@mui/material";
 import { timeHandler } from "../MessageBox/MessageBox";
 
 export default function SimpleFriendBlock(Friend: any) {
-  const { data } = useAppSelector((state) => state.user);
-
   var value: Friend | undefined = Friend["Friend"];
 
   if (value?.channel_id === undefined || value.channel_id === null) {

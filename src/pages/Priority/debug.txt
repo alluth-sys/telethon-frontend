@@ -1,0 +1,138 @@
+0
+: 
+{channel_id: 1109500936, username: 'Telethon Chat', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAQl0…Qq2y/b6CTwrig/fa03/8vNgmg1kkhgrcAAAAASUVORK5CYII=', unread_count: 375, last_message: {…}, …}
+1
+: 
+{channel_id: 5145920656, username: 'U An', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+2
+: 
+{channel_id: 631509543, username: '散戶聯盟1', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAce0…BRCSzNDoTJOx02mb2/wGBOmPftGP+JgAAAABJRU5ErkJggg==', unread_count: 94, last_message: {…}, …}
+3
+: 
+{channel_id: 5377330541, username: '奕璇 邱', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAj/k…OyPNCRMytI08LgrXy/wJCLohfky+QkAAAAABJRU5ErkJggg==', unread_count: 0, last_message: {…}, …}
+4
+: 
+{channel_id: 1178317029, username: 'Developers Society', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAA6G…xIiCZMXnJOThd79jC/wOsncDBXayicQAAAABJRU5ErkJggg==', unread_count: 14, last_message: {…}, …}
+5
+: 
+{channel_id: 604254497, username: '飊股聨盟C823-2616', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAlm0…SKbezZQYTG3xMI8+49h7+f/kTT+m90z8dAAAAAElFTkSuQmCC', unread_count: 35, last_message: {…}, …}
+6
+: 
+{channel_id: 702289335, username: '飆股亮燈區B824-1251', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAllU…lhaGd7bI/DcA1mDIp65n+P0ZXdC3v+JexAAAAAElFTkSuQmCC', unread_count: 50, last_message: {…}, …}
+7
+: 
+{channel_id: 741749044, username: '天天漲停o822-2395', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAliU…StL3pB9OJB8HHTiihvfz/AVpgQmvIzYpOAAAAAElFTkSuQmCC', unread_count: 33, last_message: {…}, …}
+8
+: 
+{channel_id: 737864042, username: '中級實戰股票學習群4（信誠環球投顧）', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAcwU…pF0FD9IpwOtmD9fqa4P8CFMebcdHr/XIAAAAASUVORK5CYII=', unread_count: 397, last_message: {…}, …}
+9
+: 
+{channel_id: 627357028, username: '天天張停GG824_1160', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAliU…StL3pB9OJB8HHTiihvfz/AVpgQmvIzYpOAAAAAElFTkSuQmCC', unread_count: 34, last_message: {…}, …}
+10
+: 
+{channel_id: 762545163, username: '123', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+11
+: 
+{channel_id: 609707916, username: '天天漲停z824-1663', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAliU…StL3pB9OJB8HHTiihvfz/AVpgQmvIzYpOAAAAAElFTkSuQmCC', unread_count: 22, last_message: {…}, …}
+12
+: 
+{channel_id: 1266163180, username: 'TGS stuff', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+13
+: 
+{channel_id: 777000, username: 'Telegram', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAJRk…g3NgiMG5sERg33vYE/gX0z+uNvVwuvAAAAABJRU5ErkJggg==', unread_count: 0, last_message: {…}, …}
+14
+: 
+{channel_id: 701776163, username: '阮慕驊帶你一路賺到退休', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAWhk…fVCmevy/EC4iEwgMIWWv/PzDEzis7JOHCAAAAAElFTkSuQmCC', unread_count: 77, last_message: {…}, …}
+15
+: 
+{channel_id: 1519327247, username: '5445', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+16
+: 
+{channel_id: 798245521, username: '陳重銘財富倍增XZ140群', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAY6U…CIDklCmzsteAbUPQA8H8Awby5jXySm4EAAAAASUVORK5CYII=', unread_count: 154, last_message: {…}, …}
+17
+: 
+{channel_id: 789804758, username: '跟孫慶龍老師一起發掘未來趨勢股', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAkC0…QJgCTx6kR71M1SVSWNv8/qk24Dw2DHjMAAAAASUVORK5CYII=', unread_count: 18, last_message: {…}, …}
+18
+: 
+{channel_id: 669921804, username: '朱家泓飙股分享XP747群', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAY0U…+8O1v3zc7V/p+QBFi8P8AMs/ZS7ISw5MAAAAASUVORK5CYII=', unread_count: 148, last_message: {…}, …}
+19
+: 
+{channel_id: 621159156, username: '🇹🇼張震散戶飆股分享群276', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAd1U…ly83Xru2oUSi9krsH8L8Bss+99ImIT9YAAAAASUVORK5CYII=', unread_count: 135, last_message: {…}, …}
+20
+: 
+{channel_id: 626433082, username: '🚨台股亮燈區I822-1636', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAlm0…SKbezZQYTG3xMI8+49h7+f/kTT+m90z8dAAAAAElFTkSuQmCC', unread_count: 33, last_message: {…}, …}
+21
+: 
+{channel_id: 523984651, username: '陳重銘財富倍增A128群', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAY6U…CIDklCmzsteAbUPQA8H8Awby5jXySm4EAAAAASUVORK5CYII=', unread_count: 179, last_message: {…}, …}
+22
+: 
+{channel_id: 1635091334, username: 'testing', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+23
+: 
+{channel_id: 629592652, username: '台灣飙股紅燈區8.3-1156', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAa00…Q6N6q30CnSswI1rzBUvk/AebFGGRTL6V+AAAAAElFTkSuQmCC', unread_count: 97, last_message: {…}, …}
+24
+: 
+{channel_id: 779820933, username: '喔', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAY6U…CIDklCmzsteAbUPQA8H8Awby5jXySm4EAAAAASUVORK5CYII=', unread_count: 56, last_message: {…}, …}
+25
+: 
+{channel_id: 1718943162, username: 'Sell Telegram Accounts', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAbwU…niJR5f2ttZmwbF82f/z8q699jA4kRHAAAAABJRU5ErkJggg==', unread_count: 24, last_message: {…}, …}
+26
+: 
+{channel_id: 722471502, username: '🔔', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+27
+: 
+{channel_id: 762998576, username: '股市大贏家-飆股（黃世民）69', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAApc0…eo4JEHMcIMgYFXI/qsiz9b9EYA6ne2hBmAAAAAElFTkSuQmCC', unread_count: 25, last_message: {…}, …}
+28
+: 
+{channel_id: 5206351277, username: 'albert', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABHG…Dus6AkcIqNWDSxHh9s/5/tYxy/Lf/SvcAAAAASUVORK5CYII=', unread_count: 0, last_message: {…}, …}
+29
+: 
+{channel_id: 777093761, username: '榮旭老師線上課堂99', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAATCk…/jOP4rrvuOnDgwK+kFf8FBu8OitkW1WMAAAAASUVORK5CYII=', unread_count: 7, last_message: {…}, …}
+30
+: 
+{channel_id: 641676634, username: '炫哥講股交流群288', profile_b64: 'no profile', unread_count: 0, last_message: {…}, …}
+31
+: 
+{channel_id: 631257049, username: '炫哥飆股學習交流群💹', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAi/0…5DBmAcy6JwiCKxHtg/n9k8g0Gs6WcQwAAAABJRU5ErkJggg==', unread_count: 20, last_message: {…}, …}
+32
+: 
+{channel_id: 643778894, username: '張振華-股市菁英特訓班', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAfu0…c63aaxSzGGOtGVQlRVP8vwoeqJ3pid6UAAAAASUVORK5CYII=', unread_count: 88, last_message: {…}, …}
+33
+: 
+{channel_id: 740037386, username: '萬寶投顧總長-蔡明彰線上課堂', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAZRk…f2jk1NeV5ul6rbalQ8/8Dcnb1+AebmacAAAAASUVORK5CYII=', unread_count: 160, last_message: {…}, …}
+34
+: 
+{channel_id: 693580753, username: '林玖龍線上體驗學堂', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAkz0…MX87DARCiZsgYINKVyuT/A5faz4/qEKJtAAAAAElFTkSuQmCC', unread_count: 40, last_message: {…}, …}
+35
+: 
+{channel_id: 660231021, username: '蔡明彰—分析師線上課堂', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAk4U…KUYC7d9jIsYS1U84FkPj/AP+0xwzcpgaqAAAAAElFTkSuQmCC', unread_count: 45, last_message: {…}, …}
+36
+: 
+{channel_id: 679719057, username: '張震飆股實戰交流群90', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAcwU…pF0FD9IpwOtmD9fqa4P8CFMebcdHr/XIAAAAASUVORK5CYII=', unread_count: 178, last_message: {…}, …}
+37
+: 
+{channel_id: 795331291, username: '炫哥飆股學習交流群💹', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAjCk…EZj8cjQVgnKbpKCUAYPj/AE3LUPCw9ppmAAAAAElFTkSuQmCC', unread_count: 26, last_message: {…}, …}
+38
+: 
+{channel_id: 783204361, username: '郭哲榮分析師-台灣最多人的財經頻道', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAiRU…YZUUBCE3dKmCRd4uO/393MKNeswGffwAAAABJRU5ErkJggg==', unread_count: 66, last_message: {…}, …}
+39
+: 
+{channel_id: 745753676, username: '謝金河-老謝看世界865', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAiDU…hKSC5wMxmxOQdoYMsiP8/HUp81QHcubEAAAAASUVORK5CYII=', unread_count: 9, last_message: {…}, …}
+40
+: 
+{channel_id: 664567941, username: '孫慶龍學習群70', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAmH0…jkhutlJRSKeN6nihSjMj/B/ja464pgt0vAAAAAElFTkSuQmCC', unread_count: 14, last_message: {…}, …}
+41
+: 
+{channel_id: 608082024, username: '施昇輝-線上選股教學班', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAhd0…E3/nK1bsH8zu79cH+9P8D7ENsQV6aZ/oAAAAASUVORK5CYII=', unread_count: 41, last_message: {…}, …}
+42
+: 
+{channel_id: 729097039, username: '炫哥講股集中營04', profile_b64: 'no profile', unread_count: 20, last_message: {…}, …}
+43
+: 
+{channel_id: 1209008204, username: '郭老師飆股分析01', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAgzk…tqqrtre0QwrPDZ8z8fwERXKbQV+nDzQAAAABJRU5ErkJggg==', unread_count: 28, last_message: {…}, …}
+44
+: 
+{channel_id: 755933968, username: '精選飆股實戰實戰群👍17', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAb+U…mTrgMLs8uDiHE2Fy5fP7/AdyrXPiyLXz2AAAAAElFTkSuQmCC', unread_count: 0, last_message: {…}, …}
+45
+: 
+{channel_id: 1044177265, username: 'Archer Archer', profile_b64: 'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAnnU…H1oQiUadVtzcMq+PH/g/Y3UZ+g4DWLwAAAABJRU5ErkJggg==', unread_count: 1, last_message: {…}, …}

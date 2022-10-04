@@ -63,6 +63,13 @@ export default function SideBar() {
         text={t("Settings")}
         path="/settings"
       />
+      <button
+        onClick={() => {
+          navigate("/play");
+        }}
+      >
+        Play
+      </button>
       <hr className="sidebar-hr" />
       <div
         className="relative flex items-center justify-center h-12 w-12 mt-96 mx-auto 

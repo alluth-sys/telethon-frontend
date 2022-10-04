@@ -8,6 +8,9 @@ import Home from "@/pages/Home/Home";
 import Chat from "@/pages/Chat/Chat";
 import Priority from "@/pages/Priority/Priority";
 import Settings from "@/pages/Settings/Settings";
+import Play from "@/pages/playground/play";
+import Play2 from "./pages/playground/play2";
+import Drag from "./pages/playground/dndplay";
 
 // Routes
 import PrivateRoute from "@/routes/PrivateRoute";
@@ -49,7 +52,10 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/priority" element={<Priority />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/play2" element={<Play2 />} />
         </Route>
+        <Route path="/dnd" element={<Drag />} />
       </Routes>
     </Router>
   );
