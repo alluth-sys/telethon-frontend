@@ -1,7 +1,7 @@
 import { Message } from "@/states/user/userSlice";
 import { Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import "./MessageBox.css";
 import moment from "moment";
 
@@ -67,6 +67,7 @@ export default function MessageBox({ message }: any) {
   if (message.tag == "message") {
     return (
       <div
+        id={message.message_id}
         className="mb-5 mx-10"
         style={getItemStyle(message.sender_id == data!.id)}
       >
@@ -101,6 +102,7 @@ export default function MessageBox({ message }: any) {
   } else if (message.tag == "image") {
     return (
       <div
+        id={message.message_id}
         className="mb-5 mx-10 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
@@ -124,6 +126,7 @@ export default function MessageBox({ message }: any) {
   } else if (message.tag == "gif") {
     return (
       <div
+        id={message.message_id}
         className="mb-5 mx-10 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >

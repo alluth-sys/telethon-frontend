@@ -199,6 +199,10 @@ export const userSlice = createSlice({
       state.friendList[action.payload.data.context.channel_id].unread_count = 0;
       return state;
     },
+    updateFriendPriority : (state,action)=>{
+      state.friendList[action.payload.channel_id].priority = action.payload.priority;
+      return state
+    }
   },
 });
 
@@ -217,6 +221,7 @@ export const {
   setUserShowContextMenu,
   setUserContextMenuAnchorPoint,
   updateFriendUnreadCount,
+  updateFriendPriority,
 } = userSlice.actions;
 
 export default userSlice.reducer;
