@@ -15,9 +15,6 @@ export default function Home() {
         dispatch(setUserFriendList(res));
       });
     }
-    return () => {
-      socket.off("initial");
-    };
   }, []);
 
   return (

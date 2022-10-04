@@ -20,6 +20,11 @@ export function timeHandler(timestamp: string | undefined) {
   }
 }
 
+export function messageTimeHandler(timestamp: string | undefined) {
+  const time = moment(timestamp);
+  return time.format("HH:mm");
+}
+
 // TODO : fix escaping char
 export function messageHandler(msg: string) {
   try {
@@ -53,14 +58,6 @@ export default function MessageBox({ message }: any) {
     return <></>;
   }
 
-  console.log(
-    "sender_id ",
-    message.sender_id,
-    "data_id : ",
-    data!.id,
-    "message ",
-    message.data
-  );
   if (message.sender_id == data!.id) {
     if (message.tag == "message") {
       return (
@@ -88,7 +85,7 @@ export default function MessageBox({ message }: any) {
                 fontSize: "10px",
               }}
             >
-              {timeHandler(message.timestamp)}
+              {messageTimeHandler(message.timestamp)}
             </Typography>
           </div>
         </div>
@@ -109,7 +106,9 @@ export default function MessageBox({ message }: any) {
               src={`data:image/jpeg;base64,${message.data}`}
               style={{ borderRadius: 10 }}
             />
-            <div className="overlay">{timeHandler(message.timestamp)}</div>
+            <div className="overlay">
+              {messageTimeHandler(message.timestamp)}
+            </div>
           </div>
         </div>
       );
@@ -129,7 +128,9 @@ export default function MessageBox({ message }: any) {
               src={`data:image/gif;base64,${message.data}`}
               style={{ borderRadius: 10 }}
             />
-            <div className="overlay">{timeHandler(message.timestamp)}</div>
+            <div className="overlay">
+              {messageTimeHandler(message.timestamp)}
+            </div>
           </div>
         </div>
       );
@@ -163,7 +164,7 @@ export default function MessageBox({ message }: any) {
                 fontSize: "10px",
               }}
             >
-              {timeHandler(message.timestamp)}
+              {messageTimeHandler(message.timestamp)}
             </Typography>
           </div>
         </div>
@@ -184,7 +185,9 @@ export default function MessageBox({ message }: any) {
               src={`data:image/jpeg;base64,${message.data}`}
               style={{ borderRadius: 10 }}
             />
-            <div className="overlay">{timeHandler(message.timestamp)}</div>
+            <div className="overlay">
+              {messageTimeHandler(message.timestamp)}
+            </div>
           </div>
         </div>
       );

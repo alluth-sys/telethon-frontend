@@ -26,7 +26,6 @@ export default function FriendList({ limit = 0 }) {
     (state: RootState) => state.user.timeList,
     isEqual
   );
-  var i = 0;
   return (
     <div className="flex flex-col grow w-full">
       <div
@@ -95,7 +94,7 @@ export function FriendBlock(Friend: any) {
             height={64}
           />
         </div>
-        <div className="grid ml-4 grow " style={{ height: "60px" }}>
+        <div className="font-loader grid ml-4 grow " style={{ height: "60px" }}>
           <div style={{ height: "20px", minHeight: "20px" }}>
             {wordsFilter(value.username, 8)}
           </div>
@@ -122,7 +121,7 @@ export function FriendBlock(Friend: any) {
           }}
         >
           <Typography
-            className="px-2"
+            className="px-2 font-loader"
             style={{
               color: "black",
               minWidth: "20px",
@@ -161,11 +160,19 @@ export function FriendBlock(Friend: any) {
 
 export const MessageProfile = ({ tag, data }: Message) => {
   if (tag === "message") {
-    return <Typography>{wordsFilter(data)}</Typography>;
+    return <Typography className="font-loader">{wordsFilter(data)}</Typography>;
   } else if (tag === "image") {
-    return <Typography>{wordsFilter("Send a photo")}</Typography>;
+    return (
+      <Typography className="font-loader">
+        {wordsFilter("Send a photo")}
+      </Typography>
+    );
   } else if (tag === "gif") {
-    return <Typography>{wordsFilter("Send a gif")}</Typography>;
+    return (
+      <Typography className="font-loader">
+        {wordsFilter("Send a gif")}
+      </Typography>
+    );
   }
   return <Typography></Typography>;
 };

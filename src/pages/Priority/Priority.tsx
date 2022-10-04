@@ -25,9 +25,13 @@ import { List } from "react-virtualized";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 
-const getItemStyle = (isDragging: boolean,provided:DraggableProvided, style: object) => {
-  if(!style){
-    return provided
+const getItemStyle = (
+  isDragging: boolean,
+  provided: DraggableProvided,
+  style: object
+) => {
+  if (!style) {
+    return provided;
   }
   return {
     userSelect: "none",
@@ -36,23 +40,28 @@ const getItemStyle = (isDragging: boolean,provided:DraggableProvided, style: obj
     background: isDragging ? "lightgreen" : "grey",
     overflowWrap: "break-word",
     position: "relative",
-    width:"320px",
+    width: "320px",
     // styles we need to apply on draggables
     ...provided,
     ...style,
   };
 };
 
-const move = (src:Friend[],des:Friend[],startIndex : number,endIndex :number)=>{
-  const result_src = Array.from(src)
-  const result_des = Array.from(des)
-  const [removed] = result_src.splice(startIndex,1)
-  result_des.splice(endIndex,0,removed)
-  const res = [result_src,result_des]
-  return res
-}
+const move = (
+  src: Friend[],
+  des: Friend[],
+  startIndex: number,
+  endIndex: number
+) => {
+  const result_src = Array.from(src);
+  const result_des = Array.from(des);
+  const [removed] = result_src.splice(startIndex, 1);
+  result_des.splice(endIndex, 0, removed);
+  const res = [result_src, result_des];
+  return res;
+};
 
-const reorder = (list:Friend[], startIndex: number, endIndex: number) => {
+const reorder = (list: Friend[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -64,7 +73,7 @@ export default function priority() {
 
   const [list, setList] = React.useState([]);
   const [priList, setPriList] = React.useState([]);
-  const [cacheName , setCacheName] = React.useState("")
+  const [cacheName, setCacheName] = React.useState("");
 
   React.useEffect(() => {
     setList(timeList);
@@ -92,12 +101,11 @@ export default function priority() {
       source.droppableId == "timeList" &&
       destination.droppableId == "priList"
     ) {
-      const res = move(list,priList,source.index,destination.index)
-      const newList = res[0]
-      const newPri = res[1]
-      setList(newList)
-      setPriList(newPri)
-
+      const res = move(list, priList, source.index, destination.index);
+      const newList = res[0];
+      const newPri = res[1];
+      setList(newList);
+      setPriList(newPri);
     }
 
     if (
@@ -111,63 +119,61 @@ export default function priority() {
   };
 
   const Encapsulated = (props: any) => {
-    const { value,isDragging, provided, style, index } = props;
+    const { value, isDragging, provided, style, index } = props;
     if (value?.channel_id === undefined || value.channel_id === null) {
       return (
-      <div
-        className="flex grow bg-slate-500  h-20 items-center navigate"
-        index={index}
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        style={getItemStyle(isDragging,provided.draggableProps.style, style)}
-      >
-        <div style={{ padding: "0px 5px" }}>
-          <ProfilePicture
-            uid={cacheName}
-            imgSrc={`data:image/jpeg;base64,${null}`}
-            width={64}
-            height={64}
-          />
-        </div>
-        <div className="grid ml-4 grow " style={{ height: "60px" }}>
-          <div style={{ height: "20px", minHeight: "20px" }}>
-            {wordsFilter("", 8)}
-          </div>
-
-          <div
-            className="flex "
-            style={{
-              overflowWrap: "break-word",
-              whiteSpace: "nowrap",
-              height: "20px",
-              minHeight: "20px",
-            }}
-          >
-          </div>
-        </div>
         <div
-          className="w-fit"
-          style={{
-            position: "absolute",
-            right: "3px",
-            top: "11px",
-            borderRadius: "20px",
-          }}
+          className="flex grow bg-slate-500  h-20 items-center navigate"
+          index={index}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={getItemStyle(isDragging, provided.draggableProps.style, style)}
         >
-          <Typography
-            className="px-2"
+          <div style={{ padding: "0px 5px" }}>
+            <ProfilePicture
+              uid={cacheName}
+              imgSrc={`data:image/jpeg;base64,${null}`}
+              width={64}
+              height={64}
+            />
+          </div>
+          <div className="grid ml-4 grow " style={{ height: "60px" }}>
+            <div style={{ height: "20px", minHeight: "20px" }}>
+              {wordsFilter("", 8)}
+            </div>
+
+            <div
+              className="flex "
+              style={{
+                overflowWrap: "break-word",
+                whiteSpace: "nowrap",
+                height: "20px",
+                minHeight: "20px",
+              }}
+            ></div>
+          </div>
+          <div
+            className="w-fit"
             style={{
-              color: "black",
-              minWidth: "20px",
-              fontSize: "13px",
-              fontWeight: "bold",
+              position: "absolute",
+              right: "3px",
+              top: "11px",
+              borderRadius: "20px",
             }}
           >
-          </Typography>
+            <Typography
+              className="px-2"
+              style={{
+                color: "black",
+                minWidth: "20px",
+                fontSize: "13px",
+                fontWeight: "bold",
+              }}
+            ></Typography>
+          </div>
         </div>
-      </div>
-      )
+      );
     }
     return (
       <div
@@ -176,7 +182,7 @@ export default function priority() {
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
-        style={getItemStyle(isDragging,provided.draggableProps.style, style)}
+        style={getItemStyle(isDragging, provided.draggableProps.style, style)}
       >
         <div style={{ padding: "0px 5px" }}>
           <ProfilePicture
@@ -245,7 +251,7 @@ export default function priority() {
           </div>
         )}
       </div>
-    )
+    );
   };
 
   // Using a higher order function so that we can look up the quotes data to retrieve
@@ -261,7 +267,13 @@ export default function priority() {
           key={value.channel_id}
         >
           {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-          <Encapsulated provided={provided} isDragging={snapshot.isDragging} value={value} style={style} index={index}/>
+            <Encapsulated
+              provided={provided}
+              isDragging={snapshot.isDragging}
+              value={value}
+              style={style}
+              index={index}
+            />
           )}
         </Draggable>
       );
@@ -271,9 +283,9 @@ export default function priority() {
     <div className="flex grow justify-start">
       <DragDropContext
         onDragEnd={handleDrag}
-        onDragStart={(e:any) => {
-          if(e!.source.droppableId=="timeList"){
-            setCacheName(list[e!.source.index].username)
+        onDragStart={(e: any) => {
+          if (e!.source.droppableId == "timeList") {
+            setCacheName(list[e!.source.index].username);
           }
         }}
       >
@@ -326,16 +338,24 @@ export default function priority() {
               provided: DraggableProvided,
               snapshot: DraggableStateSnapshot,
               rubric: DraggableRubric
-            ) => <Encapsulated provided={provided} isDragging={snapshot.isDragging} style={{margin:0}} index={rubric.source.index} Friend={null} />}
+            ) => (
+              <Encapsulated
+                provided={provided}
+                isDragging={snapshot.isDragging}
+                style={{ margin: 0 }}
+                index={rubric.source.index}
+                Friend={null}
+              />
+            )}
           >
             {(droppableProvided: DroppableProvided) => (
               <List
-                height={window.innerHeight-1}
+                height={window.innerHeight - 1}
                 rowCount={list.length}
                 rowHeight={80}
                 width={320}
                 className="container-snap"
-                ref={(ref:any) => {
+                ref={(ref: any) => {
                   // react-virtualized has no way to get the list's ref that I can so
                   // So we use the `ReactDOM.findDOMNode(ref)` escape hatch to get the ref
                   if (ref) {

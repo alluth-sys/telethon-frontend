@@ -12,16 +12,15 @@ export default function useFriendList() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
   const [success, setSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [data, setData] =
-    React.useState<
-      {
-        id: string;
-        name: string;
-        priority: number;
-        b64: string;
-        unread_count: number;
-      }[]
-    >();
+  const [data, setData] = React.useState<
+    {
+      id: string;
+      name: string;
+      priority: number;
+      b64: string;
+      unread_count: number;
+    }[]
+  >();
 
   const getUserFriendList = async () => {
     setLoading(true);
