@@ -1,9 +1,4 @@
-import {
-  createSlice,
-  PayloadAction,
-  current,
-  Dictionary,
-} from "@reduxjs/toolkit";
+import { createSlice, Dictionary } from "@reduxjs/toolkit";
 
 export interface IData {
   id: number;
@@ -96,8 +91,23 @@ export const userSlice = createSlice({
     },
     setUserLoggedOut: (state: IUser) => {
       state.isLogin = false;
+      state.data = null;
       return state;
     },
+    updateUserName: (state: IUser, action) => {
+      state.data!.first_name = action.payload.firstname;
+      state.data!.last_name = action.payload.lastname;
+      return state;
+    },
+    updateUsername: (state: IUser, action) => {
+      state.data!.username = action.payload.uname;
+      return state;
+    },
+    updateUserProfile: (state: IUser, action) => {
+      state.data!.profile_pic = action.payload.image;
+      return state;
+    },
+
     setUserFriendList: (state: IUser, action) => {
       // console.log("set user friend list");
       let friend: Friend = {
@@ -192,6 +202,9 @@ export const userSlice = createSlice({
 export const {
   setUserAuthed,
   setUserLoggedOut,
+  updateUserName,
+  updateUsername,
+  updateUserProfile,
   setUserFriendList,
   setFriendLatestMessage,
   setFriendChatHistory,

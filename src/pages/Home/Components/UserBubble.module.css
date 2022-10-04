@@ -1,0 +1,12 @@
+.myBubbleUI {
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  border: "2px solid yellow";
+}
+
+.child {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}

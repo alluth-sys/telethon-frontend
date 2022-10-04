@@ -47,7 +47,7 @@ export default function ConnectionSnackBar() {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={1000}
       onClose={handleClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
     >

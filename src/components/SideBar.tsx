@@ -47,8 +47,8 @@ export default function SideBar() {
 
   return (
     <div
-      className="static top-0 left-0 h-screen w-16 flex flex-col
-                   dark:bg-gray-900 shadow-lg text-white"
+      className=" sticky top-0 left-0 h-screen w-16 flex flex-col
+                   dark:bg-gray-900 shadow-lg text-white "
     >
       <TelegramIcon
         className="relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto text-white"

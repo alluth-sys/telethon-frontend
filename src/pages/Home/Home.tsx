@@ -1,14 +1,13 @@
 import React from "react";
-import { useAppSelector } from "@/app/hooks";
-import { Button } from "@mui/material";
 import { SocketContext } from "@/service/Socket";
 import { useAppDispatch } from "@/app/hooks";
 import { setUserFriendList } from "@/states/user/userSlice";
 
+import BubblePanel from "./BubblePanel";
+
 export default function Home() {
   const socket = React.useContext(SocketContext);
   const dispatch = useAppDispatch();
-  const { data } = useAppSelector((state) => state.user);
 
   React.useEffect(() => {
     if (socket !== null) {
@@ -16,18 +15,14 @@ export default function Home() {
         dispatch(setUserFriendList(res));
       });
     }
+    return () => {
+      socket.off("initial");
+    };
   }, []);
 
   return (
     <div className="w-full">
-      <div>home</div>
-      <Button
-        onClick={() => {
-          socket.emit("ping");
-        }}
-      >
-        test
-      </Button>
+      <BubblePanel />
     </div>
   );
 }

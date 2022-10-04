@@ -4,7 +4,7 @@ import styles from "@/components/LoginForm/LoginForm.module.css";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import LoadingButton from "@mui/lab/LoadingButton";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 // Spacer
 import Spacer from "react-spacer";
@@ -40,49 +40,63 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const signInHandler = () => {
+  const signInHandler = async () => {
     setOnLoading(true);
-    axios
-      .post(`${BASE}/login`, {
-        phone: phoneNumber,
-      })
-      .then((res) => {
-        setOnLoading(false);
-        if (res.data.code === 200) {
-          // Set User Data when signed in without existing sessions
-          setOnSuccess(true);
-        } else if (res.status === 202) {
-          // Set User Data when signed in with existing sessions
-          setOnSuccess(true);
-          dispatch(setUserAuthed(res.data.context));
-          localStorage.setItem("uid", JSON.stringify(res.data.context.id)); // Set User Id for Persistent Login
+    setOnSuccess(false);
 
-          navigate("/home");
-          socket.emit("conn", res.data.context.id);
-          socket.on("message", (msg) => {
-            dispatch(setFriendLatestMessage(msg));
-          });
-        }
+    try {
+      const response = await axios.post(`${BASE}/login`, {
+        phone: phoneNumber,
       });
+
+      if (response.data.code == 200) {
+        setOnSuccess(true);
+      } else if (response.data.code == 202) {
+        setOnSuccess(true);
+        dispatch(setUserAuthed(response.data.context));
+        // Set User Id for Persistent Login
+        localStorage.setItem("uid", JSON.stringify(response.data.context.id));
+
+        navigate("/home");
+        socket.emit("conn", response.data.context.id);
+        socket.on("message", (msg) => {
+          dispatch(setFriendLatestMessage(msg));
+        });
+      }
+    } catch (error) {
+      const errors = error as Error | AxiosError;
+      if (axios.isAxiosError(errors)) {
+        Promise.reject(errors.toJSON());
+      } else {
+        Promise.reject(Error);
+      }
+    }
+    setOnLoading(false);
   };
 
-  const codeVerificationHandler = () => {
+  const codeVerificationHandler = async () => {
     setCodeLoading(true);
-    axios
-      .post(`${BASE}/verify`, {
+    try {
+      const response = await axios.post(`${BASE}/verify`, {
         phone: phoneNumber,
         code: code,
-      })
-      .then((res) => {
-        setCodeLoading(false);
-        dispatch(setUserAuthed(res.data.context)); // Set User Data
-        localStorage.setItem("uid", JSON.stringify(res.data.context.id)); // Set User Id for Persistent Login
-        navigate("/home");
-      })
-      .catch((e) => {
-        setCodeLoading(false);
-        console.log(e);
       });
+      if (response.data.code == 200) {
+        // Set User Data
+        dispatch(setUserAuthed(response.data.context));
+        // Set User Id for Persistent Login
+        localStorage.setItem("uid", JSON.stringify(response.data.context.id));
+        navigate("/home");
+      }
+    } catch (error) {
+      const errors = error as Error | AxiosError;
+      if (axios.isAxiosError(errors)) {
+        Promise.reject(errors.toJSON());
+      } else {
+        Promise.reject(Error);
+      }
+    }
+    setCodeLoading(false);
   };
 
   return (

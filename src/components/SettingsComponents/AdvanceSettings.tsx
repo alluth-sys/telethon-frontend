@@ -8,10 +8,14 @@ import Divider from "@mui/material/Divider";
 import Spacer from "react-spacer";
 import { Typography } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
+import Fab from "@mui/material/Fab";
+import SaveIcon from "@mui/icons-material/Save";
+import CheckIcon from "@mui/icons-material/Check";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { BASE } from "@/constants/endpoints";
+
+import Skeleton from "@mui/material/Skeleton";
 
 import axios, { AxiosError } from "axios";
 
@@ -19,28 +23,45 @@ const client = axios.create({
   baseURL: BASE,
 });
 
+const typeList: string[] = [
+  "StatusTimestamp",
+  "ChatInvite",
+  "PhoneCall",
+  "PhoneP2P",
+  "Forwards",
+  "ProfilePhoto",
+  "PhoneNumber",
+  "AddedByPhone",
+];
+
+interface IJSON {
+  [index: string]: number;
+}
+
 export default function AdvanceSettings() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
-  const [settings, setSettings] = React.useState<Array<boolean>>([]);
-  const [isLoading, setLoading] = React.useState(true);
+  const [onLoad, setOnLoad] = React.useState(true);
+  const [success, setSuccess] = React.useState(false);
+  const [saveLoad, setSaveLoad] = React.useState(false);
+
+  const [checked, setChecked] = React.useState<string[]>([]);
 
   const fetchData = async () => {
-    setLoading(true);
+    setOnLoad(true);
     try {
       const response = await client.get(`/setting/privacy/${UserData?.id}`);
 
+      let i = 0;
       for (const privacy of response.data.context) {
         if (
           privacy.rules[0]._ === "PrivacyValueAllowAll" ||
           privacy.rules[0]._ === "PrivacyValueAllowContacts"
         ) {
-          settings.push(true);
-        } else {
-          settings.push(false);
+          checked.push(typeList[i]);
         }
+        i++;
       }
-
-      setLoading(false);
+      setOnLoad(false);
     } catch (error) {
       const errors = error as Error | AxiosError;
       if (axios.isAxiosError(errors)) {
@@ -48,26 +69,32 @@ export default function AdvanceSettings() {
       } else {
         Promise.reject(Error);
       }
-      setLoading(false);
+      setOnLoad(false);
     }
   };
-  const handleChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    setLoading(true);
-    const val = event.target.checked ? 1 : 0;
+  const onSave = async () => {
+    if (success) {
+      setSuccess(false);
+      return;
+    }
+
+    setSaveLoad(true);
+
+    let settingOptions: IJSON = {};
+
+    for (const type of typeList) {
+      settingOptions[type] = checked.indexOf(type) == -1 ? 0 : 1;
+    }
+
+    console.log(settingOptions);
 
     try {
       const response = await client.post(`/setting/privacy/${UserData?.id}`, {
-        type: id,
-        value: val,
+        ...settingOptions,
       });
       if (response.data.code === 200) {
-        let newSettings = [...settings];
-        newSettings[id] = event.target.checked;
-        setSettings(newSettings);
-        setLoading(false);
+        setSaveLoad(false);
+        setSuccess(true);
       }
     } catch (error) {
       const errors = error as Error | AxiosError;
@@ -76,9 +103,21 @@ export default function AdvanceSettings() {
       } else {
         Promise.reject(Error);
       }
-      setLoading(false);
+      setSaveLoad(false);
     }
-    setLoading(false);
+    setSaveLoad(false);
+  };
+
+  const handleToggle = async (type: string) => {
+    const currentIndex = checked.indexOf(type);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(type);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setChecked(newChecked);
   };
 
   // Fetch Settings Data
@@ -86,7 +125,7 @@ export default function AdvanceSettings() {
     fetchData();
   }, []);
 
-  if (!isLoading) {
+  if (!onLoad) {
     return (
       <div>
         <Typography variant="h6">Advance Settings</Typography>
@@ -96,9 +135,9 @@ export default function AdvanceSettings() {
           <FormControlLabel
             control={
               <Switch
-                checked={settings[0]}
-                onChange={(e) => {
-                  handleChange(e, 0);
+                checked={checked.indexOf("StatusTimestamp") != -1}
+                onChange={() => {
+                  handleToggle("StatusTimestamp");
                 }}
               />
             }
@@ -111,9 +150,9 @@ export default function AdvanceSettings() {
           <FormControlLabel
             control={
               <Switch
-                checked={settings[1]}
-                onChange={(e) => {
-                  handleChange(e, 1);
+                checked={checked.indexOf("ChatInvite") != -1}
+                onChange={() => {
+                  handleToggle("ChatInvite");
                 }}
               />
             }
@@ -125,7 +164,14 @@ export default function AdvanceSettings() {
           </Typography>
 
           <FormControlLabel
-            control={<Switch checked={settings[2]} />}
+            control={
+              <Switch
+                checked={checked.indexOf("PhoneCall") != -1}
+                onChange={() => {
+                  handleToggle("PhoneCall");
+                }}
+              />
+            }
             label="Phone Call"
             className="p-2 w-fit"
           />
@@ -133,7 +179,14 @@ export default function AdvanceSettings() {
             Whether you will accept phone calls
           </Typography>
           <FormControlLabel
-            control={<Switch checked={settings[3]} />}
+            control={
+              <Switch
+                checked={checked.indexOf("PhoneP2P") != -1}
+                onChange={() => {
+                  handleToggle("PhoneP2P");
+                }}
+              />
+            }
             label="Phone P2P"
             className="p-2 w-fit"
           />
@@ -141,7 +194,14 @@ export default function AdvanceSettings() {
             Whether you allow P2P communication during VoIP calls
           </Typography>
           <FormControlLabel
-            control={<Switch checked={settings[4]} />}
+            control={
+              <Switch
+                checked={checked.indexOf("Forwards") != -1}
+                onChange={() => {
+                  handleToggle("Forwards");
+                }}
+              />
+            }
             label="Forwards"
             className="p-2 w-fit"
           />
@@ -149,7 +209,14 @@ export default function AdvanceSettings() {
             Whether messages forwarded from you will be anonymous
           </Typography>
           <FormControlLabel
-            control={<Switch checked={settings[5]} />}
+            control={
+              <Switch
+                checked={checked.indexOf("ProfilePhoto") != -1}
+                onChange={() => {
+                  handleToggle("ProfilePhoto");
+                }}
+              />
+            }
             label="Profile Photo"
             className="p-2 w-fit"
           />
@@ -157,28 +224,37 @@ export default function AdvanceSettings() {
             Whether people will be able to see your profile picture
           </Typography>
           <FormControlLabel
-            control={<Switch checked={settings[6]} />}
+            control={
+              <Switch
+                checked={checked.indexOf("PhoneNumber") != -1}
+                onChange={() => {
+                  handleToggle("PhoneNumber");
+                }}
+              />
+            }
             label="Phone Number"
             className="p-2 w-fit"
           />
           <Typography color={"gray"} fontSize="small">
             Whether people will be able to see your phone number
           </Typography>
-          <FormControlLabel
-            control={<Switch checked={settings[7]} />}
-            label="Added By Phone"
-            className="p-2 w-fit"
-          />
-          <Typography color={"gray"} fontSize="small">
-            Whether people can add you to their contact list by your phone
-            number
-          </Typography>
         </FormGroup>
+        <div className="flex w-full items-end justify-items-end flex-col mt-8">
+          <Fab color="primary" onClick={onSave}>
+            {success ? (
+              <CheckIcon />
+            ) : !saveLoad ? (
+              <SaveIcon />
+            ) : (
+              <CircularProgress sx={{ color: "white" }} />
+            )}
+          </Fab>
+        </div>
       </div>
     );
   } else {
     return (
-      <div className="flex items-center justify-center h-full w-2/4 flex-col">
+      <div className="flex h-full w-full items-center justify-center">
         <CircularProgress />
       </div>
     );
