@@ -33,7 +33,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
-import {BASE} from "@/constants/endpoints"
+import { BASE } from "@/constants/endpoints";
 import axios from "axios";
 
 const getItemStyle = (
@@ -81,65 +81,82 @@ const reorder = (list: Friend[], startIndex: number, endIndex: number) => {
 
 export default function priority() {
   const friendList = useAppSelector((state) => state.user.friendList);
-  const dispatch = useAppDispatch()
+  const user_id = useAppSelector((state)=>state.user.data?.id)
+  const dispatch = useAppDispatch();
   const [list, setList] = React.useState([]);
-  const [level3List,setLevel3List] = React.useState([]);
-  const [level2List,setLevel2List] = React.useState([]);
-  const [level1List,setLevel1List] = React.useState([]);
+  const [level3List, setLevel3List] = React.useState([]);
+  const [level2List, setLevel2List] = React.useState([]);
+  const [level1List, setLevel1List] = React.useState([]);
   const [cacheName, setCacheName] = React.useState("");
 
   var nameMap = new Map();
-  nameMap.set("friendList",list)
-  nameMap.set("level3List",level3List)
-  nameMap.set("level2List",level2List)
-  nameMap.set("level1List",level1List)
+  nameMap.set("friendList", list);
+  nameMap.set("level3List", level3List);
+  nameMap.set("level2List", level2List);
+  nameMap.set("level1List", level1List);
 
   var funMap = new Map();
-  funMap.set("friendList",setList)
-  funMap.set("level3List",setLevel3List)
-  funMap.set("level2List",setLevel2List)
-  funMap.set("level1List",setLevel1List)
+  funMap.set("friendList", setList);
+  funMap.set("level3List", setLevel3List);
+  funMap.set("level2List", setLevel2List);
+  funMap.set("level1List", setLevel1List);
 
-  var priMap = new Map()
-  priMap.set("friendList",-1)
-  priMap.set("level3List",2)
-  priMap.set("level2List",1)
-  priMap.set("level1List",0)
+  var priMap = new Map();
+  priMap.set("friendList", -1);
+  priMap.set("level3List", 2);
+  priMap.set("level2List", 1);
+  priMap.set("level1List", 0);
 
   React.useEffect(() => {
     let tmplist = Object.entries(friendList);
     tmplist = tmplist.filter((ele) => ele[1].channel_id != 0);
-    setList(tmplist.filter(ele => ele[1].priority==-1));
-    setLevel1List(tmplist.filter(ele => ele[1].priority ==0 ))
-    setLevel2List(tmplist.filter(ele => ele[1].priority ==1 ))
-    setLevel3List(tmplist.filter(ele => ele[1].priority ==2 ))
+    setList(tmplist.filter((ele) => ele[1].priority == -1));
+    setLevel1List(tmplist.filter((ele) => ele[1].priority == 0));
+    setLevel2List(tmplist.filter((ele) => ele[1].priority == 1));
+    setLevel3List(tmplist.filter((ele) => ele[1].priority == 2));
   }, [friendList]);
 
   const handleDrag = (result: dragResult) => {
     const { source, destination } = result;
-  
 
     if (!destination) {
       return;
     }
 
-    if(destination.droppableId == source.droppableId){
-      const items = reorder(nameMap.get(destination.droppableId),source.index,destination.index)
-      const newState=items;
-      funMap.get(destination.droppableId)(newState)
-    }else{
-      axios.post(`${BASE}/channel/priority/<id>`,{channel_id : (result.draggableId) , priority:priMap.get(destination.droppableId)
-      }).then(response => {
-        const res = move(nameMap.get(source.droppableId), nameMap.get(destination.droppableId), source.index, destination.index);
-        const newSrc = res[0];
-        const newDes = res[1];
-        funMap.get(destination.droppableId)(newDes);
-        funMap.get(source.droppableId)(newSrc);
-        dispatch(updateFriendPriority({channel_id : (result.draggableId),priority : priMap.get(destination.droppableId)}))
-      })
-        .catch(e=> console.log(e))
+    if (destination.droppableId == source.droppableId) {
+      const items = reorder(
+        nameMap.get(destination.droppableId),
+        source.index,
+        destination.index
+      );
+      const newState = items;
+      funMap.get(destination.droppableId)(newState);
+    } else {
+      axios
+        .post(`${BASE}/channel/priority/${user_id}`, {
+          channel_id: result.draggableId,
+          priority: priMap.get(destination.droppableId),
+        })
+        .then((response) => {
+          const res = move(
+            nameMap.get(source.droppableId),
+            nameMap.get(destination.droppableId),
+            source.index,
+            destination.index
+          );
+          const newSrc = res[0];
+          const newDes = res[1];
+          funMap.get(destination.droppableId)(newDes);
+          funMap.get(source.droppableId)(newSrc);
+          dispatch(
+            updateFriendPriority({
+              channel_id: result.draggableId,
+              priority: priMap.get(destination.droppableId),
+            })
+          );
+        })
+        .catch((e) => console.log(e));
     }
-
   };
 
   const Encapsulated = (props: any) => {
@@ -344,45 +361,44 @@ export default function priority() {
               {level3open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={level3open} timeout="auto" unmountOnExit>
-            <Droppable droppableId="level3List" key="level3List">
-                  {(
-                    provided: DroppableProvided,
-                    snapshot: DroppableSnapShot
-                  ) => {
-                    return (
-                      <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {level3List.map((item: any, index) => (
-                          <Draggable
-                            key={`${item[1].channel_id}_level_3`}
-                            draggableId={item[1].channel_id.toString() + "_level_3"}
-                            index={index}
-                          >
-                            {(
-                              provided: DraggableProvided,
-                              snapshot: DraggableSnapShot
-                            ) => {
-                              return (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    null,
-                                    provided.draggableProps.style
-                                  )}
-                                >
-                                  <SimpleFriendBlock Friend={item[1]} />
-                                </div>
-                              );
-                            }}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
+              <Droppable droppableId="level3List" key="level3List">
+                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                  return (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {level3List.map((item: any, index) => (
+                        <Draggable
+                          key={`${item[1].channel_id}_level_3`}
+                          draggableId={
+                            item[1].channel_id.toString() + "_level_3"
+                          }
+                          index={index}
+                        >
+                          {(
+                            provided: DraggableProvided,
+                            snapshot: DraggableSnapShot
+                          ) => {
+                            return (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  null,
+                                  provided.draggableProps.style
+                                )}
+                              >
+                                <SimpleFriendBlock Friend={item[1]} />
+                              </div>
+                            );
+                          }}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
             </Collapse>
             <ListItemButton onClick={handlelevel2Click}>
               <ListItemIcon>
@@ -392,45 +408,44 @@ export default function priority() {
               {level2open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={level2open} timeout="auto" unmountOnExit>
-                <Droppable droppableId="level2List" key="level2List">
-                  {(
-                    provided: DroppableProvided,
-                    snapshot: DroppableSnapShot
-                  ) => {
-                    return (
-                      <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {level2List.map((item: any, index) => (
-                          <Draggable
-                            key={`${item[1].channel_id}_level_2`}
-                            draggableId={item[1].channel_id.toString() + "_level_2"}
-                            index={index}
-                          >
-                            {(
-                              provided: DraggableProvided,
-                              snapshot: DraggableSnapShot
-                            ) => {
-                              return (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    null,
-                                    provided.draggableProps.style
-                                  )}
-                                >
-                                  <SimpleFriendBlock Friend={item[1]} />
-                                </div>
-                              );
-                            }}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
+              <Droppable droppableId="level2List" key="level2List">
+                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                  return (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {level2List.map((item: any, index) => (
+                        <Draggable
+                          key={`${item[1].channel_id}_level_2`}
+                          draggableId={
+                            item[1].channel_id.toString() + "_level_2"
+                          }
+                          index={index}
+                        >
+                          {(
+                            provided: DraggableProvided,
+                            snapshot: DraggableSnapShot
+                          ) => {
+                            return (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  null,
+                                  provided.draggableProps.style
+                                )}
+                              >
+                                <SimpleFriendBlock Friend={item[1]} />
+                              </div>
+                            );
+                          }}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
             </Collapse>
             <ListItemButton onClick={handlelevel1Click}>
               <ListItemIcon>
@@ -440,45 +455,44 @@ export default function priority() {
               {level1open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={level1open} timeout="auto" unmountOnExit>
-                <Droppable droppableId="level1List" key="level1List">
-                  {(
-                    provided: DroppableProvided,
-                    snapshot: DroppableSnapShot
-                  ) => {
-                    return (
-                      <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {level1List.map((item: any, index) => (
-                          <Draggable
-                            key={`${item[1].channel_id}_level_1`}
-                            draggableId={item[1].channel_id.toString() + "_level_1"}
-                            index={index}
-                          >
-                            {(
-                              provided: DraggableProvided,
-                              snapshot: DraggableSnapShot
-                            ) => {
-                              return (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    null,
-                                    provided.draggableProps.style
-                                  )}
-                                >
-                                  <SimpleFriendBlock Friend={item[1]} />
-                                </div>
-                              );
-                            }}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
+              <Droppable droppableId="level1List" key="level1List">
+                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                  return (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {level1List.map((item: any, index) => (
+                        <Draggable
+                          key={`${item[1].channel_id}_level_1`}
+                          draggableId={
+                            item[1].channel_id.toString() + "_level_1"
+                          }
+                          index={index}
+                        >
+                          {(
+                            provided: DraggableProvided,
+                            snapshot: DraggableSnapShot
+                          ) => {
+                            return (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  null,
+                                  provided.draggableProps.style
+                                )}
+                              >
+                                <SimpleFriendBlock Friend={item[1]} />
+                              </div>
+                            );
+                          }}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  );
+                }}
+              </Droppable>
             </Collapse>
           </MuiList>
         </div>
