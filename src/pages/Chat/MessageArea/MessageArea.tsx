@@ -1,12 +1,21 @@
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import moment from "moment";
-import { useEffect } from "react";
-import { scrollBarAnimation } from "../Chat";
+import { useEffect, useState } from "react";
 import MessageBox from "@/components/MessageBox/MessageBox";
 import OptionalCard from "./OptionalCard/OptionalCard";
 import { getChatHistory } from "@/components/FriendList/FriendList";
 import { setUserFreindListInitialized } from "@/states/user/userSlice";
 import Timeindicator from "./TimeIndicator/Timeindicator";
+import ScrollButton from "../ScrollButton/ScrollButton";
+import AckButton from "../AckButton/AckButton";
+
+export function scrollBarAnimation() {
+  var curr = document.getElementById("messageArea");
+  curr!.className = "scrolling-class grid";
+  setTimeout(() => {
+    curr!.className = "message-area-scrollbar grid";
+  }, 1000);
+}
 
 export default function MessageArea({ focus }: any) {
   const dispatch = useAppDispatch();
@@ -23,6 +32,8 @@ export default function MessageArea({ focus }: any) {
   const chat_history = useAppSelector(
     (state) => state.user.friendList[focus].chat_history
   );
+
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (
@@ -56,6 +67,12 @@ export default function MessageArea({ focus }: any) {
   var scrollTimer = -1;
   const handleOnScroll = () => {
     var curr = document.getElementById("messageArea");
+
+    if (curr!.scrollHeight - curr!.scrollTop <= curr!.clientHeight + 2) {
+      setScrolled(false);
+    } else {
+      setScrolled(true);
+    }
 
     curr!.className = "scrolling-class grid";
 
@@ -99,7 +116,7 @@ export default function MessageArea({ focus }: any) {
             }
             previous_message_timestamp = current_message_timestamp;
             return (
-              <div className="grid" key={`${key.toString()}_div`} >
+              <div className="grid" key={`${key.toString()}_div`}>
                 {!sameDay && previous_message_timestamp != "Invalid date" && (
                   <Timeindicator
                     timestamp={current_message_timestamp}
@@ -113,6 +130,8 @@ export default function MessageArea({ focus }: any) {
         </div>
       </div>
       <OptionalCard />
+      <ScrollButton display={scrolled} />
+      {focus != 0 && <AckButton />}
     </>
   );
 }

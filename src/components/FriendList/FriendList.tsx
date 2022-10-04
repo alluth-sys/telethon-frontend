@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
-import { scrollBarAnimation } from "@/pages/Chat/Chat";
+import { scrollBarAnimation } from "@/pages/Chat/MessageArea/MessageArea";
 import { Friend, Message } from "@/states/user/userSlice";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
@@ -26,14 +26,15 @@ export default function FriendList({ limit = 0 }) {
     (state: RootState) => state.user.timeList,
     isEqual
   );
+
   return (
     <div className="flex flex-col grow w-full">
       <div
         style={{ maxHeight: "100vh", overflow: "scroll" }}
         className="container-snap"
       >
-        {timeList.map((Friend, index) => {
-          return <FriendBlock Friend={Friend} key={index.toString()} />;
+        {timeList.map((key, index) => {
+          return <FriendBlock channel_id={key} key={key.toString()} />;
         })}
       </div>
     </div>
@@ -64,13 +65,29 @@ export function getChatHistory(
     .catch((e) => console.log(e));
 }
 
-export function FriendBlock(Friend: any) {
-  const { data } = useAppSelector((state) => state.user);
+type FriendBlockArg = { channel_id: number };
+export function FriendBlock({ channel_id }: FriendBlockArg) {
+  const user_id = useAppSelector((state) => state.user.data!.id);
+
+  const chat_history = useAppSelector(
+    (state) => state.user.friendList[channel_id]?.chat_history
+  );
+  const username = useAppSelector(
+    (state) => state.user.friendList[channel_id]?.username
+  );
+  const profile_b64 = useAppSelector(
+    (state) => state.user.friendList[channel_id]?.profile_b64
+  );
+  const last_message = useAppSelector(
+    (state) => state.user.friendList[channel_id]?.last_message
+  );
+  const unread_count = useAppSelector(
+    (state) => state.user.friendList[channel_id]?.unread_count
+  );
 
   const dispatch = useAppDispatch();
-  var value: Friend | undefined = Friend["Friend"];
 
-  if (value?.channel_id === undefined || value.channel_id === null) {
+  if (channel_id === undefined || channel_id === null) {
     return <></>;
   }
   return (
@@ -79,24 +96,24 @@ export function FriendBlock(Friend: any) {
         className="flex grow bg-slate-500  h-20 items-center navigate"
         style={{ overflowWrap: "break-word", position: "relative" }}
         onClick={() => {
-          dispatch(setUserFocus(value!["channel_id"]));
+          dispatch(setUserFocus(channel_id));
           // if the history inexists, fetch the chat history
-          if (Object.keys(value!.chat_history).length == 0) {
-            getChatHistory(value!["channel_id"], data?.id, dispatch);
+          if (Object.keys(chat_history).length == 0) {
+            getChatHistory(channel_id, user_id, dispatch);
           }
         }}
       >
         <div style={{ padding: "0px 5px" }}>
           <ProfilePicture
-            uid={value!.username}
-            imgSrc={`data:image/jpeg;base64,${value!.profile_b64}`}
+            uid={username}
+            imgSrc={`data:image/jpeg;base64,${profile_b64}`}
             width={64}
             height={64}
           />
         </div>
         <div className="font-loader grid ml-4 grow " style={{ height: "60px" }}>
           <div style={{ height: "20px", minHeight: "20px" }}>
-            {wordsFilter(value.username, 8)}
+            {wordsFilter(username, 8)}
           </div>
 
           <div
@@ -108,7 +125,7 @@ export function FriendBlock(Friend: any) {
               minHeight: "20px",
             }}
           >
-            <MessageProfile {...value!.last_message!} />
+            <MessageProfile {...last_message!} />
           </div>
         </div>
         <div
@@ -129,10 +146,10 @@ export function FriendBlock(Friend: any) {
               fontWeight: "bold",
             }}
           >
-            {timeHandler(value!.last_message?.timestamp)}
+            {timeHandler(last_message?.timestamp)}
           </Typography>
         </div>
-        {value!.unread_count != 0 && (
+        {unread_count != 0 && (
           <div
             className="w-fit"
             style={{
@@ -148,7 +165,7 @@ export function FriendBlock(Friend: any) {
               className="px-2"
               style={{ color: "white", minWidth: "43px" }}
             >
-              {value!.unread_count > 99 ? "99+" : value!.unread_count}
+              {unread_count > 99 ? "99+" : unread_count}
             </Typography>
           </div>
         )}

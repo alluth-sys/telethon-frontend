@@ -14,7 +14,7 @@ export interface IUser {
   isLogin: boolean;
   data: IData | null;
   friendList: FriendList;
-  timeList: Array<Friend>;
+  timeList: Array<number>;
   timeListIndex: number;
   focus: number;
   showContextMenu: boolean;
@@ -123,7 +123,7 @@ export const userSlice = createSlice({
       };
       state.friendList[action.payload.channel] = friend;
 
-      state.timeList[state.timeListIndex] = friend;
+      state.timeList[state.timeListIndex] = friend.channel_id;
       state.timeListIndex++;
 
       return state;
@@ -135,7 +135,7 @@ export const userSlice = createSlice({
       }
       // get the channel id of the incoming message
       const index = state.timeList.findIndex(
-        (element) => element.channel_id == action.payload.channel
+        (element) => element == action.payload.channel
       );
 
       // send back the priority of the messages' timestamp
@@ -144,7 +144,7 @@ export const userSlice = createSlice({
         state.timeList[i] = state.timeList[i - 1];
       }
       // set the incoming message as top
-      timeList0.last_message = action.payload;
+      // timeList0.last_message = action.payload;
       state.timeList[0] = timeList0;
 
       // append in chat history
@@ -153,8 +153,7 @@ export const userSlice = createSlice({
       state.friendList[channel].chat_history[message_id] = action.payload;
 
       // update the latest message
-      state.friendList[action.payload.channel].last_message =
-        action.payload.data;
+      state.friendList[action.payload.channel].last_message = action.payload;
 
       return state;
     },
@@ -195,6 +194,11 @@ export const userSlice = createSlice({
       state.contextMenuAnchorPoint.y = action.payload.y;
       return state;
     },
+    updateFriendUnreadCount: (state, action) => {
+      console.log(action.payload);
+      state.friendList[action.payload.data.context.channel_id].unread_count = 0;
+      return state;
+    },
   },
 });
 
@@ -212,6 +216,7 @@ export const {
   setUserFreindListInitialized,
   setUserShowContextMenu,
   setUserContextMenuAnchorPoint,
+  updateFriendUnreadCount,
 } = userSlice.actions;
 
 export default userSlice.reducer;

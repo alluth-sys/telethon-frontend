@@ -8,14 +8,8 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
 import { setUserShowContextMenu } from "@/states/user/userSlice";
 import "./Chat.css";
-
-export function scrollBarAnimation() {
-  var curr = document.getElementById("messageArea");
-  curr!.className = "scrolling-class grid";
-  setTimeout(() => {
-    curr!.className = "message-area-scrollbar grid";
-  }, 1000);
-}
+import AckButton from "./AckButton/AckButton";
+import ScrollButton from "./ScrollButton/ScrollButton";
 
 export default function chat() {
   // state need to be organized :
@@ -55,7 +49,7 @@ export default function chat() {
       <div className="grow grid content-end ">
         <div
           className="flex flex-col  grow w-full "
-          style={{ height: "85vh" }}
+          style={{ height: "85vh", position: "relative" }}
           id="messageAreaWrapper"
         >
           <MessageArea focus={focus} />
