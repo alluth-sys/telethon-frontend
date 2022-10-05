@@ -138,9 +138,17 @@ export default function priority() {
       const newState = items;
       funMap.get(destination.droppableId)(newState);
     } else {
+      let channel_id = ""
+
+      if(result.draggableId.toString().includes("_")){
+        channel_id = result.draggableId.toString().split("_")[0]
+      }else{  
+        channel_id = result.draggableId.toString()
+      }
+
       axios
         .post(`${BASE}/channel/priority/${user_id}`, {
-          channel_id: result.draggableId,
+          channel_id: channel_id,
           priority: priMap.get(destination.droppableId),
         })
         .then((response) => {
