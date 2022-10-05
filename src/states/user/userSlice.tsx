@@ -19,11 +19,13 @@ export interface IUser {
   focus: number;
   showContextMenu: boolean;
   contextMenuAnchorPoint: Dictionary<number>;
+  selectedMessageId: Array<number>;
+  importantMessages: Dictionary<Message>;
 }
 
 export type Message = {
   tag: string;
-  channel: number;
+  channel_id: number;
   from: string;
   sender_id: number;
   data: string;
@@ -60,7 +62,7 @@ const initialState: IUser = {
       chat_history: {
         "0": {
           tag: "null",
-          channel: -1,
+          channel_id: -1,
           from: "null",
           sender_id: -1,
           data: "null",
@@ -78,6 +80,18 @@ const initialState: IUser = {
   focus: 0,
   showContextMenu: false,
   contextMenuAnchorPoint: { x: 0, y: 0 },
+  selectedMessageId: [],
+  importantMessages: {
+    "0": {
+      tag: "null",
+      channel_id: -1,
+      from: "null",
+      sender_id: -1,
+      data: "null",
+      message_id: -1,
+      timestamp: "null",
+    },
+  },
 };
 
 export const userSlice = createSlice({
@@ -107,7 +121,6 @@ export const userSlice = createSlice({
       state.data!.profile_pic = action.payload.image;
       return state;
     },
-
     setUserFriendList: (state: IUser, action) => {
       // console.log("set user friend list");
       let friend: Friend = {
@@ -204,6 +217,37 @@ export const userSlice = createSlice({
         action.payload.priority;
       return state;
     },
+    setSelectedMessageId: (state, action) => {
+      if (action.payload.reset != undefined) {
+        state.selectedMessageId = initialState.selectedMessageId;
+        return state;
+      }
+      state.selectedMessageId = action.payload.message_id;
+      return state;
+    },
+    setImportantMessages: (state, action) => {
+      let message: Message = {
+        tag: "null",
+        channel_id: -1,
+        from: "null",
+        sender_id: -1,
+        data: "null",
+        message_id: -1,
+        timestamp: "null",
+      };
+      if (action.payload.channel_id != undefined) {
+        message =
+          state.friendList[action.payload.channel_id].chat_history[
+            action.payload.message_id
+          ];
+      } else {
+        return state;
+      }
+      state.importantMessages[
+        `${action.payload.channel_id}_${action.payload.message_id}`
+      ] = message;
+      return state;
+    },
   },
 });
 
@@ -223,6 +267,8 @@ export const {
   setUserContextMenuAnchorPoint,
   updateFriendUnreadCount,
   updateFriendPriority,
+  setSelectedMessageId,
+  setImportantMessages,
 } = userSlice.actions;
 
 export default userSlice.reducer;

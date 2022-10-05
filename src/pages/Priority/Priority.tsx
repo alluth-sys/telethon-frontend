@@ -5,7 +5,7 @@ import FriendList, {
 } from "@/components/FriendList/FriendList";
 import { Typography } from "@mui/material";
 import ReactDOM from "react-dom";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Draggable,
   DragDropContext,
@@ -17,7 +17,11 @@ import {
   type DropResult,
 } from "react-beautiful-dnd";
 import "./Priority.css";
-import { Friend, updateFriendPriority } from "@/states/user/userSlice";
+import {
+  Friend,
+  setUserShowContextMenu,
+  updateFriendPriority,
+} from "@/states/user/userSlice";
 import SimpleFriendBlock from "@/components/SimpleFriendBlock/SimpleFriendBlock";
 import { dragResult, DroppableSnapShot, DraggableSnapShot } from "./types";
 import { List } from "react-virtualized";
@@ -35,6 +39,7 @@ import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 import { BASE } from "@/constants/endpoints";
 import axios from "axios";
+import BulletinArea from "./BulletinArea/BulletinArea";
 
 const getItemStyle = (
   isDragging: boolean,
@@ -81,7 +86,8 @@ const reorder = (list: Friend[], startIndex: number, endIndex: number) => {
 
 export default function priority() {
   const friendList = useAppSelector((state) => state.user.friendList);
-  const user_id = useAppSelector((state)=>state.user.data?.id)
+  const user_id = useAppSelector((state) => state.user.data?.id);
+  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
   const dispatch = useAppDispatch();
   const [list, setList] = React.useState([]);
   const [level3List, setLevel3List] = React.useState([]);
@@ -336,8 +342,17 @@ export default function priority() {
     setlevel1Open(!level1open);
   };
 
+  const handleClickOut = useCallback(() => {
+    showContextMenu ? dispatch(setUserShowContextMenu(false)) : null;
+  }, [showContextMenu]);
+
   return (
-    <div className="flex grow justify-start">
+    <div
+      className="flex grow justify-start"
+      onClick={() => {
+        handleClickOut();
+      }}
+    >
       <DragDropContext
         onDragEnd={handleDrag}
         onDragStart={(e: any) => {
@@ -545,8 +560,8 @@ export default function priority() {
 
       <div className="grid grow">
         <div
-          className="bg-black flex h-1/3 justify-center items-center "
-          style={{ width: "100%" }}
+          className="bg-black flex justify-center items-center "
+          style={{ width: "100%", height: "33vh" }}
         >
           <Typography
             style={{ color: "white", fontSize: 50 }}
@@ -554,6 +569,13 @@ export default function priority() {
           >
             Bulletin Board
           </Typography>
+        </div>
+        <div
+          className="flex flex-col  grow w-full pt-5"
+          style={{ height: "67vh", position: "static" }}
+          id="BulletingAreaWrapper"
+        >
+          <BulletinArea />
         </div>
       </div>
     </div>

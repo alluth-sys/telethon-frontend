@@ -1,4 +1,4 @@
-import { Message } from "@/states/user/userSlice";
+import { Message, setSelectedMessageId } from "@/states/user/userSlice";
 import { Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState, useCallback } from "react";
@@ -55,15 +55,19 @@ export default function MessageBox({ message }: any) {
       e.preventDefault();
       dispatch(setUserContextMenuAnchorPoint({ x: e.pageX, y: e.pageY }));
       dispatch(setUserShowContextMenu(true));
+      dispatch(setSelectedMessageId({ message_id: Array(e.target.id) }));
     },
-    [setUserShowContextMenu, setUserContextMenuAnchorPoint]
+    [
+      setUserShowContextMenu,
+      setUserContextMenuAnchorPoint,
+      setSelectedMessageId,
+    ]
   );
 
   // handle dummy history
-  if (message.channel == -1 && message.tag == "null") {
+  if (message.channel_id == -1 && message.tag == "null") {
     return <></>;
   }
-
   if (message.tag == "message") {
     return (
       <div
@@ -82,7 +86,7 @@ export default function MessageBox({ message }: any) {
           <Typography
             style={{ color: "white" }}
             className="font-loader pl-5 pr-5"
-            id={message.message_id.toString()}
+            id={message.message_id}
           >
             {messageHandler(message.data)}
           </Typography>
@@ -118,6 +122,7 @@ export default function MessageBox({ message }: any) {
           <img
             src={`data:image/jpeg;base64,${message.data}`}
             style={{ borderRadius: 10 }}
+            id={message.message_id}
           />
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
         </div>
@@ -142,6 +147,7 @@ export default function MessageBox({ message }: any) {
           <img
             src={`data:image/gif;base64,${message.data}`}
             style={{ borderRadius: 10 }}
+            id={message.message_id}
           />
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
         </div>

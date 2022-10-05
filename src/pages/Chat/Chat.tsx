@@ -32,7 +32,6 @@ export default function chat() {
   }, []);
 
   const handleClickOut = useCallback(() => {
-    console.log("chat click", showContextMenu);
     showContextMenu ? dispatch(setUserShowContextMenu(false)) : null;
   }, [showContextMenu]);
 
