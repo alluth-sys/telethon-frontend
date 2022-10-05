@@ -20,7 +20,7 @@ export default function ScrollButton({ display }: any) {
     <div
       style={setStyle(display, {
         position: "absolute",
-        bottom: 80,
+        bottom: 160,
         right: 100,
         backgroundColor: "black",
         borderRadius: "50px",

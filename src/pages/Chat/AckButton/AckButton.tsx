@@ -24,7 +24,7 @@ export default function AckButton() {
     <div
       style={{
         position: "absolute",
-        bottom: 30,
+        bottom: 105,
         right: 100,
         backgroundColor: "black",
         borderRadius: "50px",

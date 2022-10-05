@@ -49,7 +49,7 @@ export default function chat() {
       <div className="grow grid content-end ">
         <div
           className="flex flex-col  grow w-full "
-          style={{ height: "85vh", position: "relative" }}
+          style={{ height: "85vh", position: "static" }}
           id="messageAreaWrapper"
         >
           <MessageArea focus={focus} />
