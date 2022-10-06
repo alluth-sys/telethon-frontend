@@ -138,12 +138,12 @@ export default function priority() {
       const newState = items;
       funMap.get(destination.droppableId)(newState);
     } else {
-      let channel_id = ""
+      let channel_id = "";
 
-      if(result.draggableId.toString().includes("_")){
-        channel_id = result.draggableId.toString().split("_")[0]
-      }else{  
-        channel_id = result.draggableId.toString()
+      if (result.draggableId.toString().includes("_")) {
+        channel_id = result.draggableId.toString().split("_")[0];
+      } else {
+        channel_id = result.draggableId.toString();
       }
 
       axios
@@ -152,19 +152,9 @@ export default function priority() {
           priority: priMap.get(destination.droppableId),
         })
         .then((response) => {
-          const res = move(
-            nameMap.get(source.droppableId),
-            nameMap.get(destination.droppableId),
-            source.index,
-            destination.index
-          );
-          const newSrc = res[0];
-          const newDes = res[1];
-          funMap.get(destination.droppableId)(newDes);
-          funMap.get(source.droppableId)(newSrc);
           dispatch(
             updateFriendPriority({
-              channel_id: result.draggableId,
+              channel_id: channel_id,
               priority: priMap.get(destination.droppableId),
             })
           );
