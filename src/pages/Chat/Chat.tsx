@@ -3,13 +3,15 @@ import InputArea from "@/pages/Chat/InputArea/InputArea";
 import MessageArea from "./MessageArea/MessageArea";
 
 import WebFont from "webfontloader";
-import { useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
+import * as React from "react"
 import { setUserShowContextMenu } from "@/states/user/userSlice";
 import "./Chat.css";
-import AckButton from "./AckButton/AckButton";
-import ScrollButton from "./ScrollButton/ScrollButton";
+import Collapse from '@mui/material/Collapse';
+import { IconButton } from "@mui/material";
+import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 
 export default function chat() {
   // state need to be organized :
@@ -35,6 +37,8 @@ export default function chat() {
     showContextMenu ? dispatch(setUserShowContextMenu(false)) : null;
   }, [showContextMenu]);
 
+  const [collapsed, setCollapse] = useState(true);
+
   return (
     <div
       className="flex grow justify-start"
@@ -42,8 +46,10 @@ export default function chat() {
         handleClickOut();
       }}
     >
-      <div className="flex" style={{ width: "320px" }}>
-        <FriendList />
+      <div className=" grid" >
+        <Collapse in={collapsed} collapsedSize={0} orientation="horizontal">
+            <FriendList />
+        </Collapse>
       </div>
       <div className="grow grid content-end ">
         <div
@@ -51,6 +57,10 @@ export default function chat() {
           style={{ height: "85vh", position: "static" }}
           id="messageAreaWrapper"
         >
+          
+        <IconButton onClick={() => setCollapse(!collapsed)} style={{height:"5vh" , width:"50px"}}>
+              {collapsed&&<ChevronLeft />||<ChevronRight/> }
+        </IconButton>
           <MessageArea focus={focus} />
         </div>
         <div className="grid h-15vh">

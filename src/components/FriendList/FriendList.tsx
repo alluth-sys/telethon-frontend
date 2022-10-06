@@ -30,8 +30,8 @@ export default function FriendList({ limit = 0 }) {
   return (
     <div className="flex flex-col grow w-full">
       <div
-        style={{ maxHeight: "100vh", overflow: "scroll" }}
-        className="container-snap"
+        style={{ height: "100vh", overflow: "scroll" , width:"320px" }}
+        className="container-snap grow w-full"
       >
         {timeList.map((key, index) => {
           return <FriendBlock channel_id={key} key={key.toString()} />;
@@ -93,8 +93,8 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
   return (
     <>
       <div
-        className="flex grow bg-slate-500  h-20 items-center navigate"
-        style={{ overflowWrap: "break-word", position: "relative" }}
+        className="flex grow bg-slate-500  h-20 items-center navigate "
+        style={{ overflowWrap: "break-word", position: "relative" , width:"320px" }}
         onClick={() => {
           dispatch(setUserFocus(channel_id));
           // if the history inexists, fetch the chat history
