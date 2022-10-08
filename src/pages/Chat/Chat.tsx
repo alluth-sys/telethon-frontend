@@ -46,14 +46,19 @@ export default function chat() {
         handleClickOut();
       }}
     >
+<<<<<<< Updated upstream
       <div className=" grid" >
         <Collapse in={collapsed} collapsedSize={0} orientation="horizontal">
             <FriendList />
         </Collapse>
+=======
+      <div className="flex border-r-2 border-black" style={{ width: "320px" }}>
+        <FriendList />
+>>>>>>> Stashed changes
       </div>
       <div className="grow grid content-end ">
         <div
-          className="flex flex-col  grow w-full "
+          className="flex flex-col grow w-full"
           style={{ height: "85vh", position: "static" }}
           id="messageAreaWrapper"
         >
