@@ -1,3 +1,4 @@
+import { store } from "@/app/store";
 import { createSlice, Dictionary } from "@reduxjs/toolkit";
 
 export interface IData {
@@ -103,11 +104,7 @@ export const userSlice = createSlice({
       state.data = action.payload;
       return state;
     },
-    setUserLoggedOut: (state: IUser) => {
-      state.isLogin = false;
-      state.data = null;
-      return state;
-    },
+    setUserLoggedOut: (state) => {},
     updateUserName: (state: IUser, action) => {
       state.data!.first_name = action.payload.firstname;
       state.data!.last_name = action.payload.lastname;

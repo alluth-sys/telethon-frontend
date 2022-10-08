@@ -9,11 +9,11 @@ import useFriendList from "./Hooks/useFriendList";
 import UserBubble from "./Components/UserBubble";
 
 const options = {
-  size: 180,
+  size: 150,
   minSize: 50,
   gutter: 100,
   provideProps: true,
-  numCols: 3,
+  numCols: 5,
   fringeWidth: 160,
   yRadius: 130,
   xRadius: 220,
@@ -24,23 +24,26 @@ const options = {
 };
 
 export default function BubblePanel() {
-  const { success, loading, data, getUserFriendList } = useFriendList();
+  const { friendData, getUserFriendList } = useFriendList();
 
   React.useEffect(() => {
+    if (friendData) return;
     getUserFriendList();
   }, []);
 
   const getFriends = () => {
-    if (data) {
-      return data.map((friend, index) => {
-        return <UserBubble {...friend} key={index} />;
-      });
+    if (friendData) {
+      return friendData
+        .filter((friend) => friend.unread_count > 0)
+        .map((friend, index) => {
+          return <UserBubble {...friend} key={index} />;
+        });
     }
   };
 
   const UserBubbles = getFriends();
 
-  if (success && !loading) {
+  if (friendData) {
     return (
       <BubbleUI options={options} className={styles.myBubbleUI}>
         {UserBubbles}

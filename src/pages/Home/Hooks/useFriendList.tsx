@@ -1,5 +1,8 @@
 import React from "react";
 import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch } from "@/app/hooks";
+import { setFriendData } from "@/states/user/friendSlice";
+
 import { RootState } from "@/app/store";
 import axios, { AxiosError } from "axios";
 import { BASE } from "@/constants/endpoints";
@@ -10,25 +13,32 @@ const client = axios.create({
 
 export default function useFriendList() {
   const UserData = useAppSelector((state: RootState) => state.user.data);
+  const friendData = useAppSelector((state: RootState) => state.friend.data);
+  const dispatch = useAppDispatch();
+
   const [success, setSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [data, setData] = React.useState<
-    {
-      id: string;
-      name: string;
-      priority: number;
-      b64: string;
-      unread_count: number;
-    }[]
-  >();
+  // const [data, setData] = React.useState<
+  //   {
+  //     id: string;
+  //     name: string;
+  //     priority: number;
+  //     b64: string;
+  //     unread_count: number;
+  //   }[]
+  // >();
 
   const getUserFriendList = async () => {
     setLoading(true);
     try {
       const response = await client.get(`/channel/list/${UserData?.id}`);
       if (response.data.code === 200) {
-        setData(response.data.context);
-        console.log(response.data.context);
+        dispatch(
+          setFriendData({
+            data: response.data.context,
+          })
+        );
+
         setLoading(false);
         setSuccess(true);
       }
@@ -43,5 +53,5 @@ export default function useFriendList() {
     setLoading(false);
   };
 
-  return { loading, success, data, getUserFriendList };
+  return { loading, success, friendData, getUserFriendList };
 }
