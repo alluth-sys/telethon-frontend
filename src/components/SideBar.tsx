@@ -72,8 +72,9 @@ export default function SideBar() {
         transition-all duration-300 ease-linear
         cursor-pointer shadow-lg "
       >
-        <div onClick={SignOutHandler}>
+        <div onClick={SignOutHandler} className="sidebar-icon group">
           <LogoutIcon />
+          <span className="sidebar-tooltip group-hover:scale-100">Logout</span>
         </div>
       </div>
     </div>

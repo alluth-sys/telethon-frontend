@@ -93,8 +93,13 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
   return (
     <>
       <div
+<<<<<<< Updated upstream
         className="flex grow bg-slate-500  h-20 items-center navigate "
         style={{ overflowWrap: "break-word", position: "relative" , width:"320px" }}
+=======
+        className="flex grow bg-white h-20 items-center navigate shadow-xl"
+        style={{ overflowWrap: "break-word", position: "relative" }}
+>>>>>>> Stashed changes
         onClick={() => {
           dispatch(setUserFocus(channel_id));
           // if the history inexists, fetch the chat history
@@ -170,7 +175,6 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
           </div>
         )}
       </div>
-      <hr />
     </>
   );
 }
