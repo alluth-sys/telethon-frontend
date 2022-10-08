@@ -37,7 +37,7 @@ export default function MessageArea({ focus }: any) {
 
   useEffect(() => {
     if (
-      document.getElementById("messageArea")!.clientHeight <
+      document.getElementById("messageArea")!.clientHeight+100 <
       document.getElementById("messageAreaWrapper")!.clientHeight
     ) {
       getChatHistory(focus, user_id, dispatch, oldest_message_id);

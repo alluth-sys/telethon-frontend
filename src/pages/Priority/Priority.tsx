@@ -63,20 +63,6 @@ const getItemStyle = (
   };
 };
 
-const move = (
-  src: Friend[],
-  des: Friend[],
-  startIndex: number,
-  endIndex: number
-) => {
-  const result_src = Array.from(src);
-  const result_des = Array.from(des);
-  const [removed] = result_src.splice(startIndex, 1);
-  result_des.splice(endIndex, 0, removed);
-  const res = [result_src, result_des];
-  return res;
-};
-
 const reorder = (list: Friend[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -89,10 +75,10 @@ export default function priority() {
   const user_id = useAppSelector((state) => state.user.data?.id);
   const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
   const dispatch = useAppDispatch();
-  const [list, setList] = React.useState([]);
-  const [level3List, setLevel3List] = React.useState([]);
-  const [level2List, setLevel2List] = React.useState([]);
-  const [level1List, setLevel1List] = React.useState([]);
+  const [list, setList] = React.useState<[string,Friend][]>([]);
+  const [level3List, setLevel3List] = React.useState<[string,Friend][]>([]);
+  const [level2List, setLevel2List] = React.useState<[string,Friend][]>([]);
+  const [level1List, setLevel1List] = React.useState<[string,Friend][]>([]);
   const [cacheName, setCacheName] = React.useState("");
 
   var nameMap = new Map();
@@ -121,6 +107,13 @@ export default function priority() {
     setLevel2List(tmplist.filter((ele) => ele[1].priority == 1));
     setLevel3List(tmplist.filter((ele) => ele[1].priority == 2));
   }, [friendList]);
+
+  React.useEffect(() => {
+    axios
+      .get(`${BASE}/channel/important_msg/${user_id}`)
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e));
+  }, []);
 
   const handleDrag = (result: dragResult) => {
     const { source, destination } = result;
@@ -302,7 +295,7 @@ export default function priority() {
   // Using a higher order function so that we can look up the quotes data to retrieve
   // our quote from within the rowRender function
   const getRowRender =
-    (list: Friend[]) =>
+    (list: [string,Friend][]) =>
     ({ index, style }: any) => {
       const value: any = list[index];
 
