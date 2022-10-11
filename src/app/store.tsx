@@ -9,7 +9,6 @@ const combinedReducer = combineReducers({
 
 // @ts-ignore
 const rootReducer = (state, action) => {
-  console.log(action.type);
   if (action.type === "user/setUserLoggedOut") {
     state = undefined;
   }

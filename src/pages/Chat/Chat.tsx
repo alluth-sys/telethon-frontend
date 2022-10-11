@@ -6,10 +6,10 @@ import WebFont from "webfontloader";
 import { useState, useEffect, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
-import * as React from "react"
+import * as React from "react";
 import { setUserShowContextMenu } from "@/states/user/userSlice";
 import "./Chat.css";
-import Collapse from '@mui/material/Collapse';
+import Collapse from "@mui/material/Collapse";
 import { IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 
@@ -46,15 +46,10 @@ export default function chat() {
         handleClickOut();
       }}
     >
-<<<<<<< Updated upstream
-      <div className=" grid" >
+      <div className=" grid">
         <Collapse in={collapsed} collapsedSize={0} orientation="horizontal">
-            <FriendList />
+          <FriendList />
         </Collapse>
-=======
-      <div className="flex border-r-2 border-black" style={{ width: "320px" }}>
-        <FriendList />
->>>>>>> Stashed changes
       </div>
       <div className="grow grid content-end ">
         <div
@@ -62,10 +57,12 @@ export default function chat() {
           style={{ height: "85vh", position: "static" }}
           id="messageAreaWrapper"
         >
-          
-        <IconButton onClick={() => setCollapse(!collapsed)} style={{height:"5vh" , width:"50px"}}>
-              {collapsed&&<ChevronLeft />||<ChevronRight/> }
-        </IconButton>
+          <IconButton
+            onClick={() => setCollapse(!collapsed)}
+            style={{ height: "5vh", width: "50px" }}
+          >
+            {(collapsed && <ChevronLeft />) || <ChevronRight />}
+          </IconButton>
           <MessageArea focus={focus} />
         </div>
         <div className="grid h-15vh">
