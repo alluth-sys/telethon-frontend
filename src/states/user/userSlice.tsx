@@ -134,6 +134,7 @@ export const userSlice = createSlice({
         priority: action.payload.priority,
         initialized_chat: false,
       };
+
       state.friendList[action.payload.channel] = friend;
 
       state.timeList[state.timeListIndex] = friend.channel_id;
@@ -148,7 +149,7 @@ export const userSlice = createSlice({
       }
       // get the channel id of the incoming message
       const index = state.timeList.findIndex(
-        (element) => element == action.payload.channel
+        (element) => element == action.payload.channel_id
       );
 
       // send back the priority of the messages' timestamp
@@ -161,12 +162,12 @@ export const userSlice = createSlice({
       state.timeList[0] = timeList0;
 
       // append in chat history
-      const channel: number = action.payload.channel;
+      const channel: number = action.payload.channel_id;
       const message_id: number = action.payload.message_id;
       state.friendList[channel].chat_history[message_id] = action.payload;
 
       // update the latest message
-      state.friendList[action.payload.channel].last_message = action.payload;
+      state.friendList[action.payload.channel_id].last_message = action.payload;
 
       return state;
     },
@@ -174,16 +175,16 @@ export const userSlice = createSlice({
       // append in chat history
       for (let i = 0; i < action.payload.data.context.length; i++) {
         const newhistory = {
-          ...state.friendList[action.payload.data.context[0].channel]
+          ...state.friendList[action.payload.data.context[0].channel_id]
             .chat_history,
           [action.payload.data.context[i].message_id]:
             action.payload.data.context[i],
         };
-        state.friendList[action.payload.data.context[0].channel].chat_history =
+        state.friendList[action.payload.data.context[0].channel_id].chat_history =
           newhistory;
         if (i == action.payload.data.context.length - 1) {
           state.friendList[
-            action.payload.data.context[0].channel
+            action.payload.data.context[0].channel_id
           ].oldest_message_id = action.payload.data.context[i].message_id;
         }
       }
@@ -226,7 +227,7 @@ export const userSlice = createSlice({
       return state;
     },
     setImportantMessages: (state, action) => {
-      let message: Message = {
+      let message: Message | undefined = {
         tag: "null",
         channel_id: -1,
         from: "null",
@@ -240,13 +241,13 @@ export const userSlice = createSlice({
           state.friendList[action.payload.channel_id].chat_history[
             action.payload.message_id
           ];
+        state.importantMessages[
+          `${action.payload.channel_id}_${action.payload.message_id}`
+        ] = message;
+        return state;
       } else {
         return state;
       }
-      state.importantMessages[
-        `${action.payload.channel_id}_${action.payload.message_id}`
-      ] = message;
-      return state;
     },
   },
 });

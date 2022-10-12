@@ -75,10 +75,10 @@ export default function priority() {
   const user_id = useAppSelector((state) => state.user.data?.id);
   const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
   const dispatch = useAppDispatch();
-  const [list, setList] = React.useState<[string,Friend][]>([]);
-  const [level3List, setLevel3List] = React.useState<[string,Friend][]>([]);
-  const [level2List, setLevel2List] = React.useState<[string,Friend][]>([]);
-  const [level1List, setLevel1List] = React.useState<[string,Friend][]>([]);
+  const [list, setList] = React.useState<[string, Friend][]>([]);
+  const [level3List, setLevel3List] = React.useState<[string, Friend][]>([]);
+  const [level2List, setLevel2List] = React.useState<[string, Friend][]>([]);
+  const [level1List, setLevel1List] = React.useState<[string, Friend][]>([]);
   const [cacheName, setCacheName] = React.useState("");
 
   var nameMap = new Map();
@@ -295,7 +295,7 @@ export default function priority() {
   // Using a higher order function so that we can look up the quotes data to retrieve
   // our quote from within the rowRender function
   const getRowRender =
-    (list: [string,Friend][]) =>
+    (list: [string, Friend][]) =>
     ({ index, style }: any) => {
       const value: any = list[index];
 

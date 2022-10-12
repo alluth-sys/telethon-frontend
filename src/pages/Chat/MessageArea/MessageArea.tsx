@@ -3,11 +3,12 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import MessageBox from "@/components/MessageBox/MessageBox";
 import OptionalCard from "./OptionalCard/OptionalCard";
-import { getChatHistory } from "@/components/FriendList/FriendList";
-import { setUserFreindListInitialized } from "@/states/user/userSlice";
+import { setFriendChatHistory, setUserFreindListInitialized } from "@/states/user/userSlice";
 import Timeindicator from "./TimeIndicator/Timeindicator";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import AckButton from "../AckButton/AckButton";
+import axios from "axios";
+import Loader from "./Loader/Loader";
 
 export function scrollBarAnimation() {
   var curr = document.getElementById("messageArea");
@@ -17,9 +18,11 @@ export function scrollBarAnimation() {
   }, 1000);
 }
 
+
+
 export default function MessageArea({ focus }: any) {
   const dispatch = useAppDispatch();
-
+  const [loading,setLoading] = useState(false)
   const user_id = useAppSelector((state) => state.user.data!.id);
 
   const oldest_message_id = useAppSelector(
@@ -37,10 +40,10 @@ export default function MessageArea({ focus }: any) {
 
   useEffect(() => {
     if (
-      document.getElementById("messageArea")!.clientHeight+100 <
+      document.getElementById("messageArea")!.clientHeight + 100 <
       document.getElementById("messageAreaWrapper")!.clientHeight
     ) {
-      getChatHistory(focus, user_id, dispatch, oldest_message_id);
+      getChatHistory(focus, user_id, oldest_message_id);
     } else {
       dispatch(setUserFreindListInitialized(focus));
     }
@@ -64,6 +67,31 @@ export default function MessageArea({ focus }: any) {
     }
   }, [chat_history]);
 
+
+  function getChatHistory(
+    target_channel_id: number,
+    user_id: number | undefined,
+    message_id = 0
+  ) {
+    if (target_channel_id == 0) {
+      return;
+    }
+    axios
+      .get("http://localhost:5000/getMessage", {
+        params: {
+          user_id: user_id,
+          channel_id: target_channel_id,
+          message_id: message_id,
+        },
+      })
+      .then((res) => {
+        dispatch(setFriendChatHistory(res));
+        scrollBarAnimation();
+        setLoading(false)
+      })
+      .catch((e) => console.log(e));
+  }
+
   var scrollTimer = -1;
   const handleOnScroll = () => {
     var curr = document.getElementById("messageArea");
@@ -85,7 +113,8 @@ export default function MessageArea({ focus }: any) {
     }, 1000);
 
     if (curr?.scrollTop === 0) {
-      getChatHistory(focus, user_id, dispatch, oldest_message_id);
+      setLoading(true)
+      getChatHistory(focus, user_id, oldest_message_id);
     }
   };
 
@@ -95,6 +124,7 @@ export default function MessageArea({ focus }: any) {
 
   return (
     <>
+    
       <div
         style={{
           overflowY: "scroll",
@@ -105,6 +135,7 @@ export default function MessageArea({ focus }: any) {
         id="messageArea"
         onScroll={handleOnScroll}
       >
+        <Loader loading={loading}/>
         <div style={{ justifySelf: "center", width: "72%" }} className="grid">
           {Object.entries(chat_history).map(([key, index]) => {
             current_message_timestamp = moment(

@@ -88,7 +88,7 @@ export default function MessageBox({ message }: any) {
             className="font-loader pl-5 pr-5"
             id={message.message_id}
           >
-            {messageHandler(message.data)}
+            {messageHandler(message.content)}
           </Typography>
           <Typography
             className="pl-3 pr-5"
@@ -120,7 +120,7 @@ export default function MessageBox({ message }: any) {
           onContextMenu={handleContextMenu}
         >
           <img
-            src={`data:image/jpeg;base64,${message.data}`}
+            src={`data:image/jpeg;base64,${message.content}`}
             style={{ borderRadius: 10 }}
             id={message.message_id}
           />
@@ -145,7 +145,7 @@ export default function MessageBox({ message }: any) {
           onContextMenu={handleContextMenu}
         >
           <img
-            src={`data:image/gif;base64,${message.data}`}
+            src={`data:image/gif;base64,${message.content}`}
             style={{ borderRadius: 10 }}
             id={message.message_id}
           />
