@@ -1,13 +1,13 @@
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import SendIcon from "@mui/icons-material/Send";
-import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import "./InputArea.css";
 import InputEmoji from "react-input-emoji";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setFriendLatestMessage } from "@/states/user/userSlice";
+import VoiceInput from "./VoiceInput/VoiceInput";
 
 export default function InputArea() {
   // state need to be organized :
@@ -16,7 +16,10 @@ export default function InputArea() {
   //  select:
   //    channel_id
   const [text, setText] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(true);
   const { data, focus } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
 
   function handleOnEnter() {
@@ -81,7 +84,7 @@ export default function InputArea() {
             onEnter={handleOnEnter}
           />
           <SendIcon className="my-8 mx-5 navigate" onClick={handleOnEnter} />
-          <KeyboardVoiceIcon className="my-8 mx-5 navigate" />
+          <VoiceInput />
         </div>
       </div>
     </>
