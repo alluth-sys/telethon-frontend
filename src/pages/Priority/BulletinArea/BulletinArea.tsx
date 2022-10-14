@@ -1,6 +1,10 @@
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import MessageBox from "@/components/MessageBox/MessageBox";
 import OptionalCard from "@/pages/Chat/MessageArea/OptionalCard/OptionalCard";
+import axios from "axios";
+import React from "react";
+import { BASE } from "@/constants/endpoints";
+import { setImportantMessages } from "@/states/user/userSlice";
 
 var scrollTimer = -1;
 const handleOnScroll = () => {
@@ -21,6 +25,18 @@ export default function BulletinArea() {
   const important_messages = useAppSelector(
     (state) => state.user.importantMessages
   );
+
+  const user_id = useAppSelector((state) => state.user.data?.id);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    axios
+      .get(`${BASE}/channel/important_msg/${user_id}`)
+      .then((res) => {
+        dispatch(setImportantMessages(res));
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
     <>

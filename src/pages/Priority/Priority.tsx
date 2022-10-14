@@ -108,13 +108,6 @@ export default function priority() {
     setLevel3List(tmplist.filter((ele) => ele[1].priority == 2));
   }, [friendList]);
 
-  React.useEffect(() => {
-    axios
-      .get(`${BASE}/channel/important_msg/${user_id}`)
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
-  }, []);
-
   const handleDrag = (result: dragResult) => {
     const { source, destination } = result;
 

@@ -180,8 +180,9 @@ export const userSlice = createSlice({
           [action.payload.data.context[i].message_id]:
             action.payload.data.context[i],
         };
-        state.friendList[action.payload.data.context[0].channel_id].chat_history =
-          newhistory;
+        state.friendList[
+          action.payload.data.context[0].channel_id
+        ].chat_history = newhistory;
         if (i == action.payload.data.context.length - 1) {
           state.friendList[
             action.payload.data.context[0].channel_id
@@ -236,6 +237,7 @@ export const userSlice = createSlice({
         message_id: -1,
         timestamp: "null",
       };
+      // the action is dispatched by local change
       if (action.payload.channel_id != undefined) {
         message =
           state.friendList[action.payload.channel_id].chat_history[
@@ -246,6 +248,12 @@ export const userSlice = createSlice({
         ] = message;
         return state;
       } else {
+        // the action is dispatched by endpoint
+        for (let i = 0; i < action.payload.data.context.length; i++) {
+          state.importantMessages[
+            `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`
+          ] = action.payload.data.context[i];
+        }
         return state;
       }
     },
