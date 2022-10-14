@@ -2,6 +2,10 @@ import React from "react";
 import Avatar from "@mui/material/Avatar";
 import { Typography } from "@mui/material";
 
+import { setUserFocus } from "@/states/user/userSlice";
+import { useAppDispatch } from "@/app/hooks";
+import { useNavigate } from "react-router-dom";
+
 type Tprops = {
   id: string;
   name: string;
@@ -11,11 +15,14 @@ type Tprops = {
 };
 
 export default function UserBubble(props: Tprops) {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   return (
     <div
       className="w-full h-full rounded-full relative"
       onClick={() => {
-        console.log(props.id);
+        dispatch(setUserFocus(props.id));
+        navigate("/chat");
       }}
     >
       <div className="w-full h-full rounded-full overflow-hidden hover:shadow-2xl transition-shadow">

@@ -174,7 +174,6 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
           </div>
         )}
       </div>
-      <hr />
     </>
   );
 }
