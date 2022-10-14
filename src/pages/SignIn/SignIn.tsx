@@ -5,7 +5,7 @@ import styles from "./SignIn.module.css";
 import LoginForm from "@/components/LoginForm/LoginForm";
 import LoginBanner from "@/components/LoginBanner/LoginBanner";
 import CheckConnectionBackdrop from "@/components/Connection/CheckConnectionBackdrop";
-import { setUserAuthed, setFriendLatestMessage } from "@/states/user/userSlice";
+import { setUserAuthed } from "@/states/user/userSlice";
 import { useAppDispatch } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
 
@@ -33,9 +33,6 @@ export default function SignIn() {
           dispatch(setUserAuthed(response.data.context));
           navigate("/home");
           socket.emit("conn", response.data.context.id);
-          socket.on("message", (msg) => {
-            dispatch(setFriendLatestMessage(msg));
-          });
         }
       } catch (error) {
         const errors = error as Error | AxiosError;

@@ -3,7 +3,10 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import MessageBox from "@/components/MessageBox/MessageBox";
 import OptionalCard from "./OptionalCard/OptionalCard";
-import { setFriendChatHistory, setUserFreindListInitialized } from "@/states/user/userSlice";
+import {
+  setFriendChatHistory,
+  setUserFreindListInitialized,
+} from "@/states/user/userSlice";
 import Timeindicator from "./TimeIndicator/Timeindicator";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import AckButton from "../AckButton/AckButton";
@@ -18,11 +21,9 @@ export function scrollBarAnimation() {
   }, 1000);
 }
 
-
-
 export default function MessageArea({ focus }: any) {
   const dispatch = useAppDispatch();
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const user_id = useAppSelector((state) => state.user.data!.id);
 
   const oldest_message_id = useAppSelector(
@@ -67,7 +68,6 @@ export default function MessageArea({ focus }: any) {
     }
   }, [chat_history]);
 
-
   function getChatHistory(
     target_channel_id: number,
     user_id: number | undefined,
@@ -87,7 +87,7 @@ export default function MessageArea({ focus }: any) {
       .then((res) => {
         dispatch(setFriendChatHistory(res));
         scrollBarAnimation();
-        setLoading(false)
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }
@@ -113,7 +113,7 @@ export default function MessageArea({ focus }: any) {
     }, 1000);
 
     if (curr?.scrollTop === 0) {
-      setLoading(true)
+      setLoading(true);
       getChatHistory(focus, user_id, oldest_message_id);
     }
   };
@@ -124,7 +124,6 @@ export default function MessageArea({ focus }: any) {
 
   return (
     <>
-    
       <div
         style={{
           overflowY: "scroll",
@@ -135,7 +134,7 @@ export default function MessageArea({ focus }: any) {
         id="messageArea"
         onScroll={handleOnScroll}
       >
-        <Loader loading={loading}/>
+        <Loader loading={loading} />
         <div style={{ justifySelf: "center", width: "72%" }} className="grid">
           {Object.entries(chat_history).map(([key, index]) => {
             current_message_timestamp = moment(
