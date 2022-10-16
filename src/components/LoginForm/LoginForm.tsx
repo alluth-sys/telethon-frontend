@@ -54,14 +54,9 @@ export default function LoginForm() {
       } else if (response.data.code == 202) {
         setOnSuccess(true);
         dispatch(setUserAuthed(response.data.context));
-        // Set User Id for Persistent Login
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
-
         navigate("/home");
         socket.emit("conn", response.data.context.id);
-        socket.on("message", (msg) => {
-          dispatch(setFriendLatestMessage(msg));
-        });
       }
     } catch (error) {
       const errors = error as Error | AxiosError;
@@ -82,11 +77,10 @@ export default function LoginForm() {
         code: code,
       });
       if (response.data.code == 200) {
-        // Set User Data
         dispatch(setUserAuthed(response.data.context));
-        // Set User Id for Persistent Login
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
         navigate("/home");
+        socket.emit("conn", response.data.context.id);
       }
     } catch (error) {
       const errors = error as Error | AxiosError;
