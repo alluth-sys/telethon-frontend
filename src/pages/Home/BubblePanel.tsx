@@ -23,8 +23,6 @@ const options = {
   gravitation: 5,
 };
 
-//
-
 export default function BubblePanel() {
   const { friendData, getUserFriendList } = useFriendList();
 

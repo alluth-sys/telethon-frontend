@@ -25,17 +25,17 @@ export default function UserBubble(props: Tprops) {
         navigate("/chat");
       }}
     >
-      <div className="w-full h-full rounded-full overflow-hidden hover:shadow-2xl transition-shadow">
+      <div className="w-full h-full rounded-full overflow-hidden hover:shadow-2xl transition-shadow group">
         <div className="flex justify-center items-center h-full w-full transition-opacity duration-100 ease-in relative">
           <Avatar
             alt={props.name}
             src={`data:image/jpeg;base64,${props.b64}`}
             sx={{ height: "100%", width: "100%" }}
           />
-          <div className="absolute w-full h-full flex justify-center items-end hover:opacity-100 opacity-0 transition-opacity">
-            <div className="bg-blue-500 h-10 w-full flex justify-center items-center">
-              <Typography sx={{ color: "white" }}>{props.name}</Typography>
-            </div>
+        </div>
+        <div className="w-full absolute flex justify-center items-center">
+          <div className="bubble-tooltip group-hover:scale-100">
+            {props.name}
           </div>
         </div>
       </div>
