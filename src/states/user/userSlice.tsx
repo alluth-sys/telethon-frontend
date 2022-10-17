@@ -1,5 +1,5 @@
 import { store } from "@/app/store";
-import { createSlice, Dictionary,current } from "@reduxjs/toolkit";
+import { createSlice, Dictionary, current } from "@reduxjs/toolkit";
 
 export interface IData {
   id: number;
@@ -136,7 +136,7 @@ export const userSlice = createSlice({
 
       state.timeList[state.timeListIndex] = friend.channel_id;
       state.timeListIndex++;
-
+      console.log(current(state.friendList));
       return state;
     },
     setFriendLatestMessage: (state: IUser, action) => {
@@ -157,7 +157,6 @@ export const userSlice = createSlice({
       // set the incoming message as top
       // timeList0.last_message = action.payload;
       state.timeList[0] = timeList0;
-
 
       // append in chat history
       const channel: number = action.payload.channel_id;
