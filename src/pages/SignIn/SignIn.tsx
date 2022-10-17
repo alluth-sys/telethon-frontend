@@ -17,8 +17,14 @@ export default function SignIn() {
   const [isOpen, setOpen] = React.useState(true);
   const socket = React.useContext(SocketContext);
 
+  const strict_mode_ref = React.useRef(false);
   React.useEffect(() => {
-    checkConnection();
+    if (!strict_mode_ref.current) {
+      checkConnection();
+      strict_mode_ref.current = true;
+    } else {
+      return;
+    }
   }, []);
 
   const checkConnection = async () => {

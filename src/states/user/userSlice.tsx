@@ -1,5 +1,5 @@
 import { store } from "@/app/store";
-import { createSlice, Dictionary } from "@reduxjs/toolkit";
+import { createSlice, Dictionary,current } from "@reduxjs/toolkit";
 
 export interface IData {
   id: number;
@@ -27,9 +27,9 @@ export interface IUser {
 export type Message = {
   tag: string;
   channel_id: number;
-  from: string;
+  sender_name: string;
   sender_id: number;
-  data: string;
+  content: string;
   message_id: number;
   timestamp: string;
 };
@@ -64,9 +64,9 @@ const initialState: IUser = {
         "0": {
           tag: "null",
           channel_id: -1,
-          from: "null",
+          sender_name: "null",
           sender_id: -1,
-          data: "null",
+          content: "null",
           message_id: -1,
           timestamp: "null",
         },
@@ -86,9 +86,9 @@ const initialState: IUser = {
     "0": {
       tag: "null",
       channel_id: -1,
-      from: "null",
+      sender_name: "null",
       sender_id: -1,
-      data: "null",
+      content: "null",
       message_id: -1,
       timestamp: "null",
     },
@@ -141,7 +141,7 @@ export const userSlice = createSlice({
     },
     setFriendLatestMessage: (state: IUser, action) => {
       console.log("incoming msg", action.payload);
-      if (action.payload.data.context !== undefined) {
+      if (action.payload.data !== undefined) {
         action.payload = action.payload.data.context;
       }
       // get the channel id of the incoming message
@@ -158,13 +158,14 @@ export const userSlice = createSlice({
       // timeList0.last_message = action.payload;
       state.timeList[0] = timeList0;
 
+
       // append in chat history
       const channel: number = action.payload.channel_id;
       const message_id: number = action.payload.message_id;
       state.friendList[channel].chat_history[message_id] = action.payload;
 
       // update the latest message
-      state.friendList[action.payload.channel_id].last_message = action.payload;
+      state.friendList[channel].last_message = action.payload;
 
       return state;
     },
@@ -228,9 +229,9 @@ export const userSlice = createSlice({
       let message: Message | undefined = {
         tag: "null",
         channel_id: -1,
-        from: "null",
+        sender_name: "null",
         sender_id: -1,
-        data: "null",
+        content: "null",
         message_id: -1,
         timestamp: "null",
       };

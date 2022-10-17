@@ -16,7 +16,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SendIcon from "@mui/icons-material/Send";
 
 //Redux
-import { setUserAuthed, setFriendLatestMessage } from "@/states/user/userSlice";
+import { setUserAuthed } from "@/states/user/userSlice";
 import { useAppDispatch } from "@/app/hooks";
 
 // Router
