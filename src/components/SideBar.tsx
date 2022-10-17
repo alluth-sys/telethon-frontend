@@ -64,14 +64,7 @@ export default function SideBar() {
         path="/settings"
       />
       <hr className="sidebar-hr" />
-      <div
-        className="relative flex items-center justify-center h-12 w-12 mt-96 mx-auto 
-        text-white bg-gray-400 
-        hover:bg-blue-500 dark:bg-gray-800 hover:text-white
-        hover:rounded-xl rounded-3xl
-        transition-all duration-300 ease-linear
-        cursor-pointer shadow-lg "
-      >
+      <div className="h-4/6 flex items-end">
         <div onClick={SignOutHandler} className="sidebar-icon group">
           <LogoutIcon />
           <span className="sidebar-tooltip group-hover:scale-100">Logout</span>

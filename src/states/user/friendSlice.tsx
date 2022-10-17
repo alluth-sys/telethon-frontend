@@ -12,12 +12,12 @@ interface IData {
 }
 
 interface IncomingMessage {
-  tag: string;
-  channel: number;
-  sender_id: number;
+  channel_id: number;
+  content: string;
   from: string;
-  data: any;
   message_id: number;
+  sender_id: number;
+  tag: string;
   timestamp: string;
 }
 
@@ -37,6 +37,7 @@ export const friendSlice = createSlice({
       state: IData,
       action: PayloadAction<IncomingMessage>
     ) => {
+      console.log("increment triggered");
       const index = state.data?.findIndex(
         (friend) => parseInt(friend.id) === action.payload.sender_id
       );

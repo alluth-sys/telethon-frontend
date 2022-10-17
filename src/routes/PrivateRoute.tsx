@@ -32,11 +32,9 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
 
   React.useEffect(() => {
     socket.on("message", (msg) => {
-      // dispatch(IncrementUnreads(msg));
       dispatch(setFriendLatestMessage(msg));
     });
     socket.on("initial", (res) => {
-      // console.log(res);
       dispatch(setUserFriendList(res));
     });
 

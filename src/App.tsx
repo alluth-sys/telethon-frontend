@@ -11,6 +11,7 @@ import Settings from "@/pages/Settings/Settings";
 
 // Routes
 import PrivateRoute from "@/routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 // State
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
@@ -42,8 +43,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Route>
+
         <Route element={<PrivateRoute isLogin={isLogin} data={data} />}>
           <Route path="/home" element={<Home />} />
           <Route path="/chat" element={<Chat />} />

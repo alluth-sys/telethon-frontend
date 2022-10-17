@@ -136,11 +136,9 @@ export const userSlice = createSlice({
 
       state.timeList[state.timeListIndex] = friend.channel_id;
       state.timeListIndex++;
-      console.log(current(state.friendList));
       return state;
     },
     setFriendLatestMessage: (state: IUser, action) => {
-      console.log("incoming msg", action.payload);
       if (action.payload.data !== undefined) {
         action.payload = action.payload.data.context;
       }
