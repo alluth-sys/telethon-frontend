@@ -28,7 +28,30 @@ const handleImportantMessage = (
     .catch((e) => console.log(e));
 };
 
-export default function OptionalCard() {
+const removeImportantMessage = (
+  dispatch: any,
+  message_id: Array<number>,
+  user_id: number,
+  channel_id: number
+) => {
+  axios
+    .delete(`${BASE}/channel/important_msg/${user_id}`, {
+      data: {
+        channel_id: channel_id,
+        important_msg_id: message_id[0],
+      },
+    })
+    .then((res) => {
+      const payload = {
+        channel_id: channel_id,
+        message_id: message_id,
+      };
+      console.log(res);
+    })
+    .catch((e) => console.log(e));
+};
+
+export default function ContextMenu() {
   const contextMenuAnchorPoint = useAppSelector(
     (state) => state.user.contextMenuAnchorPoint
   );
@@ -40,6 +63,11 @@ export default function OptionalCard() {
   );
   const user_id = useAppSelector((state) => state.user.data!.id);
   const focus = useAppSelector((state) => state.user.focus);
+  const isImportant = useAppSelector(
+    (state) =>
+      state.user.friendList[focus].chat_history[selectedMessageId[0]]
+        ?.isImportant
+  );
 
   if (showContextMenu) {
     return (
@@ -61,11 +89,27 @@ export default function OptionalCard() {
         <li>Pin</li>
         <li>Delete</li>
         <li
-          onClick={() =>
-            handleImportantMessage(dispatch, selectedMessageId, user_id, focus)
-          }
+          onClick={() => {
+            if (!isImportant) {
+              handleImportantMessage(
+                dispatch,
+                selectedMessageId,
+                user_id,
+                focus
+              );
+            } else {
+              removeImportantMessage(
+                dispatch,
+                selectedMessageId,
+                user_id,
+                focus
+              );
+            }
+          }}
         >
-          Set as important message
+          {(isImportant && <a>Remove from important message</a>) || (
+            <a>Set as important message</a>
+          )}
         </li>
       </ul>
     );
