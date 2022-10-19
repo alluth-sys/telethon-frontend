@@ -17,12 +17,13 @@ const rootReducer = (state, action) => {
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck:{
-      ignoreActions : ['user/setFriendChatHistory']
-    }
-  }
-  ),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        //@ts-ignore
+        ignoreActions: ["user/setFriendChatHistory"],
+      },
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

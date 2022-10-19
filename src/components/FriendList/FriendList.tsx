@@ -20,9 +20,7 @@ export function wordsFilter(words: string, limit: number = 14) {
 }
 
 export default function FriendList() {
-  const timeList = useAppSelector(
-    (state: RootState) => state.user.timeList,
-  );
+  const timeList = useAppSelector((state: RootState) => state.user.timeList);
 
   return (
     <div className="flex flex-col grow w-full">
@@ -176,10 +174,10 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
 }
 
 export const MessageProfile = ({ tag, content }: Message) => {
-
-
   if (tag === "message") {
-    return <Typography className="font-loader">{wordsFilter(content)}</Typography>;
+    return (
+      <Typography className="font-loader">{wordsFilter(content)}</Typography>
+    );
   } else if (tag === "image") {
     return (
       <Typography className="font-loader">

@@ -18,6 +18,7 @@ const scrollToBot = () => {
 export default function ScrollButton({ display }: any) {
   return (
     <div
+      //@ts-ignore
       style={setStyle(display, {
         position: "absolute",
         bottom: 160,

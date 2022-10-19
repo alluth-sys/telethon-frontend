@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import FriendList, {
+import {
   MessageProfile,
   wordsFilter,
 } from "@/components/FriendList/FriendList";
@@ -15,6 +15,9 @@ import {
   type DraggableStateSnapshot,
   type DraggableRubric,
   type DropResult,
+  type DroppableStateSnapshot,
+  type DraggingStyle,
+  type NotDraggingStyle,
 } from "react-beautiful-dnd";
 import "./Priority.css";
 import {
@@ -23,9 +26,7 @@ import {
   updateFriendPriority,
 } from "@/states/user/userSlice";
 import SimpleFriendBlock from "@/components/SimpleFriendBlock/SimpleFriendBlock";
-import { dragResult, DroppableSnapShot, DraggableSnapShot } from "./types";
 import { List } from "react-virtualized";
-import ListSubheader from "@mui/material/ListSubheader";
 import MuiList from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -34,22 +35,22 @@ import Collapse from "@mui/material/Collapse";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 import { BASE } from "@/constants/endpoints";
 import axios from "axios";
 import BulletinArea from "./BulletinArea/BulletinArea";
+import { CSSProperties } from "@material-ui/styles";
 
 const getItemStyle = (
   isDragging: boolean,
-  provided: DraggableProvided,
-  style: object
+  provided: CSSProperties | undefined,
+  style: DraggingStyle | NotDraggingStyle | undefined | null
 ) => {
   if (!style) {
     return provided;
   }
-  return {
+  const cssProp: CSSProperties = {
     userSelect: "none",
 
     // change background colour if dragging
@@ -61,6 +62,8 @@ const getItemStyle = (
     ...provided,
     ...style,
   };
+
+  return cssProp;
 };
 
 const reorder = (list: Friend[], startIndex: number, endIndex: number) => {
@@ -108,7 +111,7 @@ export default function priority() {
     setLevel3List(tmplist.filter((ele) => ele[1].priority == 2));
   }, [friendList]);
 
-  const handleDrag = (result: dragResult) => {
+  const handleDrag = (result: DropResult) => {
     const { source, destination } = result;
 
     if (!destination) {
@@ -361,7 +364,10 @@ export default function priority() {
             </ListItemButton>
             <Collapse in={level3open} timeout="auto" unmountOnExit>
               <Droppable droppableId="level3List" key="level3List">
-                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                {(
+                  provided: DroppableProvided,
+                  snapshot: DroppableStateSnapshot
+                ) => {
                   return (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
                       {level3List.map((item: any, index) => (
@@ -374,7 +380,7 @@ export default function priority() {
                         >
                           {(
                             provided: DraggableProvided,
-                            snapshot: DraggableSnapShot
+                            snapshot: DraggableStateSnapshot
                           ) => {
                             return (
                               <div
@@ -383,7 +389,7 @@ export default function priority() {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                   snapshot.isDragging,
-                                  null,
+                                  undefined,
                                   provided.draggableProps.style
                                 )}
                               >
@@ -408,7 +414,10 @@ export default function priority() {
             </ListItemButton>
             <Collapse in={level2open} timeout="auto" unmountOnExit>
               <Droppable droppableId="level2List" key="level2List">
-                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                {(
+                  provided: DroppableProvided,
+                  snapshot: DroppableStateSnapshot
+                ) => {
                   return (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
                       {level2List.map((item: any, index) => (
@@ -421,7 +430,7 @@ export default function priority() {
                         >
                           {(
                             provided: DraggableProvided,
-                            snapshot: DraggableSnapShot
+                            snapshot: DraggableStateSnapshot
                           ) => {
                             return (
                               <div
@@ -430,7 +439,7 @@ export default function priority() {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                   snapshot.isDragging,
-                                  null,
+                                  undefined,
                                   provided.draggableProps.style
                                 )}
                               >
@@ -455,7 +464,10 @@ export default function priority() {
             </ListItemButton>
             <Collapse in={level1open} timeout="auto" unmountOnExit>
               <Droppable droppableId="level1List" key="level1List">
-                {(provided: DroppableProvided, snapshot: DroppableSnapShot) => {
+                {(
+                  provided: DroppableProvided,
+                  snapshot: DroppableStateSnapshot
+                ) => {
                   return (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
                       {level1List.map((item: any, index) => (
@@ -468,7 +480,7 @@ export default function priority() {
                         >
                           {(
                             provided: DraggableProvided,
-                            snapshot: DraggableSnapShot
+                            snapshot: DraggableStateSnapshot
                           ) => {
                             return (
                               <div
@@ -477,7 +489,7 @@ export default function priority() {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                   snapshot.isDragging,
-                                  null,
+                                  undefined,
                                   provided.draggableProps.style
                                 )}
                               >
