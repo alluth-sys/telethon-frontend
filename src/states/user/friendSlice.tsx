@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
+import { Message } from "@/states/user/userSlice";
 
 export interface IFriend {
   id: string;
@@ -9,16 +10,6 @@ export interface IFriend {
 }
 interface IData {
   data: IFriend[] | undefined;
-}
-
-interface IncomingMessage {
-  channel_id: number;
-  content: string;
-  from: string;
-  message_id: number;
-  sender_id: number;
-  tag: string;
-  timestamp: string;
 }
 
 const initialState: IData = {
@@ -33,11 +24,9 @@ export const friendSlice = createSlice({
       state.data = action.payload.data;
       return state;
     },
-    IncrementUnreads: (
-      state: IData,
-      action: PayloadAction<IncomingMessage>
-    ) => {
+    incrementUnreads: (state: IData, action: PayloadAction<Message>) => {
       console.log("increment triggered");
+
       const index = state.data?.findIndex(
         (friend) => parseInt(friend.id) === action.payload.sender_id
       );
@@ -52,6 +41,6 @@ export const friendSlice = createSlice({
   },
 });
 
-export const { setFriendData, IncrementUnreads } = friendSlice.actions;
+export const { setFriendData, incrementUnreads } = friendSlice.actions;
 
 export default friendSlice.reducer;

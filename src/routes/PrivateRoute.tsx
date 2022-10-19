@@ -12,7 +12,7 @@ import {
   setUserFriendList,
 } from "@/states/user/userSlice";
 
-import { IncrementUnreads } from "@/states/user/friendSlice";
+import { incrementUnreads } from "@/states/user/friendSlice";
 
 // SnackBar
 import ConnectionSnackBar from "@/components/Connection/ConnectionSnackBar";
@@ -46,6 +46,7 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
 
   React.useEffect(() => {
     socket.on("message", (msg) => {
+      dispatch(incrementUnreads(msg));
       dispatch(setFriendLatestMessage(msg));
     });
     socket.on("initial", (res) => {
