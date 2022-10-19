@@ -139,7 +139,6 @@ export const userSlice = createSlice({
       return state;
     },
     setFriendLatestMessage: (state: IUser, action) => {
-      console.log("incoming msg", action.payload);
       if (action.payload.data !== undefined) {
         action.payload = action.payload.data.context;
       }

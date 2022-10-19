@@ -79,7 +79,6 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
   const unread_count = useAppSelector(
     (state) => state.user.friendList[channel_id]?.unread_count
   );
-
   const dispatch = useAppDispatch();
 
   if (channel_id === undefined || channel_id === null) {
