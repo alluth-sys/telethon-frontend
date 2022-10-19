@@ -14,7 +14,7 @@ import { SocketContext } from "@/service/Socket";
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isOpen, setOpen] = React.useState(true);
+  const [isOpen, setOpen] = React.useState(false);
   const socket = React.useContext(SocketContext);
 
   const strict_mode_ref = React.useRef(false);
