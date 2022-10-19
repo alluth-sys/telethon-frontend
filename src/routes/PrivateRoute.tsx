@@ -18,14 +18,28 @@ import { IncrementUnreads } from "@/states/user/friendSlice";
 import ConnectionSnackBar from "@/components/Connection/ConnectionSnackBar";
 
 import { SocketContext } from "@/service/Socket";
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import axios from "axios";
+import { BASE } from "@/constants/endpoints";
 
 type TProps = { data: IData | null; isLogin: boolean };
 
 export default function PrivateRoute({ isLogin, data }: TProps) {
   const dispatch = useAppDispatch();
 
+  const user_id = useAppSelector((state) => state.user.data?.id);
+
   const socket = React.useContext(SocketContext);
+
+  const handleUnload = (event: Event) => {
+    console.log("unload");
+    axios.get(`${BASE}/disconnect`, {
+      params: {
+        user_id: user_id,
+      },
+    });
+  };
+
   if (!isLogin && data === null) {
     return <Navigate to="/signin" replace />;
   }
@@ -38,9 +52,12 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
       dispatch(setUserFriendList(res));
     });
 
+    window.addEventListener("beforeunload", handleUnload);
+
     return () => {
       socket.off("message");
       socket.off("initial");
+      window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
 
