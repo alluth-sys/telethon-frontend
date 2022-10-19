@@ -13,14 +13,14 @@ import {
   setUserShowContextMenu,
 } from "@/states/user/userSlice";
 
-import { IncrementUnreads } from "@/states/user/friendSlice";
+import { incrementUnreads } from "@/states/user/friendSlice";
 
 // SnackBar
 import ConnectionSnackBar from "@/components/Connection/ConnectionSnackBar";
 
 import { SocketContext } from "@/service/Socket";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE } from "@/constants/endpoints";
 
 type TProps = { data: IData | null; isLogin: boolean };
@@ -32,13 +32,23 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
 
   const socket = React.useContext(SocketContext);
 
-  const handleUnload = (event: Event) => {
+  const handleUnload = async () => {
     console.log("unload");
-    axios.get(`${BASE}/disconnect`, {
-      params: {
-        user_id: user_id,
-      },
-    });
+    socket.close();
+    try {
+      await axios.get(`${BASE}/disconnect`, {
+        params: {
+          user_id: user_id,
+        },
+      });
+    } catch (error) {
+      const errors = error as Error | AxiosError;
+      if (axios.isAxiosError(errors)) {
+        Promise.reject(errors.toJSON());
+      } else {
+        Promise.reject(Error);
+      }
+    }
   };
 
   const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
@@ -53,6 +63,7 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
 
   React.useEffect(() => {
     socket.on("message", (msg) => {
+      dispatch(incrementUnreads(msg));
       dispatch(setFriendLatestMessage(msg));
     });
     socket.on("initial", (res) => {
