@@ -26,19 +26,6 @@ import React from "react";
 function App() {
   const isLogin = useAppSelector((state) => state.user.isLogin);
   const data = useAppSelector((state) => state.user.data);
-  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
-
-  const dispatch = useAppDispatch();
-
-  const handleClickOut = () => {
-    console.log("app click", showContextMenu);
-    showContextMenu ? dispatch(setUserShowContextMenu(false)) : null;
-  };
-
-  React.useEffect(() => {
-    document.addEventListener("click", handleClickOut);
-    return document.removeEventListener("click", () => {});
-  }, []);
 
   return (
     <Router>

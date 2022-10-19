@@ -2,7 +2,7 @@ import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import MessageBox from "@/components/MessageBox/MessageBox";
-import OptionalCard from "./OptionalCard/OptionalCard";
+import ContextMenu from "./ContextMenu/ContextMenu";
 import {
   setFriendChatHistory,
   setUserFreindListInitialized,
@@ -161,7 +161,7 @@ export default function MessageArea({ focus }: any) {
           })}
         </div>
       </div>
-      <OptionalCard />
+      <ContextMenu />
       <ScrollButton display={scrolled} />
       {focus != 0 && <AckButton />}
     </>

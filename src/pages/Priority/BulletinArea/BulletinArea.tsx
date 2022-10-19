@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import MessageBox from "@/components/MessageBox/MessageBox";
-import OptionalCard from "@/pages/Chat/MessageArea/OptionalCard/OptionalCard";
+import ContextMenu from "@/pages/Chat/MessageArea/ContextMenu/ContextMenu";
 import axios from "axios";
 import React from "react";
 import { BASE } from "@/constants/endpoints";
@@ -60,7 +60,7 @@ export default function BulletinArea() {
           })}
         </div>
       </div>
-      <OptionalCard />
+      <ContextMenu />
     </>
   );
 }
