@@ -6,9 +6,10 @@ import { setUserFocus } from "@/states/user/userSlice";
 import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
 import { scrollBarAnimation } from "@/pages/Chat/MessageArea/MessageArea";
-import { Friend, Message } from "@/states/user/userSlice";
+import { Message } from "@/states/user/userSlice";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
+import {BASE} from "@/constants/endpoints"
 
 export function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
@@ -46,7 +47,7 @@ export function getChatHistory(
     return;
   }
   axios
-    .get("http://localhost:5000/getMessage", {
+    .get(`http://${BASE}/getMessage`, {
       params: {
         user_id: user_id,
         channel_id: target_channel_id,
