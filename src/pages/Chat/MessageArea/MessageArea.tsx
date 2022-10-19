@@ -12,7 +12,7 @@ import ScrollButton from "../ScrollButton/ScrollButton";
 import AckButton from "../AckButton/AckButton";
 import axios from "axios";
 import Loader from "./Loader/Loader";
-import {BASE} from "@/constants/endpoints"
+import { BASE } from "@/constants/endpoints";
 
 export function scrollBarAnimation() {
   var curr = document.getElementById("messageArea");
@@ -78,7 +78,7 @@ export default function MessageArea({ focus }: any) {
       return;
     }
     axios
-      .get(`http://${BASE}/getMessage`, {
+      .get(`${BASE}/getMessage`, {
         params: {
           user_id: user_id,
           channel_id: target_channel_id,

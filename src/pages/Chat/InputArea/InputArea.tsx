@@ -8,7 +8,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setFriendLatestMessage } from "@/states/user/userSlice";
 import VoiceInput from "./VoiceInput/VoiceInput";
-import { BASE } from "@/constants/endpoints"
+import { BASE } from "@/constants/endpoints";
 
 export default function InputArea() {
   // state need to be organized :
@@ -28,7 +28,7 @@ export default function InputArea() {
       return;
     }
     axios
-      .post(`http://${BASE}/send`, {
+      .post(`${BASE}/send`, {
         user_id: data!.id,
         channel_id: focus,
         message: text,
@@ -39,7 +39,7 @@ export default function InputArea() {
 
   function uploadFile(formData: FormData, user_id: number, channel_id: number) {
     axios
-      .post(`http://${BASE}/sendFile`, formData, {
+      .post(`${BASE}/sendFile`, formData, {
         params: {
           user_id,
           channel_id,

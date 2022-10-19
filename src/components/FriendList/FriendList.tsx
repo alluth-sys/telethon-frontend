@@ -9,7 +9,7 @@ import { scrollBarAnimation } from "@/pages/Chat/MessageArea/MessageArea";
 import { Message } from "@/states/user/userSlice";
 import { timeHandler } from "@/components/MessageBox/MessageBox";
 import ProfilePicture from "@/components/MessageBox/ProfilePicture";
-import {BASE} from "@/constants/endpoints"
+import { BASE } from "@/constants/endpoints";
 
 export function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
@@ -47,7 +47,7 @@ export function getChatHistory(
     return;
   }
   axios
-    .get(`http://${BASE}/getMessage`, {
+    .get(`${BASE}/getMessage`, {
       params: {
         user_id: user_id,
         channel_id: target_channel_id,
