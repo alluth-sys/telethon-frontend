@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import MessageBox from "@/components/MessageBox/MessageBox";
-import ContextMenu from "@/pages/Chat/MessageArea/ContextMenu/ContextMenu";
 import axios from "axios";
 import React from "react";
 import { BASE } from "@/constants/endpoints";
 import { setImportantMessages } from "@/states/user/userSlice";
+import BulletinContextMenu from "./BulletinContextMenu/BulletinContextMenu";
 
 var scrollTimer = -1;
 const handleOnScroll = () => {
@@ -26,6 +26,8 @@ export default function BulletinArea() {
     (state) => state.user.importantMessages
   );
 
+  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
+
   const user_id = useAppSelector((state) => state.user.data?.id);
   const dispatch = useAppDispatch();
 
@@ -45,6 +47,7 @@ export default function BulletinArea() {
           overflowY: "scroll",
           overflowX: "hidden",
           position: "relative",
+          padding: "0 40px 0 40px",
         }}
         className="message-area-scrollbar grid"
         id="BulletinArea"
@@ -54,13 +57,17 @@ export default function BulletinArea() {
           {Object.entries(important_messages).map(([key, index]) => {
             return (
               <div className="grid" key={`${key.toString()}_div`}>
-                <MessageBox message={index} key={key.toString()} />
+                <MessageBox
+                  message={index}
+                  fromBulletin={true}
+                  key={key.toString()}
+                />
               </div>
             );
           })}
         </div>
       </div>
-      <ContextMenu />
+      {showContextMenu && <BulletinContextMenu />}
     </>
   );
 }

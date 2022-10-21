@@ -21,7 +21,7 @@ export interface IUser {
   focus: number;
   showContextMenu: boolean;
   contextMenuAnchorPoint: Dictionary<number>;
-  selectedMessageId: Array<number>;
+  selectedMessageId: Array<string>;
   importantMessages: Dictionary<Message>;
 }
 
@@ -31,7 +31,7 @@ export type Message = {
   sender_name: string;
   sender_id: number;
   content: string;
-  message_id: number;
+  message_id: number | string;
   timestamp: string;
   isImportant: boolean;
 };
@@ -46,6 +46,7 @@ export type Friend = {
   oldest_message_id: number;
   priority: number;
   initialized_chat: Boolean;
+  pinned_message: { message_id: number; context: string };
 };
 
 export type FriendList = {
@@ -73,6 +74,7 @@ const initailFriend: Friend = {
   oldest_message_id: -1,
   priority: -1,
   initialized_chat: false,
+  pinned_message: { message_id: -1, context: "" },
 };
 
 const initailMessage: Message = {
@@ -138,6 +140,7 @@ export const userSlice = createSlice({
         oldest_message_id: 0,
         priority: action.payload.priority,
         initialized_chat: false,
+        pinned_message: { message_id: -1, context: "" },
       };
       state.friendList[action.payload.channel] = friend;
 
@@ -169,12 +172,14 @@ export const userSlice = createSlice({
         }
         // set the incoming message as the first order
         state.timeList[0] = timeList0;
-        state.friendList[channel].chat_history[message_id] = action.payload;
+        if (state.friendList[channel].chat_history[message_id] != undefined) {
+          const message = { ...action.payload, isImportant: false };
+          state.friendList[channel].chat_history[message_id] = message;
+        }
 
         // update the latest message
         state.friendList[channel].last_message = action.payload;
       } else {
-        console.log("launch temp friend");
         var tempFriend: Friend = { ...initailFriend };
         tempFriend.username = "";
         tempFriend.channel_id = channel;
@@ -183,14 +188,11 @@ export const userSlice = createSlice({
         state.friendList[channel] = tempFriend;
 
         var inline = function () {
-          console.log(current(state.timeList));
           state.timeList[state.timeListIndex] =
             state.timeList[state.timeListIndex - 1];
           state.timeListIndex++;
-          console.log(current(state.timeList));
           for (let i = state.timeList.length; i > 0; i--) {
             state.timeList[i] = state.timeList[i - 1];
-            console.log(current(state.timeList));
           }
           state.timeList[0] = channel;
         };
@@ -203,20 +205,25 @@ export const userSlice = createSlice({
     },
     setFriendChatHistory: (state: IUser, action) => {
       // append in chat history
+      const channel_id = action.payload.data.context[0].channel_id;
+
       for (let i = 0; i < action.payload.data.context.length; i++) {
-        const newhistory = {
-          ...state.friendList[action.payload.data.context[0].channel_id]
-            .chat_history,
-          [action.payload.data.context[i].message_id]:
-            action.payload.data.context[i],
+        const message_id = action.payload.data.context[i].message_id;
+        const message: Message = {
+          ...action.payload.data.context[i],
+          isImportant: false,
         };
-        state.friendList[
-          action.payload.data.context[0].channel_id
-        ].chat_history = newhistory;
+        if (
+          state.friendList[channel_id].chat_history[message_id] == undefined
+        ) {
+          const newhistory = {
+            ...state.friendList[channel_id].chat_history,
+            [message_id]: message,
+          };
+          state.friendList[channel_id].chat_history = newhistory;
+        }
         if (i == action.payload.data.context.length - 1) {
-          state.friendList[
-            action.payload.data.context[0].channel_id
-          ].oldest_message_id = action.payload.data.context[i].message_id;
+          state.friendList[channel_id].oldest_message_id = message_id;
         }
       }
 
@@ -276,9 +283,14 @@ export const userSlice = createSlice({
       } else {
         // the action is dispatched by endpoint
         for (let i = 0; i < action.payload.data.context.length; i++) {
+          let message: Message = {
+            ...action.payload.data.context[i],
+            isImportant: true,
+          };
+          message.message_id = `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`;
           state.importantMessages[
             `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`
-          ] = action.payload.data.context[i];
+          ] = message;
 
           if (
             state.friendList[action.payload.data.context[i].channel_id] !=
@@ -286,19 +298,33 @@ export const userSlice = createSlice({
           ) {
             state.friendList[
               action.payload.data.context[i].channel_id
-            ].chat_history[action.payload.data.context[i].message_id] =
-              action.payload.data.context[i];
+            ].chat_history[action.payload.data.context[i].message_id] = {
+              ...action.payload.data.context[i],
+              isImportant: true,
+            };
           } else {
             var tempFriend: Friend = { ...initailFriend };
             tempFriend.channel_id = action.payload.data.context[i].channel_id;
             tempFriend.chat_history[action.payload.data.context[i].message_id] =
-              action.payload.data.context[i];
+              { ...action.payload.data.context[i], isImportant: true };
             state.friendList[action.payload.data.context[i].channel_id] =
               tempFriend;
           }
         }
         return state;
       }
+    },
+    removeImportantMessages: (state, action) => {
+      delete state.importantMessages[action.payload.message_id];
+      return state;
+    },
+    setFriendPinnedMessage: (state, action) => {
+      state.friendList[action.payload.friend_id].pinned_message.message_id =
+        action.payload.payload.message_id;
+      state.friendList[action.payload.friend_id].pinned_message.context =
+        action.payload.payload.context;
+
+      return state;
     },
   },
 });
@@ -321,6 +347,8 @@ export const {
   updateFriendPriority,
   setSelectedMessageId,
   setImportantMessages,
+  removeImportantMessages,
+  setFriendPinnedMessage,
 } = userSlice.actions;
 
 export default userSlice.reducer;

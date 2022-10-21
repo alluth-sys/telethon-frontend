@@ -339,6 +339,7 @@ export default function priority() {
       onClick={() => {
         handleClickOut();
       }}
+      style={{ overflowX: "hidden", overflowY: "hidden" }}
     >
       <DragDropContext
         onDragEnd={handleDrag}

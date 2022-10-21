@@ -2,20 +2,21 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import {
+  removeImportantMessages,
   setImportantMessages,
   setSelectedMessageId,
 } from "@/states/user/userSlice";
 
 const handleImportantMessage = (
-  dispatch: any,
-  message_id: Array<number>,
+  dispatch: Function,
+  message_id: number,
   user_id: number,
   channel_id: number
 ) => {
   axios
     .post(`${BASE}/channel/important_msg/${user_id}`, {
       channel_id: channel_id,
-      important_msg_id: message_id[0],
+      important_msg_id: message_id,
     })
     .then((res) => {
       const payload = {
@@ -29,8 +30,8 @@ const handleImportantMessage = (
 };
 
 const removeImportantMessage = (
-  dispatch: any,
-  message_id: Array<number>,
+  dispatch: Function,
+  message_id: number,
   user_id: number,
   channel_id: number
 ) => {
@@ -38,20 +39,17 @@ const removeImportantMessage = (
     .delete(`${BASE}/channel/important_msg/${user_id}`, {
       data: {
         channel_id: channel_id,
-        important_msg_id: message_id[0],
+        important_msg_id: message_id,
       },
     })
     .then((res) => {
-      const payload = {
-        channel_id: channel_id,
-        message_id: message_id,
-      };
-      console.log(res);
+      dispatch(removeImportantMessages({ message_id: message_id }));
     })
     .catch((e) => console.log(e));
 };
 
-export default function ContextMenu() {
+type ContextMenuProps = { setReplying: Function };
+export default function ContextMenu({ setReplying }: ContextMenuProps) {
   const contextMenuAnchorPoint = useAppSelector(
     (state) => state.user.contextMenuAnchorPoint
   );
@@ -62,12 +60,35 @@ export default function ContextMenu() {
     (state) => state.user.selectedMessageId
   );
   const user_id = useAppSelector((state) => state.user.data!.id);
-  const focus = useAppSelector((state) => state.user.focus);
-  const isImportant = useAppSelector(
-    (state) =>
-      state.user.friendList[focus].chat_history[selectedMessageId[0]]
-        ?.isImportant
-  );
+  let selectedMessageChannel: number;
+  let selectedMessageIdInChannel: number;
+  let selectedMessageContent: string | undefined;
+  let isImportant: boolean | undefined;
+  let mess: any;
+
+  if (selectedMessageId.length > 0) {
+    selectedMessageChannel = parseInt(selectedMessageId[0].split("_")[0]);
+    selectedMessageIdInChannel = parseInt(selectedMessageId[0].split("_")[1]);
+
+    selectedMessageContent = useAppSelector(
+      (state) =>
+        state.user.friendList[selectedMessageChannel].chat_history[
+          selectedMessageIdInChannel
+        ]?.content
+    );
+    isImportant = useAppSelector(
+      (state) =>
+        state.user.friendList[selectedMessageChannel].chat_history[
+          selectedMessageIdInChannel
+        ]?.isImportant
+    );
+    mess = useAppSelector(
+      (state) =>
+        state.user.friendList[selectedMessageChannel].chat_history[
+          selectedMessageIdInChannel
+        ]
+    );
+  }
 
   if (showContextMenu) {
     return (
@@ -82,10 +103,22 @@ export default function ContextMenu() {
         }}
         id="test"
       >
-        <li>Reply</li>
-        <li>Copy</li>
-        <li>Forward</li>
-        <li>Select</li>
+        <li
+          onClick={() => {
+            setReplying(true);
+          }}
+        >
+          Reply
+        </li>
+        <li
+          onClick={() => {
+            if (selectedMessageContent != undefined) {
+              navigator.clipboard.writeText(selectedMessageContent);
+            }
+          }}
+        >
+          Copy
+        </li>
         <li>Pin</li>
         <li>Delete</li>
         <li
@@ -93,16 +126,16 @@ export default function ContextMenu() {
             if (!isImportant) {
               handleImportantMessage(
                 dispatch,
-                selectedMessageId,
+                selectedMessageIdInChannel,
                 user_id,
-                focus
+                selectedMessageChannel
               );
             } else {
               removeImportantMessage(
                 dispatch,
-                selectedMessageId,
+                selectedMessageIdInChannel,
                 user_id,
-                focus
+                selectedMessageChannel
               );
             }
           }}

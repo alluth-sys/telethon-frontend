@@ -45,10 +45,10 @@ const getItemStyle = (isMyself: boolean) => {
   };
 };
 
-type MessageBoxProps = {message:any,fromBulletin:boolean}
-export default function MessageBox({ message,fromBulletin }: MessageBoxProps) {
+type MessageBoxProps = { message: any; fromBulletin: boolean };
+export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
   const data = useAppSelector((state) => state.user.data);
-  const focus = useAppSelector(state=>state.user.focus)
+  const focus = useAppSelector((state) => state.user.focus);
 
   const dispatch = useAppDispatch();
 
@@ -56,16 +56,23 @@ export default function MessageBox({ message,fromBulletin }: MessageBoxProps) {
     (e: any) => {
       e.preventDefault();
       // compute the proper X,Y
-      const target_id = e.target.id
-      const node = document.getElementById(target_id)
-      const rect = node?.getBoundingClientRect() 
-      if(rect!=undefined){
-        dispatch(setUserContextMenuAnchorPoint({ x: (rect.x+10), y: rect.y+rect.height }));
+      const target_id = e.target.id;
+      const node = document.getElementById(target_id);
+      const rect = node?.getBoundingClientRect();
+      if (rect != undefined) {
+        dispatch(
+          setUserContextMenuAnchorPoint({
+            x: rect.x + 10,
+            y: rect.y + rect.height,
+          })
+        );
       }
       dispatch(setUserShowContextMenu(true));
-      if(!fromBulletin){
-        dispatch(setSelectedMessageId({ message_id: Array(`${focus}_${e.target.id}`) }));
-      }else{
+      if (!fromBulletin) {
+        dispatch(
+          setSelectedMessageId({ message_id: Array(`${focus}_${e.target.id}`) })
+        );
+      } else {
         dispatch(setSelectedMessageId({ message_id: Array(`${e.target.id}`) }));
       }
     },
