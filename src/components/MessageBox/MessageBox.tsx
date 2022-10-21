@@ -65,9 +65,9 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
             x: rect.x + 10,
             y: rect.y + rect.height,
           })
-        );
-      }
-      dispatch(setUserShowContextMenu(true));
+          );
+          dispatch(setUserShowContextMenu(true));
+        }
       if (!fromBulletin) {
         dispatch(
           setSelectedMessageId({ message_id: Array(`${focus}_${e.target.id}`) })
