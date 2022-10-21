@@ -7,12 +7,14 @@ import {
   setFriendChatHistory,
   setFriendPinnedMessage,
   setUserFreindListInitialized,
+  setUserShowContextMenu,
 } from "@/states/user/userSlice";
 import Timeindicator from "./TimeIndicator/Timeindicator";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import AckButton from "../AckButton/AckButton";
 import Loader from "./Loader/Loader";
 import {
+  computeDistance,
   getChatHistory,
   getChatPinnedMessage,
   scrollBarAnimation,
@@ -25,6 +27,9 @@ export default function MessageArea({ focus }: any) {
   const [replying, setReplying] = useState(false);
   const user_id = useAppSelector((state) => state.user.data!.id);
   const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
+  const contextMenuAnchorPoint = useAppSelector(
+    (state) => state.user.contextMenuAnchorPoint
+  );
 
   const oldest_message_id = useAppSelector(
     (state) => state.user.friendList[focus].oldest_message_id
@@ -38,6 +43,23 @@ export default function MessageArea({ focus }: any) {
   );
 
   const [scrolled, setScrolled] = useState(false);
+
+  const handleOnMove = (e: any) => {
+    const cursorPos = { x: e.clientX, y: e.clientY };
+    if (computeDistance(cursorPos, contextMenuAnchorPoint) > 300) {
+      dispatch(setUserShowContextMenu(false));
+    }
+  };
+
+  useEffect(() => {
+    if (!showContextMenu) {
+      document.onmousemove = null;
+    } else {
+      if (contextMenuAnchorPoint != undefined) {
+        document.onmousemove = handleOnMove;
+      }
+    }
+  }, [showContextMenu]);
 
   useEffect(() => {
     getChatPinnedMessage(focus, user_id).then((res: Response | any) => {
@@ -84,32 +106,37 @@ export default function MessageArea({ focus }: any) {
 
   var scrollTimer = -1;
   const handleOnScroll = () => {
-    var curr = document.getElementById("messageArea");
-
-    if (curr!.scrollHeight - curr!.scrollTop <= curr!.clientHeight + 2) {
-      setScrolled(false);
+    console.log(showContextMenu);
+    if (showContextMenu) {
+      return;
     } else {
-      setScrolled(true);
-    }
+      var curr = document.getElementById("messageArea");
 
-    curr!.className = "scrolling-class grid";
+      if (curr!.scrollHeight - curr!.scrollTop <= curr!.clientHeight + 2) {
+        setScrolled(false);
+      } else {
+        setScrolled(true);
+      }
 
-    if (scrollTimer != -1) {
-      clearTimeout(scrollTimer);
-    }
+      curr!.className = "scrolling-class grid";
 
-    scrollTimer = window.setTimeout(() => {
-      curr!.className = "message-area-scrollbar grid";
-    }, 1000);
+      if (scrollTimer != -1) {
+        clearTimeout(scrollTimer);
+      }
 
-    if (curr?.scrollTop === 0) {
-      setLoading(true);
-      for (let i = 0; i < 20; i++) {
-        getChatHistory(focus, user_id, oldest_message_id - i).then((res) => {
-          dispatch(setFriendChatHistory(res));
-          scrollBarAnimation();
-          setLoading(false);
-        });
+      scrollTimer = window.setTimeout(() => {
+        curr!.className = "message-area-scrollbar grid";
+      }, 1000);
+
+      if (curr?.scrollTop === 0) {
+        setLoading(true);
+        for (let i = 0; i < 20; i++) {
+          getChatHistory(focus, user_id, oldest_message_id - i).then((res) => {
+            dispatch(setFriendChatHistory(res));
+            scrollBarAnimation();
+            setLoading(false);
+          });
+        }
       }
     }
   };

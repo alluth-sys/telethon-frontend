@@ -62,3 +62,10 @@ export function scrollBarAnimation() {
     }
   }, 1000);
 }
+
+type position = { x: number; y: number };
+export function computeDistance(pos1: position, pos2: position) {
+  const disX = Math.pow(pos1.x - pos2.x, 2);
+  const disY = Math.pow(pos1.y - pos2.y, 2);
+  return Math.pow(disX + disY, 1 / 2);
+}

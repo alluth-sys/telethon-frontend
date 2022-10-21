@@ -6,21 +6,6 @@ import { BASE } from "@/constants/endpoints";
 import { setImportantMessages } from "@/states/user/userSlice";
 import BulletinContextMenu from "./BulletinContextMenu/BulletinContextMenu";
 
-var scrollTimer = -1;
-const handleOnScroll = () => {
-  var curr = document.getElementById("BulletinArea");
-
-  curr!.className = "scrolling-class grid";
-
-  if (scrollTimer != -1) {
-    clearTimeout(scrollTimer);
-  }
-
-  scrollTimer = window.setTimeout(() => {
-    curr!.className = "message-area-scrollbar grid";
-  }, 1000);
-};
-
 export default function BulletinArea() {
   const important_messages = useAppSelector(
     (state) => state.user.importantMessages
@@ -30,6 +15,24 @@ export default function BulletinArea() {
 
   const user_id = useAppSelector((state) => state.user.data?.id);
   const dispatch = useAppDispatch();
+
+  var scrollTimer = -1;
+  const handleOnScroll = () => {
+    if (showContextMenu) {
+      return;
+    }
+    var curr = document.getElementById("BulletinArea");
+
+    curr!.className = "scrolling-class grid";
+
+    if (scrollTimer != -1) {
+      clearTimeout(scrollTimer);
+    }
+
+    scrollTimer = window.setTimeout(() => {
+      curr!.className = "message-area-scrollbar grid";
+    }, 1000);
+  };
 
   React.useEffect(() => {
     axios

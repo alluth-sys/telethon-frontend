@@ -60,14 +60,22 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
       const node = document.getElementById(target_id);
       const rect = node?.getBoundingClientRect();
       if (rect != undefined) {
+        let anchorX = rect.x + 10;
+        let anchorY = rect.y + rect.height;
+        if (anchorX + 100 > window.innerWidth) {
+          anchorX -= 100;
+        }
+        if (anchorY + 100 > window.innerHeight) {
+          anchorY -= 100;
+        }
         dispatch(
           setUserContextMenuAnchorPoint({
-            x: rect.x + 10,
-            y: rect.y + rect.height,
+            x: anchorX,
+            y: anchorY,
           })
-          );
-          dispatch(setUserShowContextMenu(true));
-        }
+        );
+        dispatch(setUserShowContextMenu(true));
+      }
       if (!fromBulletin) {
         dispatch(
           setSelectedMessageId({ message_id: Array(`${focus}_${e.target.id}`) })

@@ -20,7 +20,7 @@ export interface IUser {
   timeListIndex: number;
   focus: number;
   showContextMenu: boolean;
-  contextMenuAnchorPoint: Dictionary<number>;
+  contextMenuAnchorPoint: { x: number; y: number };
   selectedMessageId: Array<string>;
   importantMessages: Dictionary<Message>;
 }
