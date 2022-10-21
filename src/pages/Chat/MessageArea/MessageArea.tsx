@@ -41,20 +41,24 @@ export default function MessageArea({ focus }: any) {
 
   useEffect(() => {
     getChatPinnedMessage(focus, user_id).then((res: Response | any) => {
-      if(res.data.context.message_id!=-1){
+      if (res.data.context.message_id != -1) {
         const payload = { friend_id: focus, payload: res.data.context };
         dispatch(setFriendPinnedMessage(payload));
       }
     });
-    setReplying(false)
+    setReplying(false);
   }, [focus]);
 
   useEffect(() => {
     if (
-      document.getElementById("messageArea")!.clientHeight + 100 <
+      document.getElementById("messageArea")!.scrollHeight <
       document.getElementById("messageAreaWrapper")!.clientHeight
     ) {
-      getChatHistory(focus, user_id, oldest_message_id);
+      getChatHistory(focus, user_id, oldest_message_id).then((res) => {
+        dispatch(setFriendChatHistory(res));
+        scrollBarAnimation();
+        setLoading(false);
+      });
     } else {
       dispatch(setUserFreindListInitialized(focus));
     }
@@ -78,30 +82,6 @@ export default function MessageArea({ focus }: any) {
     }
   }, [chat_history]);
 
-  function getChatHistory(
-    target_channel_id: number,
-    user_id: number | undefined,
-    message_id = 0
-  ) {
-    if (target_channel_id == 0) {
-      return;
-    }
-    axios
-      .get(`${BASE}/getMessage`, {
-        params: {
-          user_id: user_id,
-          channel_id: target_channel_id,
-          message_id: message_id,
-        },
-      })
-      .then((res) => {
-        dispatch(setFriendChatHistory(res));
-        scrollBarAnimation();
-        setLoading(false);
-      })
-      .catch((e) => console.log(e));
-  }
-
   var scrollTimer = -1;
   const handleOnScroll = () => {
     var curr = document.getElementById("messageArea");
@@ -124,7 +104,13 @@ export default function MessageArea({ focus }: any) {
 
     if (curr?.scrollTop === 0) {
       setLoading(true);
-      getChatHistory(focus, user_id, oldest_message_id);
+      for (let i = 0; i < 20; i++) {
+        getChatHistory(focus, user_id, oldest_message_id - i).then((res) => {
+          dispatch(setFriendChatHistory(res));
+          scrollBarAnimation();
+          setLoading(false);
+        });
+      }
     }
   };
 
