@@ -33,7 +33,6 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
   const socket = React.useContext(SocketContext);
 
   const handleUnload = async () => {
-    console.log("unload");
     socket.close();
     try {
       await axios.get(`${BASE}/disconnect`, {

@@ -5,27 +5,26 @@ import MessageBox from "@/components/MessageBox/MessageBox";
 import ContextMenu from "./ContextMenu/ContextMenu";
 import {
   setFriendChatHistory,
+  setFriendPinnedMessage,
   setUserFreindListInitialized,
 } from "@/states/user/userSlice";
 import Timeindicator from "./TimeIndicator/Timeindicator";
 import ScrollButton from "../ScrollButton/ScrollButton";
 import AckButton from "../AckButton/AckButton";
-import axios from "axios";
 import Loader from "./Loader/Loader";
-import { BASE } from "@/constants/endpoints";
-
-export function scrollBarAnimation() {
-  var curr = document.getElementById("messageArea");
-  curr!.className = "scrolling-class grid";
-  setTimeout(() => {
-    curr!.className = "message-area-scrollbar grid";
-  }, 1000);
-}
+import {
+  getChatHistory,
+  getChatPinnedMessage,
+  scrollBarAnimation,
+} from "./helpers";
+import ReplyArea from "./ReplyArea/Reply";
 
 export default function MessageArea({ focus }: any) {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const [replying, setReplying] = useState(false);
   const user_id = useAppSelector((state) => state.user.data!.id);
+  const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
 
   const oldest_message_id = useAppSelector(
     (state) => state.user.friendList[focus].oldest_message_id
@@ -39,6 +38,16 @@ export default function MessageArea({ focus }: any) {
   );
 
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    getChatPinnedMessage(focus, user_id).then((res: Response | any) => {
+      if(res.data.context.message_id!=-1){
+        const payload = { friend_id: focus, payload: res.data.context };
+        dispatch(setFriendPinnedMessage(payload));
+      }
+    });
+    setReplying(false)
+  }, [focus]);
 
   useEffect(() => {
     if (
@@ -155,13 +164,18 @@ export default function MessageArea({ focus }: any) {
                     key={`${key.toString()}_${current_message_timestamp}`}
                   />
                 )}
-                <MessageBox message={index} key={key.toString()} />
+                <MessageBox
+                  message={index}
+                  fromBulletin={false}
+                  key={key.toString()}
+                />
               </div>
             );
           })}
         </div>
       </div>
-      <ContextMenu />
+      {replying && <ReplyArea setReplying={setReplying} />}
+      {showContextMenu && <ContextMenu setReplying={setReplying} />}
       <ScrollButton display={scrolled} />
       {focus != 0 && <AckButton />}
     </>

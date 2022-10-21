@@ -1,5 +1,5 @@
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { scrollBarAnimation } from "../MessageArea/MessageArea";
+import { scrollBarAnimation } from "../MessageArea/helpers";
 
 const setStyle = (dis: boolean, style: object) => {
   return {

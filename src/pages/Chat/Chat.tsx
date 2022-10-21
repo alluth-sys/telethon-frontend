@@ -6,12 +6,14 @@ import WebFont from "webfontloader";
 import { useState, useEffect, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
-import * as React from "react";
 import { setUserShowContextMenu } from "@/states/user/userSlice";
 import "./Chat.css";
 import Collapse from "@mui/material/Collapse";
 import { IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
+import ProfilePicture from "@/components/MessageBox/ProfilePicture";
+import { Typography } from "@material-ui/core";
+import TopArea from "./TopArea/TopArea";
 
 export default function chat() {
   // state need to be organized :
@@ -38,7 +40,6 @@ export default function chat() {
   }, [showContextMenu]);
 
   const [collapsed, setCollapse] = useState(true);
-
   return (
     <div
       className="flex grow justify-start"
@@ -51,21 +52,30 @@ export default function chat() {
           <FriendList />
         </Collapse>
       </div>
-      <div className="grow grid content-end ">
+      <div className="grow grid content-start">
+        <TopArea
+          collapsed={collapsed}
+          setCollapse={setCollapse}
+          focus={focus}
+        />
         <div
-          className="flex flex-col grow w-full"
-          style={{ height: "85vh", position: "static" }}
+          style={{
+            height: "1px",
+            width: "100%",
+            backgroundColor: "gray",
+            opacity: "0.1",
+            paddingTop: "5px",
+          }}
+        ></div>
+        <div
+          className="flex flex-col grow w-full justify-end"
+          style={{ position: "static", width: "100%", height: "78vh" }}
           id="messageAreaWrapper"
         >
-          <IconButton
-            onClick={() => setCollapse(!collapsed)}
-            style={{ height: "5vh", width: "50px" }}
-          >
-            {(collapsed && <ChevronLeft />) || <ChevronRight />}
-          </IconButton>
           <MessageArea focus={focus} />
         </div>
-        <div className="grid h-15vh">
+
+        <div className="grid " style={{ height: "10vh" }}>
           <InputArea />
         </div>
       </div>

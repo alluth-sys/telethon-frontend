@@ -45,17 +45,29 @@ const getItemStyle = (isMyself: boolean) => {
   };
 };
 
-export default function MessageBox({ message }: any) {
+type MessageBoxProps = {message:any,fromBulletin:boolean}
+export default function MessageBox({ message,fromBulletin }: MessageBoxProps) {
   const data = useAppSelector((state) => state.user.data);
+  const focus = useAppSelector(state=>state.user.focus)
 
   const dispatch = useAppDispatch();
 
   const handleContextMenu = useCallback(
     (e: any) => {
       e.preventDefault();
-      dispatch(setUserContextMenuAnchorPoint({ x: e.pageX, y: e.pageY }));
+      // compute the proper X,Y
+      const target_id = e.target.id
+      const node = document.getElementById(target_id)
+      const rect = node?.getBoundingClientRect() 
+      if(rect!=undefined){
+        dispatch(setUserContextMenuAnchorPoint({ x: (rect.x+10), y: rect.y+rect.height }));
+      }
       dispatch(setUserShowContextMenu(true));
-      dispatch(setSelectedMessageId({ message_id: Array(e.target.id) }));
+      if(!fromBulletin){
+        dispatch(setSelectedMessageId({ message_id: Array(`${focus}_${e.target.id}`) }));
+      }else{
+        dispatch(setSelectedMessageId({ message_id: Array(`${e.target.id}`) }));
+      }
     },
     [
       setUserShowContextMenu,
@@ -71,7 +83,7 @@ export default function MessageBox({ message }: any) {
   if (message.tag == "message") {
     return (
       <div
-        id={message.message_id}
+        id={message.message_id.toString()}
         className="mb-5 mx-10"
         style={getItemStyle(message.sender_id == data!.id)}
       >
@@ -86,7 +98,7 @@ export default function MessageBox({ message }: any) {
           <Typography
             style={{ color: "white" }}
             className="font-loader pl-5 pr-5"
-            id={message.message_id}
+            id={message.message_id.toString()}
           >
             {messageHandler(message.content)}
           </Typography>
@@ -106,7 +118,7 @@ export default function MessageBox({ message }: any) {
   } else if (message.tag == "image") {
     return (
       <div
-        id={message.message_id}
+        id={message.message_id.toString()}
         className="mb-5 mx-10 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
@@ -122,7 +134,7 @@ export default function MessageBox({ message }: any) {
           <img
             src={`data:image/jpeg;base64,${message.content}`}
             style={{ borderRadius: 10 }}
-            id={message.message_id}
+            id={message.message_id.toString()}
           />
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
         </div>
@@ -131,7 +143,7 @@ export default function MessageBox({ message }: any) {
   } else if (message.tag == "gif") {
     return (
       <div
-        id={message.message_id}
+        id={message.message_id.toString()}
         className="mb-5 mx-10 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
@@ -147,7 +159,7 @@ export default function MessageBox({ message }: any) {
           <img
             src={`data:image/gif;base64,${message.content}`}
             style={{ borderRadius: 10 }}
-            id={message.message_id}
+            id={message.message_id.toString()}
           />
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
         </div>
