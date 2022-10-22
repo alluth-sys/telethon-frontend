@@ -151,7 +151,7 @@ export default function MessageArea({ focus }: any) {
           overflowY: "scroll",
           overflowX: "hidden",
           position: "relative",
-          width:"100%"
+          width: "100%",
         }}
         className="message-area-scrollbar grid"
         id="messageArea"

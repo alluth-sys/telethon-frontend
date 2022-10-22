@@ -47,7 +47,7 @@ export default function chat() {
         handleClickOut();
       }}
     >
-      <div className=" grid " style={{width:"320px"}}>
+      <div className=" grid " style={{ width: "320px" }}>
         <Collapse in={collapsed} collapsedSize={0} orientation="horizontal">
           <FriendList />
         </Collapse>

@@ -9,7 +9,14 @@ export default function Pinned({ focus }: PinnedProp) {
     (state) => state.user.friendList[focus].pinned_message
   );
   return (
-    <div style={{ display: "flex", alignItems: "center",overflow:"hidden",width:"30vw" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
+        width: "30vw",
+      }}
+    >
       <IconButton
         style={{
           rotate: "-40deg",

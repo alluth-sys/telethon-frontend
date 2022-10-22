@@ -7,7 +7,6 @@ import { Typography } from "@mui/material";
 
 type ReplyAreaProps = { setReplying: Function };
 export default function ReplyArea({ setReplying }: ReplyAreaProps) {
-
   const selectedMessageId = useAppSelector(
     (state) => state.user.selectedMessageId
   );
@@ -42,7 +41,6 @@ export default function ReplyArea({ setReplying }: ReplyAreaProps) {
           borderColor: "black",
           borderWidth: "2px 2px 0px 2px",
           padding: "0 10px 0px 20px",
-        
         }}
       >
         <div style={{ width: "8%", display: "flex", alignItems: "center" }}>
@@ -57,22 +55,20 @@ export default function ReplyArea({ setReplying }: ReplyAreaProps) {
         <div
           style={{
             height: "25px",
-            overflowY:"clip",
+            overflowY: "clip",
             // justifyContent: "space-between",
             width: "40vw",
             display: "flex",
             paddingLeft: "50px",
-            textOverflow:"ellipsis"
+            textOverflow: "ellipsis",
           }}
         >
-          <Typography>
-            {selectedMessageContent}
-            </Typography>
+          <Typography>{selectedMessageContent}</Typography>
         </div>
-          <CloseIcon
-            onClick={() => setReplying(false)}
-            style={{ alignSelf: "content-end" }}
-          />
+        <CloseIcon
+          onClick={() => setReplying(false)}
+          style={{ alignSelf: "content-end" }}
+        />
       </div>
     </>
   );
