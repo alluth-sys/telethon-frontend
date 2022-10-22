@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import {
+  deleteFriendMessage,
   removeImportantMessages,
   setFriendPinnedMessage,
   setImportantMessages,
@@ -73,6 +74,27 @@ const pinMessage = (
           setFriendPinnedMessage({ friend_id: channel_id, payload: payload })
         );
       }
+    })
+    .catch((e) => console.log(e));
+};
+
+const deleteMessage = (
+  dispatch: Function,
+  message_id: number,
+  user_id: number,
+  channel_id: number
+) => {
+  console.log("delete")
+  axios
+    .delete(`${BASE}/deleteMessage`, {
+      params: {
+        message_id: message_id,
+        user_id: user_id,
+        channel_id: channel_id,
+      },
+    })
+    .then((res) => {
+      dispatch(deleteFriendMessage({friend_id:channel_id,message_id:message_id}))
     })
     .catch((e) => console.log(e));
 };
@@ -161,7 +183,18 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
         >
           Pin
         </li>
-        <li>Delete</li>
+        <li
+          onClick={() =>
+            deleteMessage(
+              dispatch,
+              selectedMessageIdInChannel,
+              user_id,
+              selectedMessageChannel
+            )
+          }
+        >
+          Delete
+        </li>
         <li
           onClick={() => {
             if (!isImportant) {
