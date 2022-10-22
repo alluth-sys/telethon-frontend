@@ -115,8 +115,15 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
           />
         </div>
         <div className="font-loader grid ml-4 grow " style={{ height: "60px" }}>
-          <div style={{ height: "20px", minHeight: "20px" }}>
-            {wordsFilter(username, 8)}
+          <div
+            style={{
+              height: "20px",
+              minHeight: "20px",
+              width: "320px",
+              overflow: "hidden",
+            }}
+          >
+            {wordsFilter(username, 50)}
           </div>
 
           <div
