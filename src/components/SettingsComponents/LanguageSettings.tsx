@@ -33,7 +33,7 @@ export default function LanguageSettings() {
 
   return (
     <>
-      <div className="m-8 flex">
+      <div className="m-8 flex bg-white p-8 rounded-xl">
         <FormControl>
           <FormLabel id="language-buttons-group-label">
             {t("Language")}
@@ -74,7 +74,7 @@ export default function LanguageSettings() {
           </RadioGroup>
         </FormControl>
       </div>
-      <div className="m-8">
+      <div className="m-8 bg-white p-8 rounded-xl">
         <Link href="#">
           <Typography style={{ color: "grey" }}>{t("FAQ")}</Typography>
         </Link>

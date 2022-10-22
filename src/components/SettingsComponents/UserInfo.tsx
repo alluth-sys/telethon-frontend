@@ -37,7 +37,7 @@ export default function UserInfo() {
   const handlePhoneModalClickClose = () => setPhoneModalOpen(false);
 
   return (
-    <div className="m-8 flex w-fit p-8 rounded-xl shadow-xl">
+    <div className="m-8 flex w-fit p-8 rounded-xl shadow-xl bg-white">
       {/* User Image */}
       <div className="m-4">
         <ProfileAvatar
