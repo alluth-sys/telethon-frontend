@@ -555,7 +555,7 @@ export default function priority() {
         </div>
       </DragDropContext>
 
-      <div className="grid grow">
+      <div className="grid grow bg-[url('./resources/bg.png')]">
         <div
           className="bg-black flex justify-center items-center "
           style={{ width: "100%", height: "33vh" }}

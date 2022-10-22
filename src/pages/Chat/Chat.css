@@ -15,10 +15,10 @@
 
 .message-area-scrollbar::-webkit-scrollbar-track {
   display: none;
+  opacity: 0;
 }
 
 .scrolling-class::-webkit-scrollbar {
-  background-color: white;
   width: 10px;
 }
 

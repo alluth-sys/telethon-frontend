@@ -52,7 +52,7 @@ export default function chat() {
           <FriendList />
         </Collapse>
       </div>
-      <div className="grow grid content-start">
+      <div className="grow grid content-start bg-[url('./resources/bg.png')]">
         <TopArea
           collapsed={collapsed}
           setCollapse={setCollapse}
@@ -62,13 +62,13 @@ export default function chat() {
           style={{
             height: "1px",
             width: "100%",
-            backgroundColor: "gray",
-            opacity: "0.1",
+            backgroundColor: "bleck",
+            opacity: "1",
             paddingTop: "5px",
           }}
         ></div>
         <div
-          className="flex flex-col grow w-full justify-end"
+          className="flex flex-col grow w-full justify-end "
           style={{ position: "static", width: "100%", height: "78vh" }}
           id="messageAreaWrapper"
         >

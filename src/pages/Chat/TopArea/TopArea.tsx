@@ -15,6 +15,7 @@ export default function TopArea({
         alignItems: "center",
         width: "100%",
         height: "8vh",
+        backgroundColor: "white",
       }}
     >
       {focus != 0 && (
