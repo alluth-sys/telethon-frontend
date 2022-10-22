@@ -14,9 +14,12 @@ import { scrollBarAnimation } from "@/pages/Chat/MessageArea/helpers";
 
 export function wordsFilter(words: string, limit: number = 14) {
   if (words !== null) {
-    if (words.length > limit) {
-      return words.slice(0, limit) + "...";
+    const msg = words.replace("\\\\", String.fromCharCode(92));
+    var result = msg; //.replace('\\"', '"');
+    if (result.length > limit) {
+      return result.slice(0, limit) + "...";
     }
+    return result;
   }
   return words;
 }

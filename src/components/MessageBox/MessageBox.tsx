@@ -28,13 +28,11 @@ export function messageTimeHandler(timestamp: string | undefined) {
 // TODO : fix escaping char
 export function messageHandler(msg: string) {
   try {
-    //console.log("origin message : ", msg);
-    msg = msg.replace("\\\\", "\\");
-    var result = msg.replace('\\"', '"');
-    //console.log("result message : ", result);
+    msg = msg.replace("\\\\", String.fromCharCode(92));
+    var result = msg; //.replace('\\"', '"');
     return result;
   } catch (e) {
-    //console.log(e);
+    console.log(e);
     return msg;
   }
 }
