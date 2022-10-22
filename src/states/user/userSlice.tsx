@@ -172,10 +172,8 @@ export const userSlice = createSlice({
         }
         // set the incoming message as the first order
         state.timeList[0] = timeList0;
-        if (state.friendList[channel].chat_history[message_id] != undefined) {
-          const message = { ...action.payload, isImportant: false };
-          state.friendList[channel].chat_history[message_id] = message;
-        }
+        const message = { ...action.payload, isImportant: false };
+        state.friendList[channel].chat_history[message_id] = message;
 
         // update the latest message
         state.friendList[channel].last_message = action.payload;
