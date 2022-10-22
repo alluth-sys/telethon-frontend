@@ -106,7 +106,6 @@ export default function MessageArea({ focus }: any) {
 
   var scrollTimer = -1;
   const handleOnScroll = () => {
-    console.log(showContextMenu);
     if (showContextMenu) {
       return;
     } else {

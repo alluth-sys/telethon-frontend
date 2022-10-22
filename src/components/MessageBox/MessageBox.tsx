@@ -65,7 +65,7 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
         if (anchorX + 100 > window.innerWidth) {
           anchorX -= 100;
         }
-        if (anchorY + 100 > window.innerHeight) {
+        if (anchorY + 200 > window.innerHeight) {
           anchorY -= 100;
         }
         dispatch(
@@ -177,6 +177,43 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
             id={message.message_id.toString()}
           />
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
+        </div>
+      </div>
+    );
+  } else if (message.tag == "audio") {
+    return (
+      <div
+        id={message.message_id.toString()}
+        className="mb-5 mx-10 grid"
+        style={getItemStyle(message.sender_id == data!.id)}
+      >
+        <div
+          style={{
+            whiteSpace: "pre-wrap",
+            overflowWrap: "break-word",
+            position: "relative",
+          }}
+          className=" w-fit max-w-sm h-fit rounded-xl flex"
+          onContextMenu={handleContextMenu}
+        >
+          <audio controls>
+            <source
+              src={`data:audio/ogg;base64,${message.content}`}
+              type="audio/ogg"
+              style={{ borderRadius: 10 }}
+              id={message.message_id.toString()}
+            />
+          </audio>
+          <Typography
+            className="pl-3 pr-5"
+            style={{
+              color: "black",
+              alignSelf: "flex-end",
+              fontSize: "10px",
+            }}
+          >
+            {messageTimeHandler(message.timestamp)}
+          </Typography>
         </div>
       </div>
     );

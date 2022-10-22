@@ -3,6 +3,7 @@ import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import {
   removeImportantMessages,
+  setFriendPinnedMessage,
   setImportantMessages,
   setSelectedMessageId,
 } from "@/states/user/userSlice";
@@ -44,6 +45,34 @@ const removeImportantMessage = (
     })
     .then((res) => {
       dispatch(removeImportantMessages({ message_id: message_id }));
+    })
+    .catch((e) => console.log(e));
+};
+
+const pinMessage = (
+  dispatch: Function,
+  message_id: number,
+  user_id: number,
+  channel_id: number,
+  context: string | undefined
+) => {
+  axios
+    .post(`${BASE}/pin`, {
+      message_id: message_id,
+      user_id: user_id,
+      channel_id: channel_id,
+    })
+    .then(() => {
+      console.log(context);
+      if (context != undefined) {
+        const payload = {
+          message_id: message_id,
+          context: context,
+        };
+        dispatch(
+          setFriendPinnedMessage({ friend_id: channel_id, payload: payload })
+        );
+      }
     })
     .catch((e) => console.log(e));
 };
@@ -119,7 +148,19 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
         >
           Copy
         </li>
-        <li>Pin</li>
+        <li
+          onClick={() =>
+            pinMessage(
+              dispatch,
+              selectedMessageIdInChannel,
+              user_id,
+              selectedMessageChannel,
+              selectedMessageContent
+            )
+          }
+        >
+          Pin
+        </li>
         <li>Delete</li>
         <li
           onClick={() => {
