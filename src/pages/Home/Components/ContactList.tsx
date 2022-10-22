@@ -7,16 +7,23 @@ import MenuItem from "@mui/material/MenuItem";
 import ContactProfile from "./ContactProfile";
 import useFriendList from "../Hooks/useFriendList";
 
+import { setUserFocus } from "@/states/user/userSlice";
+import { useAppDispatch } from "@/app/hooks";
+import { useNavigate } from "react-router-dom";
+
 export default function ContactList() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { friendData } = useFriendList();
 
   if (!friendData) return null;
@@ -43,7 +50,14 @@ export default function ContactList() {
       >
         {friendData.map((friend, index) => {
           return (
-            <MenuItem onClick={handleClose} key={index}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                dispatch(setUserFocus(friend.id));
+                navigate("/chat");
+              }}
+              key={index}
+            >
               <ContactProfile
                 b64={friend.b64}
                 name={friend.name}
