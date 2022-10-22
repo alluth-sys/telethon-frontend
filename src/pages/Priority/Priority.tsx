@@ -111,7 +111,7 @@ export default function priority() {
     setLevel3List(tmplist.filter((ele) => ele[1].priority == 2));
   }, [friendList]);
 
-  const handleDrag = (result: DropResult) => {
+  const handleDrag = async (result: DropResult) => {
     const { source, destination } = result;
 
     if (!destination) {
@@ -135,7 +135,7 @@ export default function priority() {
         channel_id = result.draggableId.toString();
       }
 
-      axios
+      await axios
         .post(`${BASE}/channel/priority/${user_id}`, {
           channel_id: channel_id,
           priority: priMap.get(destination.droppableId),

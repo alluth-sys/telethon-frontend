@@ -10,8 +10,8 @@ export default function AckButton() {
 
   const dispatch = useAppDispatch();
 
-  const sendAck = (user_id: number, target_channel_id: number) => {
-    axios
+  const sendAck = async (user_id: number, target_channel_id: number) => {
+    await axios
       .post(`${BASE}/ack`, {
         user_id: user_id,
         channel_id: target_channel_id,

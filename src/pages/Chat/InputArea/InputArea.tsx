@@ -23,11 +23,11 @@ export default function InputArea() {
 
   const dispatch = useAppDispatch();
 
-  function handleOnEnter() {
+  async function handleOnEnter() {
     if (text.length <= 0) {
       return;
     }
-    axios
+    await axios
       .post(`${BASE}/send`, {
         user_id: data!.id,
         channel_id: focus,
@@ -37,8 +37,12 @@ export default function InputArea() {
       .catch((error) => console.log(error));
   }
 
-  function uploadFile(formData: FormData, user_id: number, channel_id: number) {
-    axios
+  async function uploadFile(
+    formData: FormData,
+    user_id: number,
+    channel_id: number
+  ) {
+    await axios
       .post(`${BASE}/sendFile`, formData, {
         params: {
           user_id,

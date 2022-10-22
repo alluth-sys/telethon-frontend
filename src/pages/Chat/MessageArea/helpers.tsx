@@ -1,16 +1,16 @@
 import { BASE } from "@/constants/endpoints";
 import axios from "axios";
 
-export const getChatHistory = (
+export const getChatHistory = async (
   target_channel_id: number,
   user_id: number | undefined,
   message_id = 0
 ) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     if (target_channel_id == 0) {
       return;
     }
-    axios
+    await axios
       .get(`${BASE}/getMessage`, {
         params: {
           user_id: user_id,
@@ -27,15 +27,15 @@ export const getChatHistory = (
   });
 };
 
-export const getChatPinnedMessage = (
+export const getChatPinnedMessage = async (
   target_channel_id: number,
   user_id: number | undefined
 ) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     if (target_channel_id == 0) {
       return;
     }
-    axios
+    await axios
       .get(`${BASE}/getPinnedMessage`, {
         params: {
           user_id: user_id,

@@ -41,7 +41,7 @@ export default function FriendList() {
   );
 }
 
-export function getChatHistory(
+export async function getChatHistory(
   target_channel_id: number,
   user_id: number | undefined,
   dispatch: Function,
@@ -50,7 +50,7 @@ export function getChatHistory(
   if (target_channel_id == 0) {
     return;
   }
-  axios
+  await axios
     .get(`${BASE}/getMessage`, {
       params: {
         user_id: user_id,

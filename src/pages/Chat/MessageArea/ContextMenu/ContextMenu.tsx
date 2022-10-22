@@ -9,13 +9,13 @@ import {
   setSelectedMessageId,
 } from "@/states/user/userSlice";
 
-const handleImportantMessage = (
+const handleImportantMessage = async (
   dispatch: Function,
   message_id: number,
   user_id: number,
   channel_id: number
 ) => {
-  axios
+  await axios
     .post(`${BASE}/channel/important_msg/${user_id}`, {
       channel_id: channel_id,
       important_msg_id: message_id,
@@ -31,13 +31,13 @@ const handleImportantMessage = (
     .catch((e) => console.log(e));
 };
 
-const removeImportantMessage = (
+const removeImportantMessage = async (
   dispatch: Function,
   message_id: number,
   user_id: number,
   channel_id: number
 ) => {
-  axios
+  await axios
     .delete(`${BASE}/channel/important_msg/${user_id}`, {
       data: {
         channel_id: channel_id,
@@ -50,14 +50,14 @@ const removeImportantMessage = (
     .catch((e) => console.log(e));
 };
 
-const pinMessage = (
+const pinMessage = async (
   dispatch: Function,
   message_id: number,
   user_id: number,
   channel_id: number,
   context: string | undefined
 ) => {
-  axios
+  await axios
     .post(`${BASE}/pin`, {
       message_id: message_id,
       user_id: user_id,
@@ -78,14 +78,14 @@ const pinMessage = (
     .catch((e) => console.log(e));
 };
 
-const deleteMessage = (
+const deleteMessage = async (
   dispatch: Function,
   message_id: number,
   user_id: number,
   channel_id: number
 ) => {
-  console.log("delete")
-  axios
+  console.log("delete");
+  await axios
     .delete(`${BASE}/deleteMessage`, {
       params: {
         message_id: message_id,

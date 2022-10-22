@@ -35,12 +35,15 @@ export default function BulletinArea() {
   };
 
   React.useEffect(() => {
-    axios
-      .get(`${BASE}/channel/important_msg/${user_id}`)
-      .then((res) => {
-        dispatch(setImportantMessages(res));
-      })
-      .catch((e) => console.log(e));
+    async function fetch() {
+      await axios
+        .get(`${BASE}/channel/important_msg/${user_id}`)
+        .then((res) => {
+          dispatch(setImportantMessages(res));
+        })
+        .catch((e) => console.log(e));
+    }
+    fetch();
   }, []);
 
   return (

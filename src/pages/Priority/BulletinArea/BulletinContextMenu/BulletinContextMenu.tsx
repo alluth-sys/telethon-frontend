@@ -3,13 +3,13 @@ import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import { removeImportantMessages } from "@/states/user/userSlice";
 
-const removeImportantMessage = (
+const removeImportantMessage = async (
   dispatch: Function,
   message_id: number,
   user_id: number,
   channel_id: number
 ) => {
-  axios
+  await axios
     .delete(`${BASE}/channel/important_msg/${user_id}`, {
       data: {
         channel_id: channel_id,
