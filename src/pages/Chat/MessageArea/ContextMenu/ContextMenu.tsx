@@ -94,7 +94,9 @@ const deleteMessage = (
       },
     })
     .then((res) => {
-      dispatch(deleteFriendMessage({friend_id:channel_id,message_id:message_id}))
+      dispatch(
+        deleteFriendMessage({ friend_id: channel_id, message_id: message_id })
+      );
     })
     .catch((e) => console.log(e));
 };

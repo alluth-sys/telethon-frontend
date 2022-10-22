@@ -189,7 +189,7 @@ export const userSlice = createSlice({
           state.timeList[state.timeListIndex] =
             state.timeList[state.timeListIndex - 1];
           state.timeListIndex++;
-          for (let i = state.timeList.length; i > 0; i--) {
+          for (let i = state.timeList.length - 1; i > 0; i--) {
             state.timeList[i] = state.timeList[i - 1];
           }
           state.timeList[0] = channel;
@@ -198,6 +198,7 @@ export const userSlice = createSlice({
       }
 
       state.timeList = _.compact(state.timeList);
+      state.timeList = _.difference(state.timeList);
 
       return state;
     },
@@ -324,6 +325,13 @@ export const userSlice = createSlice({
 
       return state;
     },
+    deleteFriendMessage: (state, action) => {
+      delete state.friendList[action.payload.friend_id].chat_history[
+        action.payload.message_id
+      ];
+
+      return state;
+    },
   },
 });
 
@@ -347,6 +355,7 @@ export const {
   setImportantMessages,
   removeImportantMessages,
   setFriendPinnedMessage,
+  deleteFriendMessage,
 } = userSlice.actions;
 
 export default userSlice.reducer;
