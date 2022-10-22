@@ -32,7 +32,6 @@ export function messageHandler(msg: string) {
     var result = msg; //.replace('\\"', '"');
     return result;
   } catch (e) {
-    console.log(e);
     return msg;
   }
 }

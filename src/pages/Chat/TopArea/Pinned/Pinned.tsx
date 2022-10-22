@@ -9,7 +9,7 @@ export default function Pinned({ focus }: PinnedProp) {
     (state) => state.user.friendList[focus].pinned_message
   );
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", alignItems: "center",overflow:"hidden",width:"30vw" }}>
       <IconButton
         style={{
           rotate: "-40deg",
@@ -21,7 +21,7 @@ export default function Pinned({ focus }: PinnedProp) {
         <PushPinIcon />
       </IconButton>
       <Typography noWrap={true} style={{ paddingLeft: "1px" }}>
-        {wordsFilter(pinned_message.context, 50)}
+        {pinned_message.context}
       </Typography>
     </div>
   );
