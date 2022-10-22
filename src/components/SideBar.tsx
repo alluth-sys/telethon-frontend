@@ -67,7 +67,6 @@ export default function SideBar() {
       <div className="h-4/6 flex items-end">
         <div onClick={SignOutHandler} className="sidebar-icon group">
           <LogoutIcon />
-          <span className="sidebar-tooltip group-hover:scale-100">Logout</span>
         </div>
       </div>
     </div>
@@ -85,7 +84,6 @@ const SideBarIcon: React.FC<SideBarIconProps> = ({ icon, text, path }) => {
       }}
     >
       {icon}
-      <span className="sidebar-tooltip group-hover:scale-100">{text}</span>
     </div>
   );
 };

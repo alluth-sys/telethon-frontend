@@ -25,11 +25,14 @@ export const friendSlice = createSlice({
       return state;
     },
     incrementUnreads: (state: IData, action: PayloadAction<Message>) => {
-      console.log("increment triggered");
+      if (state.data === undefined) return state;
 
       const index = state.data?.findIndex(
         (friend) => parseInt(friend.id) === action.payload.sender_id
       );
+
+      if (index === -1) return state;
+
       // @ts-ignore
       const newArray: IFriend[] = state.data;
 
@@ -38,9 +41,28 @@ export const friendSlice = createSlice({
       state.data = newArray;
       return state;
     },
+    clearUnreads: (state: IData, action) => {
+      if (state.data === undefined) return state;
+
+      const index = state.data?.findIndex(
+        (friend) =>
+          parseInt(friend.id) === action.payload.data.context.channel_id
+      );
+
+      if (index === -1) return state;
+
+      // @ts-ignore
+      const newArray: IFriend[] = state.data;
+
+      // @ts-ignore
+      newArray[index].unread_count = 0;
+      state.data = newArray;
+      return state;
+    },
   },
 });
 
-export const { setFriendData, incrementUnreads } = friendSlice.actions;
+export const { setFriendData, incrementUnreads, clearUnreads } =
+  friendSlice.actions;
 
 export default friendSlice.reducer;

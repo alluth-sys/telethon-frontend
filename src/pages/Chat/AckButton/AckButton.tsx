@@ -2,6 +2,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
+
+import { clearUnreads } from "@/states/user/friendSlice";
 import { updateFriendUnreadCount } from "@/states/user/userSlice";
 
 export default function AckButton() {
@@ -16,7 +18,10 @@ export default function AckButton() {
         user_id: user_id,
         channel_id: target_channel_id,
       })
-      .then((res) => dispatch(updateFriendUnreadCount(res)))
+      .then((res) => {
+        dispatch(clearUnreads(res));
+        dispatch(updateFriendUnreadCount(res));
+      })
       .catch((e) => console.log(e));
   };
 
