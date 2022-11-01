@@ -53,12 +53,12 @@ export default function chat() {
         </Collapse>
       </div>
       <div className="grow grid content-start bg-[url('./resources/bg5.png')]">
-        <TopArea
+        {<TopArea
           collapsed={collapsed}
           setCollapse={setCollapse}
           focus={focus}
         />
-        ||<div style={{ height: "8vh" }}></div>
+        ||<div style={{ height: "8vh" }}></div>}
         <div
           style={{
             height: "1px",
