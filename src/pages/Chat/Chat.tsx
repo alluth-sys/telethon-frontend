@@ -42,7 +42,7 @@ export default function chat() {
   const [collapsed, setCollapse] = useState(true);
   return (
     <div
-      className="flex grow justify-start"
+      className="flex grow justify-start bg-[url('./resources/bg.png')]"
       onClick={() => {
         handleClickOut();
       }}
@@ -52,12 +52,12 @@ export default function chat() {
           <FriendList />
         </Collapse>
       </div>
-      <div className="grow grid content-start bg-[url('./resources/bg.png')]">
-        <TopArea
+      <div className="grow grid content-start ">
+        {focus!=0&&<TopArea
           collapsed={collapsed}
           setCollapse={setCollapse}
           focus={focus}
-        />
+        />||<div style={{height: "8vh",}}></div>}
         <div
           style={{
             height: "1px",
