@@ -52,12 +52,13 @@ export default function chat() {
           <FriendList />
         </Collapse>
       </div>
-      <div className="grow grid content-start ">
-        {focus!=0&&<TopArea
+      <div className="grow grid content-start bg-[url('./resources/bg5.png')]">
+        <TopArea
           collapsed={collapsed}
           setCollapse={setCollapse}
           focus={focus}
-        />||<div style={{height: "8vh",}}></div>}
+        />
+        ||<div style={{ height: "8vh" }}></div>
         <div
           style={{
             height: "1px",
@@ -74,7 +75,6 @@ export default function chat() {
         >
           <MessageArea focus={focus} />
         </div>
-
         <div className="grid " style={{ height: "10vh" }}>
           <InputArea />
         </div>

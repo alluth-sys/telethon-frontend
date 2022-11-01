@@ -127,7 +127,7 @@ export default function AdvanceSettings() {
 
   if (!onLoad) {
     return (
-      <div>
+      <div className="bg-white p-6 rounded-xl">
         <Typography variant="h6">Advance Settings</Typography>
         <Divider />
         <Spacer height={"15px"} />
