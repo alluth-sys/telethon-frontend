@@ -56,10 +56,20 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
   };
 
   const notify = (sender: string, content: string) => {
-    toast.dark(`${sender}: ${content}`, {
-      pauseOnHover: false,
-      hideProgressBar: true,
-    });
+    toast.dark(
+      ({ closeToast }) => {
+        return (
+          <div>
+            <span className="text-lime-500">{sender}: </span>
+            <span className="overflow-hidden">{content}</span>
+          </div>
+        );
+      },
+      {
+        pauseOnHover: false,
+        hideProgressBar: true,
+      }
+    );
   };
 
   const showContextMenu = useAppSelector((state) => state.user.showContextMenu);
@@ -76,7 +86,6 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
     socket.on("message", (msg) => {
       dispatch(incrementUnreads(msg));
       dispatch(setFriendLatestMessage(msg));
-      console.log(msg);
       notify(msg.from, msg.content);
     });
     socket.on("initial", (res) => {
