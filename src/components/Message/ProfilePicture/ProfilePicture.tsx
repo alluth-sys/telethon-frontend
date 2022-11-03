@@ -40,16 +40,33 @@ type TProps = {
   imgSrc: string;
   width: number;
   height: number;
+  simple?: boolean;
 };
 
-export default function ProfilePicture({ uid, imgSrc, width, height }: TProps) {
+export default function ProfilePicture({
+  uid,
+  imgSrc,
+  width,
+  height,
+  simple = false,
+}: TProps) {
   return (
-    <StyledBadge
-      overlap="circular"
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      variant="dot"
-    >
-      <Avatar alt={uid} src={imgSrc} sx={{ width: width, height: height }} />
-    </StyledBadge>
+    <>
+      {(!simple && (
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          variant="dot"
+        >
+          <Avatar
+            alt={uid}
+            src={imgSrc}
+            sx={{ width: width, height: height }}
+          />
+        </StyledBadge>
+      )) || (
+        <Avatar alt={uid} src={imgSrc} sx={{ width: width, height: height }} />
+      )}
+    </>
   );
 }

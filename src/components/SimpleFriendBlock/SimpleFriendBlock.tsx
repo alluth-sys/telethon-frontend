@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/app/hooks";
 import { Friend } from "@/states/user/userSlice";
 import { MessageProfile, wordsFilter } from "../FriendList/FriendList";
-import ProfilePicture from "../MessageBox/ProfilePicture";
+import ProfilePicture from "../Message/ProfilePicture/ProfilePicture";
 import { Typography } from "@mui/material";
-import { timeHandler } from "../MessageBox/MessageBox";
+import { timeHandler } from "../Message/MessageBox/MessageBox";
 
 export default function SimpleFriendBlock(Friend: any) {
   const { data } = useAppSelector((state) => state.user);

@@ -7,8 +7,8 @@ import axios from "axios";
 import { setFriendChatHistory } from "@/states/user/userSlice";
 
 import { Message } from "@/states/user/userSlice";
-import { timeHandler } from "@/components/MessageBox/MessageBox";
-import ProfilePicture from "@/components/MessageBox/ProfilePicture";
+import { timeHandler } from "@/components/Message/MessageBox/MessageBox";
+import ProfilePicture from "@/components/Message/ProfilePicture/ProfilePicture";
 import { BASE } from "@/constants/endpoints";
 import { scrollBarAnimation } from "@/pages/Chat/MessageArea/helpers";
 

@@ -2,7 +2,6 @@ export default function Loader({ loading }: any) {
   return (
     <div
       style={{
-        position: "absolute",
         width: "100%",
         top: 0,
         backgroundColor: "rgb(207, 185, 151)",

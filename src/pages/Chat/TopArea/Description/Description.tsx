@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/app/hooks";
-import ProfilePicture from "@/components/MessageBox/ProfilePicture";
+import ProfilePicture from "@/components/Message/ProfilePicture/ProfilePicture";
 import { IconButton, Typography } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 

@@ -1,7 +1,7 @@
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import MessageBox from "@/components/MessageBox/MessageBox";
+import MessageBox from "@/components/Message/MessageBox/MessageBox";
 import ContextMenu from "./ContextMenu/ContextMenu";
 import {
   setFriendChatHistory,
@@ -20,6 +20,7 @@ import {
   scrollBarAnimation,
 } from "./helpers";
 import ReplyArea from "./ReplyArea/Reply";
+import Message from "@/components/Message/Message";
 
 export default function MessageArea({ focus }: any) {
   const dispatch = useAppDispatch();
@@ -177,7 +178,7 @@ export default function MessageArea({ focus }: any) {
                     key={`${key.toString()}_${current_message_timestamp}`}
                   />
                 )}
-                <MessageBox
+                <Message
                   message={index}
                   fromBulletin={false}
                   key={key.toString()}

@@ -7,7 +7,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setFriendLatestMessage } from "@/states/user/userSlice";
-import VoiceInput from "./VoiceInput/VoiceInput";
 import { BASE } from "@/constants/endpoints";
 
 export default function InputArea() {
@@ -17,8 +16,6 @@ export default function InputArea() {
   //  select:
   //    channel_id
   const [text, setText] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(true);
   const { data, focus } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
@@ -89,7 +86,6 @@ export default function InputArea() {
             onEnter={handleOnEnter}
           />
           <SendIcon className="my-8 mx-5 navigate" onClick={handleOnEnter} />
-          <VoiceInput />
         </div>
       </div>
     </>

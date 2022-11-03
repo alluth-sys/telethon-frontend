@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import MessageBox from "@/components/MessageBox/MessageBox";
 import axios from "axios";
 import React from "react";
 import { BASE } from "@/constants/endpoints";
 import { setImportantMessages } from "@/states/user/userSlice";
 import BulletinContextMenu from "./BulletinContextMenu/BulletinContextMenu";
+import Message from "@/components/Message/Message";
 
 export default function BulletinArea() {
   const important_messages = useAppSelector(
@@ -63,7 +63,7 @@ export default function BulletinArea() {
           {Object.entries(important_messages).map(([key, index]) => {
             return (
               <div className="grid" key={`${key.toString()}_div`}>
-                <MessageBox
+                <Message
                   message={index}
                   fromBulletin={true}
                   key={key.toString()}

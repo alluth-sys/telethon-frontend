@@ -28,7 +28,8 @@ export function messageTimeHandler(timestamp: string | undefined) {
 // TODO : fix escaping char
 export function messageHandler(msg: string) {
   try {
-    msg = msg.replace("\\\\", String.fromCharCode(92));
+    msg = msg.replaceAll("\\\\", String.fromCharCode(92));
+    msg = msg.replaceAll('\\"', '"');
     var result = msg; //.replace('\\"', '"');
     return result;
   } catch (e) {
@@ -96,13 +97,13 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
     return (
       <div
         id={message.message_id.toString()}
-        className="mb-5 mx-10"
+        className="mb-5 mx-2 flex"
         style={getItemStyle(message.sender_id == data!.id)}
       >
         <div
           style={{
             whiteSpace: "pre-wrap",
-            overflowWrap: "break-word",
+            overflowWrap: "anywhere",
           }}
           className="bg-black w-fit max-w-sm h-fit rounded-xl flex"
           onContextMenu={handleContextMenu}
@@ -114,17 +115,17 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
           >
             {messageHandler(message.content)}
           </Typography>
-          <Typography
-            className="pl-3 pr-5"
-            style={{
-              color: "white",
-              alignSelf: "flex-end",
-              fontSize: "10px",
-            }}
-          >
-            {messageTimeHandler(message.timestamp)}
-          </Typography>
         </div>
+        <Typography
+          className="pl-3 pr-5"
+          style={{
+            color: "white",
+            alignSelf: "flex-end",
+            fontSize: "10px",
+          }}
+        >
+          {messageTimeHandler(message.timestamp)}
+        </Typography>
       </div>
     );
   } else if (message.tag == "image") {
