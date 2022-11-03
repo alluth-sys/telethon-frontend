@@ -10,18 +10,24 @@ export interface IFriend {
 }
 interface IData {
   data: IFriend[] | undefined;
+  filteredData: IFriend[] | undefined;
 }
 
 const initialState: IData = {
   data: undefined,
+  filteredData: undefined,
 };
 
 export const friendSlice = createSlice({
   name: "friendData",
   initialState,
   reducers: {
-    setFriendData: (state: IData, action: PayloadAction<IData>) => {
+    setFriendData: (state: IData, action) => {
       state.data = action.payload.data;
+      return state;
+    },
+    setFilteredData: (state: IData, action) => {
+      state.filteredData = action.payload.data;
       return state;
     },
     incrementUnreads: (state: IData, action: PayloadAction<Message>) => {
@@ -62,7 +68,11 @@ export const friendSlice = createSlice({
   },
 });
 
-export const { setFriendData, incrementUnreads, clearUnreads } =
-  friendSlice.actions;
+export const {
+  setFriendData,
+  setFilteredData,
+  incrementUnreads,
+  clearUnreads,
+} = friendSlice.actions;
 
 export default friendSlice.reducer;

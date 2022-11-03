@@ -15,6 +15,7 @@ export interface IData {
 export interface IUser {
   isLogin: boolean;
   data: IData | null;
+  filterShowRank: string;
   friendList: FriendList;
   timeList: Array<number>;
   timeListIndex: number;
@@ -96,6 +97,7 @@ const initialState: IUser = {
   friendList: {
     0: initailFriend,
   },
+  filterShowRank: "All",
   timeList: [],
   timeListIndex: 0,
   focus: 0,
@@ -128,6 +130,10 @@ export const userSlice = createSlice({
     },
     updateUserProfile: (state: IUser, action) => {
       state.data!.profile_pic = action.payload.image;
+      return state;
+    },
+    setFilterShowRank: (state: IUser, action) => {
+      state.filterShowRank = action.payload.rank;
       return state;
     },
     setUserFriendList: (state: IUser, action) => {
@@ -359,6 +365,7 @@ export const {
   removeImportantMessages,
   setFriendPinnedMessage,
   deleteFriendMessage,
+  setFilterShowRank,
 } = userSlice.actions;
 
 export default userSlice.reducer;

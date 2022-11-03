@@ -8,12 +8,16 @@ import CircularProgress from "@mui/material/CircularProgress";
 import useFriendList from "./Hooks/useFriendList";
 import UserBubble from "./Components/UserBubble";
 
+import { RootState } from "@/app/store";
+import { useAppSelector } from "@/app/hooks";
+
 const options = {
   size: 150,
   minSize: 50,
   gutter: 100,
   provideProps: true,
-  numCols: 5,
+  // TODO: Chnage base on screen width
+  numCols: 4,
   fringeWidth: 160,
   yRadius: 130,
   xRadius: 220,
@@ -24,17 +28,37 @@ const options = {
 };
 
 export default function BubblePanel() {
-  const { friendData, getUserFriendList } = useFriendList();
+  const { filteredData, getUserFriendList } = useFriendList();
+  const filterShowRank = useAppSelector(
+    (state: RootState) => state.user.filterShowRank
+  );
 
   React.useEffect(() => {
-    if (friendData) return;
+    if (filteredData) return;
     getUserFriendList();
   }, []);
 
   const getFriends = () => {
-    if (friendData) {
-      return friendData
-        .filter((friend) => friend.unread_count > 0)
+    if (filteredData) {
+      return filteredData
+        .filter((friend) => {
+          let rank: number = 0;
+          if (filterShowRank === "All") {
+            rank = -1;
+          } else if (filterShowRank === "Rank3") {
+            rank = 2;
+          } else if (filterShowRank === "Rank2") {
+            rank = 1;
+          } else if (filterShowRank === "Rank1") {
+            rank = 0;
+          }
+
+          if (rank === -1) {
+            return friend.unread_count > 0;
+          }
+
+          return friend.unread_count > 0 && friend.priority === rank;
+        })
         .map((friend, index) => {
           return <UserBubble {...friend} key={index} />;
         });
@@ -43,7 +67,7 @@ export default function BubblePanel() {
 
   const UserBubbles = getFriends();
 
-  if (friendData) {
+  if (filteredData) {
     return (
       <BubbleUI options={options} className={styles.myBubbleUI}>
         {UserBubbles}
