@@ -154,7 +154,7 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
           minWidth: "200px",
           zIndex: 3,
         }}
-        id="test"
+        id="ContextMenu"
       >
         <li
           onClick={() => {

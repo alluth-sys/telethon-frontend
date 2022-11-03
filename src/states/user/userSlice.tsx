@@ -47,6 +47,7 @@ export type Friend = {
   priority: number;
   initialized_chat: Boolean;
   pinned_message: { message_id: number; context: string };
+  participants: Dictionary<string>;
 };
 
 export type FriendList = {
@@ -75,6 +76,7 @@ const initailFriend: Friend = {
   priority: -1,
   initialized_chat: false,
   pinned_message: { message_id: -1, context: "" },
+  participants: {},
 };
 
 const initailMessage: Message = {
@@ -141,6 +143,7 @@ export const userSlice = createSlice({
         priority: action.payload.priority,
         initialized_chat: false,
         pinned_message: { message_id: -1, context: "" },
+        participants: { ...action.payload.participants },
       };
       state.friendList[action.payload.channel] = friend;
 
