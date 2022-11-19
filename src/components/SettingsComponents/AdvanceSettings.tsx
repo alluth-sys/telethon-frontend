@@ -15,8 +15,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { BASE } from "@/constants/endpoints";
 
-import Skeleton from "@mui/material/Skeleton";
-
 import axios, { AxiosError } from "axios";
 
 const client = axios.create({

@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userSlice from "@/states/user/userSlice";
 import friendSlice from "@/states/user/friendSlice";
+import settingSlice from "@/states/user/settingSlice";
 
 const combinedReducer = combineReducers({
   user: userSlice,
   friend: friendSlice,
+  setting: settingSlice,
 });
 
 // @ts-ignore

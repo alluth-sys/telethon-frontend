@@ -1,5 +1,4 @@
 import React from "react";
-
 import AdvanceSettings from "@/components/SettingsComponents/AdvanceSettings";
 import LanguageSettings from "@/components/SettingsComponents/LanguageSettings";
 import UserInfo from "@/components/SettingsComponents/UserInfo";
