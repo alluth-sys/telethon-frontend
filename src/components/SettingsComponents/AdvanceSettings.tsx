@@ -84,8 +84,6 @@ export default function AdvanceSettings() {
       settingOptions[type] = checked.indexOf(type) == -1 ? 0 : 1;
     }
 
-    console.log(settingOptions);
-
     try {
       const response = await client.post(`/setting/privacy/${UserData?.id}`, {
         ...settingOptions,

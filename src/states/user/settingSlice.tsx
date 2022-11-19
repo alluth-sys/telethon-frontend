@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
 
 interface ISettings {
   lang: string;
-  fontSize: number;
+  fontSize: string;
 }
 
 interface IData {

@@ -16,6 +16,8 @@ import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import { setFilterShowRank } from "@/states/user/userSlice";
 
+import { useTranslation } from "react-i18next";
+
 export default function BubbleSettings() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -24,6 +26,7 @@ export default function BubbleSettings() {
     (state: RootState) => state.user.filterShowRank
   );
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const [showRank, setShowRank] = React.useState(filterShowRank);
 
@@ -47,7 +50,7 @@ export default function BubbleSettings() {
       className="absolute top-20 right-10 bg-gray-800 rounded-2xl hover:bg-blue-500 transition-all duration-200 ease-linear
         cursor-pointer shadow-lg sidebar-icon group"
     >
-      <div className="contact-tooltip group-hover:scale-100">Filter</div>
+      <div className="contact-tooltip group-hover:scale-100">{t("Filter")}</div>
       <IconButton sx={{ color: "white" }} onClick={handleClick}>
         <FilterAltIcon fontSize="large" />
       </IconButton>
@@ -64,7 +67,9 @@ export default function BubbleSettings() {
         >
           <Box width={150} sx={{ p: 2, mt: 1, mx: 1, mb: 1 }}>
             <FormControl>
-              <FormLabel id="rank-radio-buttons-group-label">Show:</FormLabel>
+              <FormLabel id="rank-radio-buttons-group-label">
+                {t("Show")}:
+              </FormLabel>
               <RadioGroup
                 aria-labelledby="rank-radio-buttons-group-label"
                 defaultValue="All"
@@ -74,21 +79,25 @@ export default function BubbleSettings() {
                 }}
                 value={showRank}
               >
-                <FormControlLabel value="All" control={<Radio />} label="All" />
+                <FormControlLabel
+                  value="All"
+                  control={<Radio />}
+                  label={`${t("All")}`}
+                />
                 <FormControlLabel
                   value="Rank3"
                   control={<Radio />}
-                  label="Rank 3"
+                  label={`${t("Rank")} 3`}
                 />
                 <FormControlLabel
                   value="Rank2"
                   control={<Radio />}
-                  label="Rank 2"
+                  label={`${t("Rank")} 2`}
                 />
                 <FormControlLabel
                   value="Rank1"
                   control={<Radio />}
-                  label="Rank 1"
+                  label={`${t("Rank")} 1`}
                 />
               </RadioGroup>
             </FormControl>
@@ -100,7 +109,7 @@ export default function BubbleSettings() {
                   dispatch(setFilterShowRank({ rank: showRank }));
                 }}
               >
-                Apply
+                {t("Apply")}
               </Button>
             </div>
           </Box>
