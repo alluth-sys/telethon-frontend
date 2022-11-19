@@ -64,7 +64,6 @@ const pinMessage = async (
       channel_id: channel_id,
     })
     .then(() => {
-      console.log(context);
       if (context != undefined) {
         const payload = {
           message_id: message_id,
@@ -84,7 +83,6 @@ const deleteMessage = async (
   user_id: number,
   channel_id: number
 ) => {
-  console.log("delete");
   await axios
     .delete(`${BASE}/deleteMessage`, {
       params: {
@@ -117,7 +115,6 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
   let selectedMessageIdInChannel: number;
   let selectedMessageContent: string | undefined;
   let isImportant: boolean | undefined;
-  let mess: any;
 
   if (selectedMessageId.length > 0) {
     selectedMessageChannel = parseInt(selectedMessageId[0].split("_")[0]);
@@ -134,12 +131,6 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
         state.user.friendList[selectedMessageChannel].chat_history[
           selectedMessageIdInChannel
         ]?.isImportant
-    );
-    mess = useAppSelector(
-      (state) =>
-        state.user.friendList[selectedMessageChannel].chat_history[
-          selectedMessageIdInChannel
-        ]
     );
   }
 

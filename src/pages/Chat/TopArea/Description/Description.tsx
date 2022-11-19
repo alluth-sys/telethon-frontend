@@ -28,7 +28,12 @@ export default function Description({
       >
         {(collapsed && <ChevronLeft />) || <ChevronRight />}
       </IconButton>
-      <ProfilePicture uid={friend_name} imgSrc={b64} width={38} height={38} />
+      <ProfilePicture
+        uid={friend_name}
+        imgSrc={`data:image/jpeg;base64,${b64}`}
+        width={38}
+        height={38}
+      />
       <Typography
         style={{ paddingLeft: "20px", fontSize: "20px", stroke: "Bold" }}
       >
