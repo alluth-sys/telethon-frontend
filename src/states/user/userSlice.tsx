@@ -137,7 +137,6 @@ export const userSlice = createSlice({
       return state;
     },
     setUserFriendList: (state: IUser, action) => {
-      // console.log("set user friend list");
       let friend: Friend = {
         channel_id: action.payload.channel,
         username: action.payload.name,
@@ -255,7 +254,6 @@ export const userSlice = createSlice({
       return state;
     },
     updateFriendUnreadCount: (state, action) => {
-      console.log(action.payload);
       state.friendList[action.payload.data.context.channel_id].unread_count = 0;
       return state;
     },

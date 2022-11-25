@@ -15,8 +15,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { BASE } from "@/constants/endpoints";
 
-import Skeleton from "@mui/material/Skeleton";
-
 import axios, { AxiosError } from "axios";
 
 const client = axios.create({
@@ -85,8 +83,6 @@ export default function AdvanceSettings() {
     for (const type of typeList) {
       settingOptions[type] = checked.indexOf(type) == -1 ? 0 : 1;
     }
-
-    console.log(settingOptions);
 
     try {
       const response = await client.post(`/setting/privacy/${UserData?.id}`, {

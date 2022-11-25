@@ -13,11 +13,9 @@ import { SocketContext, socket } from "@/service/Socket";
 import "@/i18n";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <SocketContext.Provider value={socket}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </SocketContext.Provider>
-  </StrictMode>
+  <SocketContext.Provider value={socket}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </SocketContext.Provider>
 );

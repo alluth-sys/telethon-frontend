@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
+
+// Types
 import { Message } from "@/states/user/userSlice";
 
 export interface IFriend {

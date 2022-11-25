@@ -11,12 +11,16 @@ import { setUserFocus } from "@/states/user/userSlice";
 import { useAppDispatch } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 export default function ContactList() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const { t } = useTranslation();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -33,7 +37,9 @@ export default function ContactList() {
       className="absolute top-5 right-10 bg-gray-800 rounded-2xl hover:bg-blue-500 transition-all duration-200 ease-linear
         cursor-pointer shadow-lg sidebar-icon group"
     >
-      <div className="contact-tooltip group-hover:scale-100">Contacts</div>
+      <div className="contact-tooltip group-hover:scale-100">
+        {t("Contacts")}
+      </div>
       <IconButton sx={{ color: "white" }} onClick={handleClick}>
         <PeopleIcon fontSize="large" />
       </IconButton>

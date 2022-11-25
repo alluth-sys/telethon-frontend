@@ -11,7 +11,6 @@ const fetchSrc = async (message: any, user_id: number | undefined) => {
   if (localStorage.getItem(message.sender_id) != null) {
     return localStorage.getItem(message.sender_id);
   } else {
-    console.log("fecth photo for", message.id);
     await axios
       .get(`${BASE}/channel/photo/${user_id}`, {
         params: {
@@ -19,7 +18,6 @@ const fetchSrc = async (message: any, user_id: number | undefined) => {
         },
       })
       .then((res) => {
-        console.log(res);
         localStorage.setItem(message.sender_id, res.data.context[0].b64);
         return res.data.context[0].b64;
       })
@@ -41,6 +39,7 @@ export default function Message({ message, fromBulletin }: MessageBoxProps) {
       setImgSrc(res);
     });
   }, []);
+
   return (
     <>
       {(message.sender_id == user_id && (

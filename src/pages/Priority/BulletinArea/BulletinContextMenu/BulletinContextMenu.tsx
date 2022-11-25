@@ -36,14 +36,20 @@ export default function BulletinContextMenu() {
 
   let selectedMessageChannel: number;
   let selectedMessageIdInChannel: number;
+  let selectedMessageContent: string | undefined;
 
   if (selectedMessageId != undefined) {
     selectedMessageChannel = parseInt(selectedMessageId[0].split("_")[0]);
     selectedMessageIdInChannel = parseInt(selectedMessageId[0].split("_")[1]);
+
+    selectedMessageContent = useAppSelector(
+      (state) =>
+        state.user.friendList[selectedMessageChannel].chat_history[
+          selectedMessageIdInChannel
+        ]?.content
+    );
   }
   const user_id = useAppSelector((state) => state.user.data!.id);
-
-  const selectedMessageContent = undefined;
 
   return (
     <ul
@@ -55,7 +61,7 @@ export default function BulletinContextMenu() {
         minWidth: "200px",
         zIndex: 3,
       }}
-      id="test"
+      id="ContextMenu"
     >
       <li
         onClick={() => {

@@ -1,9 +1,10 @@
 import { Message, setSelectedMessageId } from "@/states/user/userSlice";
 import { Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import "./MessageBox.css";
 import moment from "moment";
+import lottie from "lottie-web";
 
 import {
   setUserShowContextMenu,
@@ -132,7 +133,7 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
     return (
       <div
         id={message.message_id.toString()}
-        className="mb-5 mx-10 grid"
+        className="mb-5 mx-2 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
         <div
@@ -154,10 +155,32 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
       </div>
     );
   } else if (message.tag == "gif") {
+    const ref = useRef<HTMLHeadingElement>(null);
+
+    useEffect(() => {
+      const d = message.content;
+      const container = document!.getElementById(
+        `${message.message_id.toString()}canvas`
+      );
+      var animData = {
+        container: container,
+        animType: "html",
+        loop: 1,
+        prerender: true,
+        autoplay: true,
+        animationData: JSON.parse(d),
+      };
+      // @ts-ignore
+      let animation = lottie.loadAnimation(animData);
+      container?.addEventListener("click", () => {
+        animation.playSegments([0, 90], false);
+      });
+    }, [ref]);
+
     return (
       <div
         id={message.message_id.toString()}
-        className="mb-5 mx-10 grid"
+        className="mb-5 mx-2 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
         <div
@@ -167,13 +190,14 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
             position: "relative",
           }}
           className=" w-fit max-w-sm h-fit rounded-xl grid"
+          id="wrapper"
           onContextMenu={handleContextMenu}
         >
-          <img
-            src={`data:image/gif;base64,${message.content}`}
-            style={{ borderRadius: 10 }}
-            id={message.message_id.toString()}
-          />
+          <div
+            id={message.message_id.toString() + "canvas"}
+            style={{ width: "300px", height: "100px" }}
+            ref={ref}
+          ></div>
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>
         </div>
       </div>
@@ -182,7 +206,7 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
     return (
       <div
         id={message.message_id.toString()}
-        className="mb-5 mx-10 grid"
+        className="mb-5 mx-2 grid"
         style={getItemStyle(message.sender_id == data!.id)}
       >
         <div

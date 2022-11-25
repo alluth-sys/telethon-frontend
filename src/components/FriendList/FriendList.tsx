@@ -12,7 +12,7 @@ import ProfilePicture from "@/components/Message/ProfilePicture/ProfilePicture";
 import { BASE } from "@/constants/endpoints";
 import { scrollBarAnimation } from "@/pages/Chat/MessageArea/helpers";
 
-export function wordsFilter(words: string, limit: number = 14) {
+export function wordsFilter(words: string, limit: number = 10) {
   if (words !== null) {
     const msg = words.replace("\\\\", String.fromCharCode(92));
     var result = msg; //.replace('\\"', '"');
@@ -119,7 +119,6 @@ export function FriendBlock({ channel_id }: FriendBlockArg) {
             style={{
               height: "20px",
               minHeight: "20px",
-              width: "320px",
               overflow: "hidden",
             }}
           >
