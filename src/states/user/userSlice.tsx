@@ -145,7 +145,7 @@ export const userSlice = createSlice({
         unread_count: action.payload.unread_count,
         last_message: action.payload.last_message,
         chat_history: {},
-        oldest_message_id: 0,
+        oldest_message_id: -1,
         priority: action.payload.priority,
         initialized_chat: false,
         pinned_message: { message_id: -1, context: "" },
@@ -230,7 +230,7 @@ export const userSlice = createSlice({
           };
           state.friendList[channel_id].chat_history = newhistory;
         }
-        if (i == action.payload.data.context.length - 1) {
+        if (state.friendList[channel_id].oldest_message_id > message_id || state.friendList[channel_id].oldest_message_id === -1) {
           state.friendList[channel_id].oldest_message_id = message_id;
         }
       }
