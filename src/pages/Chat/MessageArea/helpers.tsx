@@ -27,6 +27,34 @@ export const getChatHistory = async (
   });
 };
 
+export const getChatPinnedHistory = async (
+  target_channel_id: number,
+  user_id: number | undefined,
+  message_id: number,
+  limit = -1
+) => {
+  return new Promise(async function (resolve, reject) {
+    if (target_channel_id == 0) {
+      return;
+    }
+    await axios
+      .get(`${BASE}/messages`, {
+        params: {
+          user_id: user_id,
+          channel_id: target_channel_id,
+          message_id: message_id,
+          limit: limit
+        },
+      })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        console.log(e), reject(e);
+      });
+  });
+};
+
 export const getChatPinnedMessage = async (
   target_channel_id: number,
   user_id: number | undefined

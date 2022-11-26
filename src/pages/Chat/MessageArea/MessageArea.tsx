@@ -171,7 +171,7 @@ export default function MessageArea({ focus }: any) {
             }
             previous_message_timestamp = current_message_timestamp;
             return (
-              <div className="grid" key={`${key.toString()}_div`}>
+              <div className="grid" key={`${key.toString()}_div`} id={"message" + String(index?.message_id)}>
                 {!sameDay && previous_message_timestamp != "Invalid date" && (
                   <Timeindicator
                     timestamp={current_message_timestamp}
