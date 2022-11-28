@@ -8,7 +8,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAppSelector } from "@/app/hooks";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { setUserLoggedOut } from "@/states/user/userSlice";
 
 // Router
@@ -29,20 +29,26 @@ export default function SideBar() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const SignOutHandler = () => {
-    axios
-      .post(`${BASE}/logout`, {
+  const SignOutHandler = async () => {
+    try {
+      const response = await axios.post(`${BASE}/logout`, {
         uid: UserData?.id,
-      })
-      .then((res) => {
-        console.log(res);
+      });
+
+      if (response.data.code === 200) {
+        console.log(response);
         dispatch(setUserLoggedOut());
         localStorage.clear();
         navigate("/signin");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      }
+    } catch (error) {
+      const errors = error as Error | AxiosError;
+      if (axios.isAxiosError(errors)) {
+        Promise.reject(errors.toJSON());
+      } else {
+        Promise.reject(Error);
+      }
+    }
   };
 
   return (
