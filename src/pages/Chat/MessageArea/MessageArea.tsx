@@ -6,6 +6,7 @@ import ContextMenu from "./ContextMenu/ContextMenu";
 import {
   setFriendChatHistory,
   setFriendPinnedMessage,
+  setSearchingMessage,
   setUserFreindListInitialized,
   setUserShowContextMenu,
 } from "@/states/user/userSlice";
@@ -16,6 +17,7 @@ import Loader from "./Loader/Loader";
 import {
   computeDistance,
   getChatHistory,
+  getChatPinnedHistory,
   getChatPinnedMessage,
   scrollBarAnimation,
 } from "./helpers";
@@ -31,16 +33,17 @@ export default function MessageArea({ focus }: any) {
   const contextMenuAnchorPoint = useAppSelector(
     (state) => state.user.contextMenuAnchorPoint
   );
-
   const oldest_message_id = useAppSelector(
     (state) => state.user.friendList[focus].oldest_message_id
   );
-
   const initialized_chat = useAppSelector(
     (state) => state.user.friendList[focus].initialized_chat
   );
   const chat_history = useAppSelector(
     (state) => state.user.friendList[focus].chat_history
+  );
+  const searchingMessage = useAppSelector(
+    (state) => state.user.searchingMessage
   );
 
   const [scrolled, setScrolled] = useState(false);
@@ -51,6 +54,36 @@ export default function MessageArea({ focus }: any) {
       dispatch(setUserShowContextMenu(false));
     }
   };
+
+  useEffect(() => {
+    if (searchingMessage == "-1") {
+      return;
+    }
+    const channel: number = parseInt(searchingMessage.split("_")[0]);
+    const message_id: number = parseInt(searchingMessage.split("_")[1]);
+    const messageArea = document.getElementById("messageArea");
+    if (oldest_message_id > message_id) {
+      messageArea!.scrollTop = 0;
+      getChatPinnedHistory(focus, user_id, message_id).then((res) => {
+        console.log(res);
+        dispatch(setFriendChatHistory(res));
+        scrollBarAnimation();
+      });
+    } else {
+      const pinned_message_element = document.getElementById(
+        "message" + String(message_id)
+      );
+      console.log(messageArea);
+      console.log(pinned_message_element);
+      setTimeout(
+        () => (messageArea!.scrollTop = pinned_message_element!.offsetTop + 1),
+        500
+      );
+      console.log(pinned_message_element!.offsetTop);
+      scrollBarAnimation();
+      dispatch(setSearchingMessage(-1));
+    }
+  }, [searchingMessage]);
 
   useEffect(() => {
     if (!showContextMenu) {
@@ -92,7 +125,7 @@ export default function MessageArea({ focus }: any) {
       return;
     }
     const curr = document.getElementById("messageArea");
-    if (curr!.scrollTop != 0) {
+    if (curr!.scrollTop + curr!.clientHeight + 200 > curr!.scrollHeight) {
       setTimeout(() => {
         curr!.scrollTop = curr!.scrollHeight;
       }, 100);
@@ -111,7 +144,6 @@ export default function MessageArea({ focus }: any) {
       return;
     } else {
       var curr = document.getElementById("messageArea");
-
       if (curr!.scrollHeight - curr!.scrollTop <= curr!.clientHeight + 2) {
         setScrolled(false);
       } else {
@@ -130,13 +162,11 @@ export default function MessageArea({ focus }: any) {
 
       if (curr?.scrollTop === 0) {
         setLoading(true);
-        for (let i = 0; i < 20; i++) {
-          getChatHistory(focus, user_id, oldest_message_id - i).then((res) => {
-            dispatch(setFriendChatHistory(res));
-            scrollBarAnimation();
-            setLoading(false);
-          });
-        }
+        getChatHistory(focus, user_id, oldest_message_id).then((res) => {
+          dispatch(setFriendChatHistory(res));
+          scrollBarAnimation();
+          setLoading(false);
+        });
       }
     }
   };
@@ -171,7 +201,11 @@ export default function MessageArea({ focus }: any) {
             }
             previous_message_timestamp = current_message_timestamp;
             return (
-              <div className="grid" key={`${key.toString()}_div`} id={"message" + String(index?.message_id)}>
+              <div
+                className="grid"
+                key={`${key.toString()}_div`}
+                id={"message" + String(index?.message_id)}
+              >
                 {!sameDay && previous_message_timestamp != "Invalid date" && (
                   <Timeindicator
                     timestamp={current_message_timestamp}

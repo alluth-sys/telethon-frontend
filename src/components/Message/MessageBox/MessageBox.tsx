@@ -1,4 +1,10 @@
-import { Message, setSelectedMessageId } from "@/states/user/userSlice";
+import {
+  Message,
+  setFriendChatHistory,
+  setSearchingMessage,
+  setSelectedMessageId,
+  setUserFocus,
+} from "@/states/user/userSlice";
 import { Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState, useCallback, useRef, useEffect } from "react";
@@ -10,6 +16,7 @@ import {
   setUserShowContextMenu,
   setUserContextMenuAnchorPoint,
 } from "@/states/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export function timeHandler(timestamp: string | undefined) {
   const time = moment(timestamp);
@@ -48,6 +55,7 @@ type MessageBoxProps = { message: any; fromBulletin: boolean };
 export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
   const data = useAppSelector((state) => state.user.data);
   const focus = useAppSelector((state) => state.user.focus);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -90,6 +98,18 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
     ]
   );
 
+  const handleOnClick = (fromBulletin: boolean, message_id: string) => {
+    if (!fromBulletin) {
+      return;
+    } else {
+      const channel: number = parseInt(message_id.split("_")[0]);
+      dispatch(setSearchingMessage(message_id));
+
+      dispatch(setUserFocus(channel));
+      navigate("/chat");
+    }
+  };
+
   // handle dummy history
   if (message.channel_id == -1 && message.tag == "null") {
     return <></>;
@@ -108,6 +128,9 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
           }}
           className="bg-black w-fit max-w-sm h-fit rounded-xl flex"
           onContextMenu={handleContextMenu}
+          onClick={() => {
+            handleOnClick(fromBulletin, message.message_id);
+          }}
         >
           <Typography
             style={{ color: "white" }}
@@ -144,6 +167,9 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
           }}
           className=" w-fit max-w-sm h-fit rounded-xl grid"
           onContextMenu={handleContextMenu}
+          onClick={() => {
+            handleOnClick(fromBulletin, message.message_id);
+          }}
         >
           <img
             src={`data:image/jpeg;base64,${message.content}`}

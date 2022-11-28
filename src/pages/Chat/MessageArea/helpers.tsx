@@ -43,7 +43,7 @@ export const getChatPinnedHistory = async (
           user_id: user_id,
           channel_id: target_channel_id,
           message_id: message_id,
-          limit: limit
+          limit: limit,
         },
       })
       .then((res) => {
