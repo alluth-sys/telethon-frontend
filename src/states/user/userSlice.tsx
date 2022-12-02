@@ -152,6 +152,12 @@ export const userSlice = createSlice({
         pinned_message: { message_id: -1, context: "" },
         participants: { ...action.payload.participants },
       };
+      if (state.friendList[action.payload.channel] !== undefined) {
+        friend.chat_history = {
+          ...state.friendList[action.payload.channel].chat_history,
+        };
+      }
+
       state.friendList[action.payload.channel] = friend;
 
       if (state.timeList.findIndex((ele) => ele == friend.channel_id) == -1) {
@@ -298,11 +304,15 @@ export const userSlice = createSlice({
             ...action.payload.data.context[i],
             isImportant: true,
           };
-          message.message_id = `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`;
+          let important_message = {
+            ...message,
+            message_id: `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`,
+          };
+          // message.message_id = `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`;
           state.importantMessages[
             `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`
-          ] = message;
-
+          ] = important_message;
+          // message.message_id = action.payload.data.context[i].message_id
           if (
             state.friendList[action.payload.data.context[i].channel_id] !=
             undefined

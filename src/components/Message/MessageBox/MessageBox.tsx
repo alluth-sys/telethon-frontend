@@ -55,6 +55,7 @@ type MessageBoxProps = { message: any; fromBulletin: boolean };
 export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
   const data = useAppSelector((state) => state.user.data);
   const focus = useAppSelector((state) => state.user.focus);
+  const friendList = useAppSelector((state) => state.user.friendList);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -99,7 +100,8 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
   );
 
   const handleOnClick = (fromBulletin: boolean, message_id: string) => {
-    if (!fromBulletin) {
+    const channel_id: number = parseInt(message_id.split("_")[0]);
+    if (!fromBulletin || friendList[channel_id] === undefined) {
       return;
     } else {
       const channel: number = parseInt(message_id.split("_")[0]);
