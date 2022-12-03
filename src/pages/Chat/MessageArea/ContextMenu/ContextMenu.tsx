@@ -3,11 +3,13 @@ import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import {
   deleteFriendMessage,
+  Message,
   removeImportantMessages,
   setFriendPinnedMessage,
   setImportantMessages,
   setSelectedMessageId,
 } from "@/states/user/userSlice";
+import { Dictionary } from "@reduxjs/toolkit";
 
 const handleImportantMessage = async (
   dispatch: Function,
@@ -116,7 +118,7 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
   let selectedMessageChannel: number;
   let selectedMessageIdInChannel: number;
   let selectedMessageContent: string | undefined;
-  let isImportant: boolean | undefined;
+  let ImportantMessage: Dictionary<Message> | undefined;
 
   if (selectedMessageId.length > 0) {
     selectedMessageChannel = parseInt(selectedMessageId[0].split("_")[0]);
@@ -128,12 +130,7 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
           selectedMessageIdInChannel
         ]?.content
     );
-    isImportant = useAppSelector(
-      (state) =>
-        state.user.friendList[selectedMessageChannel].chat_history[
-          selectedMessageIdInChannel
-        ]?.isImportant
-    );
+    ImportantMessage = useAppSelector((state) => state.user.importantMessages);
   }
 
   if (showContextMenu) {
@@ -192,7 +189,7 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
         </li>
         <li
           onClick={() => {
-            if (!isImportant) {
+            if (ImportantMessage![`${selectedMessageId[0]}`] == undefined) {
               handleImportantMessage(
                 dispatch,
                 selectedMessageIdInChannel,
@@ -209,9 +206,7 @@ export default function ContextMenu({ setReplying }: ContextMenuProps) {
             }
           }}
         >
-          {(isImportant && <a>Remove from important message</a>) || (
-            <a>Set as important message</a>
-          )}
+          <a>Remove / Set as important message</a>
         </li>
       </ul>
     );

@@ -1,4 +1,5 @@
 import { BASE } from "@/constants/endpoints";
+import { setFriendChatHistory } from "@/states/user/userSlice";
 import axios from "axios";
 
 export const getChatHistory = async (
@@ -31,6 +32,7 @@ export const getChatPinnedHistory = async (
   target_channel_id: number,
   user_id: number | undefined,
   message_id: number,
+  dispatch: Function,
   limit = -1
 ) => {
   return new Promise(async function (resolve, reject) {
@@ -47,6 +49,7 @@ export const getChatPinnedHistory = async (
         },
       })
       .then((res) => {
+        dispatch(setFriendChatHistory(res));
         resolve(res);
       })
       .catch((e) => {

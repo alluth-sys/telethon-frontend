@@ -58,7 +58,7 @@ export default function chat() {
           <FriendList />
         </Collapse>
       </div>
-      <div className="grow grid content-start bg-[url('./resources/bg5.png')]">
+      <div className="grow grid content-start ">
         {(
           <TopArea
             collapsed={collapsed}

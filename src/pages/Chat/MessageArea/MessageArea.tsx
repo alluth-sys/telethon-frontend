@@ -62,11 +62,11 @@ export default function MessageArea({ focus }: any) {
     const channel: number = parseInt(searchingMessage.split("_")[0]);
     const message_id: number = parseInt(searchingMessage.split("_")[1]);
     const messageArea = document.getElementById("messageArea");
-    if (oldest_message_id < message_id) {
+    if (oldest_message_id > message_id || oldest_message_id == -1) {
       messageArea!.scrollTop = 0;
-      getChatPinnedHistory(focus, user_id, message_id).then((res) => {
-        dispatch(setFriendChatHistory(res));
-        scrollBarAnimation();
+      getChatPinnedHistory(focus, user_id, message_id, dispatch).then(() => {
+        const element = document.getElementById(message_id.toString());
+        element?.scrollIntoView();
       });
     } else {
       const pinned_message_element = document.getElementById(
@@ -98,6 +98,13 @@ export default function MessageArea({ focus }: any) {
         dispatch(setFriendPinnedMessage(payload));
       }
     });
+    if (!initialized_chat) {
+      getChatHistory(focus, user_id, oldest_message_id).then((res) => {
+        dispatch(setFriendChatHistory(res));
+        scrollBarAnimation();
+        setLoading(false);
+      });
+    }
     setReplying(false);
   }, [focus]);
 
@@ -126,7 +133,7 @@ export default function MessageArea({ focus }: any) {
         curr!.scrollTop = curr!.scrollHeight;
       }, 100);
       scrollBarAnimation();
-    } else if (initialized_chat == false) {
+    } else if (!initialized_chat) {
       curr!.scrollTop = curr!.scrollHeight;
       scrollBarAnimation();
     } else {

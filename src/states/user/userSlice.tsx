@@ -285,9 +285,9 @@ export const userSlice = createSlice({
       let message: Message | undefined = initailMessage;
       // the action is dispatched by local change
       if (action.payload.channel_id != undefined) {
-        state.friendList[action.payload.channel_id].chat_history[
-          action.payload.message_id
-        ]!.isImportant = true;
+        // state.friendList[action.payload.channel_id].chat_history[
+        //   action.payload.message_id
+        // ]!.isImportant = true;
 
         message =
           state.friendList[action.payload.channel_id].chat_history[
@@ -313,31 +313,31 @@ export const userSlice = createSlice({
             `${action.payload.data.context[i].channel_id}_${action.payload.data.context[i].message_id}`
           ] = important_message;
           // message.message_id = action.payload.data.context[i].message_id
-          if (
-            state.friendList[action.payload.data.context[i].channel_id] !=
-            undefined
-          ) {
-            const newhistory = {
-              ...state.friendList[action.payload.data.context[i].channel_id]
-                .chat_history,
-              [action.payload.data.context[i].message_id]: message,
-            };
+          // if (
+          //   state.friendList[action.payload.data.context[i].channel_id] !=
+          //   undefined
+          // ) {
+          //   const newhistory = {
+          //     ...state.friendList[action.payload.data.context[i].channel_id]
+          //       .chat_history,
+          //     [action.payload.data.context[i].message_id]: message,
+          //   };
 
-            state.friendList[
-              action.payload.data.context[i].channel_id
-            ].chat_history = newhistory;
-          } else {
-            var tempFriend: Friend = { ...initailFriend };
-            tempFriend.channel_id = action.payload.data.context[i].channel_id;
-            tempFriend.chat_history;
-            const newhistory = {
-              ...tempFriend.chat_history,
-              [action.payload.data.context[i].message_id]: message,
-            };
-            tempFriend.chat_history = newhistory;
-            state.friendList[action.payload.data.context[i].channel_id] =
-              tempFriend;
-          }
+          //   state.friendList[
+          //     action.payload.data.context[i].channel_id
+          //   ].chat_history = newhistory;
+          // } else {
+          //   var tempFriend: Friend = { ...initailFriend };
+          //   tempFriend.channel_id = action.payload.data.context[i].channel_id;
+          //   tempFriend.chat_history;
+          //   const newhistory = {
+          //     ...tempFriend.chat_history,
+          //     [action.payload.data.context[i].message_id]: message,
+          //   };
+          //   tempFriend.chat_history = newhistory;
+          //   state.friendList[action.payload.data.context[i].channel_id] =
+          //     tempFriend;
+          // }
         }
         return state;
       }
