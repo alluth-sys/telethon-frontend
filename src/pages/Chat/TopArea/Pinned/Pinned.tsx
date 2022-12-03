@@ -26,12 +26,14 @@ export default function Pinned({ focus }: PinnedProp) {
     const messageArea = document.getElementById("messageArea");
     if (oldest_message_id > pinned_message.message_id) {
       messageArea!.scrollTop = 0;
-      getChatPinnedHistory(focus, user_id, pinned_message.message_id).then(
-        (res) => {
-          dispatch(setFriendChatHistory(res));
-          scrollBarAnimation();
-        }
-      );
+      getChatPinnedHistory(
+        focus,
+        user_id,
+        pinned_message.message_id,
+        dispatch
+      ).then(() => {
+        scrollBarAnimation();
+      });
     } else {
       const pinned_message_element = document.getElementById(
         "message" + String(pinned_message.message_id)
