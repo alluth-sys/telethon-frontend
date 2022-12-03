@@ -28,7 +28,6 @@ export default function Pinned({ focus }: PinnedProp) {
       messageArea!.scrollTop = 0;
       getChatPinnedHistory(focus, user_id, pinned_message.message_id).then(
         (res) => {
-          console.log(res);
           dispatch(setFriendChatHistory(res));
           scrollBarAnimation();
         }
@@ -37,8 +36,6 @@ export default function Pinned({ focus }: PinnedProp) {
       const pinned_message_element = document.getElementById(
         "message" + String(pinned_message.message_id)
       );
-      console.log(messageArea);
-      console.log(pinned_message_element);
       messageArea!.scrollTop = pinned_message_element!.offsetTop + 1;
       scrollBarAnimation();
     }

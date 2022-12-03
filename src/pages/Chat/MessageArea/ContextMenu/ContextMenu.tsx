@@ -45,7 +45,9 @@ const removeImportantMessage = async (
       },
     })
     .then((res) => {
-      dispatch(removeImportantMessages({ message_id: message_id }));
+      dispatch(
+        removeImportantMessages({ message_id: `${channel_id}_${message_id}` })
+      );
     })
     .catch((e) => console.log(e));
 };

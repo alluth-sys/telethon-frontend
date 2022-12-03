@@ -62,24 +62,20 @@ export default function MessageArea({ focus }: any) {
     const channel: number = parseInt(searchingMessage.split("_")[0]);
     const message_id: number = parseInt(searchingMessage.split("_")[1]);
     const messageArea = document.getElementById("messageArea");
-    if (oldest_message_id > message_id) {
+    if (oldest_message_id < message_id) {
       messageArea!.scrollTop = 0;
       getChatPinnedHistory(focus, user_id, message_id).then((res) => {
-        console.log(res);
         dispatch(setFriendChatHistory(res));
         scrollBarAnimation();
       });
     } else {
       const pinned_message_element = document.getElementById(
-        "message" + String(message_id)
+        String(message_id)
       );
-      console.log(messageArea);
-      console.log(pinned_message_element);
       setTimeout(
         () => (messageArea!.scrollTop = pinned_message_element!.offsetTop + 1),
         500
       );
-      console.log(pinned_message_element!.offsetTop);
       scrollBarAnimation();
       dispatch(setSearchingMessage(-1));
     }
