@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { BASE } from "@/constants/endpoints";
 
 import { SocketContext } from "@/service/Socket";
+import { access_token_header } from "@/constants/access_token";
 
 export default function LoginForm() {
   const [phoneNumber, setPhoneNumber] = React.useState<String | null>("");
@@ -43,17 +44,24 @@ export default function LoginForm() {
   const signInHandler = async () => {
     setOnLoading(true);
     setOnSuccess(false);
-
     try {
-      const response = await axios.post(`${BASE}/login`, {
-        phone: phoneNumber,
-      });
+      const response = await axios.post(
+        `${BASE}/login`,
+        {
+          phone: phoneNumber,
+        },
+        { headers: access_token_header() }
+      );
 
       if (response.data.code == 200) {
         setOnSuccess(true);
       } else if (response.data.code == 202) {
         setOnSuccess(true);
         dispatch(setUserAuthed(response.data.context));
+        localStorage.setItem(
+          "access_token",
+          JSON.stringify(response.data.context.access_token)
+        );
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
         navigate("/home");
         socket.emit("conn", response.data.context.id);
@@ -78,6 +86,10 @@ export default function LoginForm() {
       });
       if (response.data.code == 200) {
         dispatch(setUserAuthed(response.data.context));
+        localStorage.setItem(
+          "access_token",
+          JSON.stringify(response.data.context.access_token)
+        );
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
         navigate("/home");
         socket.emit("conn", response.data.context.id);

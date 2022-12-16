@@ -1,3 +1,4 @@
+import { access_token_header } from "@/constants/access_token";
 import { BASE } from "@/constants/endpoints";
 import { setFriendChatHistory } from "@/states/user/userSlice";
 import axios from "axios";
@@ -18,6 +19,7 @@ export const getChatHistory = async (
           channel_id: target_channel_id,
           message_id: message_id,
         },
+        headers: access_token_header(),
       })
       .then((res) => {
         resolve(res);
@@ -47,6 +49,7 @@ export const getChatPinnedHistory = async (
           message_id: message_id,
           limit: limit,
         },
+        headers: access_token_header(),
       })
       .then((res) => {
         dispatch(setFriendChatHistory(res));
@@ -72,6 +75,7 @@ export const getChatPinnedMessage = async (
           user_id: user_id,
           channel_id: target_channel_id,
         },
+        headers: access_token_header(),
       })
       .then((res) => {
         resolve(res);

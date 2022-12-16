@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { BASE } from "@/constants/endpoints";
 
 import axios, { AxiosError } from "axios";
+import { access_token_header } from "@/constants/access_token";
 
 const client = axios.create({
   baseURL: BASE,
@@ -47,7 +48,9 @@ export default function AdvanceSettings() {
   const fetchData = async () => {
     setOnLoad(true);
     try {
-      const response = await client.get(`/setting/privacy/${UserData?.id}`);
+      const response = await client.get(`/setting/privacy/${UserData?.id}`, {
+        headers: access_token_header(),
+      });
 
       let i = 0;
       for (const privacy of response.data.context) {
@@ -85,9 +88,13 @@ export default function AdvanceSettings() {
     }
 
     try {
-      const response = await client.post(`/setting/privacy/${UserData?.id}`, {
-        ...settingOptions,
-      });
+      const response = await client.post(
+        `/setting/privacy/${UserData?.id}`,
+        {
+          ...settingOptions,
+        },
+        { headers: access_token_header() }
+      );
       if (response.data.code === 200) {
         setSaveLoad(false);
         setSuccess(true);

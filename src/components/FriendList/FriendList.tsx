@@ -11,6 +11,7 @@ import { timeHandler } from "@/components/Message/MessageBox/MessageBox";
 import ProfilePicture from "@/components/Message/ProfilePicture/ProfilePicture";
 import { BASE } from "@/constants/endpoints";
 import { scrollBarAnimation } from "@/pages/Chat/MessageArea/helpers";
+import { access_token_header } from "@/constants/access_token";
 
 export function wordsFilter(words: string, limit: number = 10) {
   if (words !== null) {
@@ -57,6 +58,7 @@ export async function getChatHistory(
         channel_id: target_channel_id,
         message_id: message_id,
       },
+      headers: access_token_header(),
     })
     .then((res) => {
       dispatch(setFriendChatHistory(res));

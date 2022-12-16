@@ -27,6 +27,7 @@ import { BASE } from "@/constants/endpoints";
 // Notification
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { access_token_header } from "@/constants/access_token";
 
 type TProps = { data: IData | null; isLogin: boolean };
 
@@ -44,6 +45,7 @@ export default function PrivateRoute({ isLogin, data }: TProps) {
         params: {
           user_id: user_id,
         },
+        headers: access_token_header(),
       });
     } catch (error) {
       const errors = error as Error | AxiosError;

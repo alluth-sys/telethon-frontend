@@ -20,6 +20,7 @@ import { updateUserProfile } from "@/states/user/userSlice";
 import Avatar from "@mui/material/Avatar";
 import axios, { AxiosError } from "axios";
 import { BASE } from "@/constants/endpoints";
+import { access_token_header } from "@/constants/access_token";
 
 const style = {
   position: "absolute" as "absolute",
@@ -67,9 +68,13 @@ export default function ProfilePictureEditModal({
 
     setLoading(true);
     try {
-      const response = await client.post(`/setting/photo/${UserData?.id}`, {
-        photo: image?.split(",")[1],
-      });
+      const response = await client.post(
+        `/setting/photo/${UserData?.id}`,
+        {
+          photo: image?.split(",")[1],
+        },
+        { headers: access_token_header() }
+      );
 
       if (response.data.code === 200) {
         dispatch(

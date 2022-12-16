@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import MessageBox from "./MessageBox/MessageBox";
 import ProfilePicture from "./ProfilePicture/ProfilePicture";
+import { access_token_header } from "@/constants/access_token";
 
 type MessageBoxProps = { message: any; fromBulletin: boolean };
 
@@ -16,6 +17,7 @@ const fetchSrc = async (message: any, user_id: number | undefined) => {
         params: {
           user_list: message.sender_id,
         },
+        headers: access_token_header(),
       })
       .then((res) => {
         localStorage.setItem(message.sender_id, res.data.context[0].b64);

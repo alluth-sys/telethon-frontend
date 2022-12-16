@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
 
 import { SocketContext } from "@/service/Socket";
+import { access_token_header } from "@/constants/access_token";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -30,13 +31,22 @@ export default function SignIn() {
   const checkConnection = async () => {
     setOpen(true);
     let uid = localStorage.getItem("uid");
+    let access_token = localStorage.getItem("access_token");
     if (uid) {
       try {
-        const response = await axios.post(`${BASE}/checkConnection`, {
-          uid: uid,
-        });
+        const response = await axios.post(
+          `${BASE}/checkConnection`,
+          {
+            uid: uid,
+          },
+          { headers: access_token_header() }
+        );
         if (response.data.code == 200) {
           dispatch(setUserAuthed(response.data.context));
+          localStorage.setItem(
+            "access_token",
+            JSON.stringify(response.data.context.access_token)
+          );
           navigate("/home");
           socket.emit("conn", response.data.context.id);
         }

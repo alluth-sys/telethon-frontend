@@ -8,6 +8,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setFriendLatestMessage } from "@/states/user/userSlice";
 import { BASE } from "@/constants/endpoints";
+import { access_token_header } from "@/constants/access_token";
 
 export default function InputArea() {
   // state need to be organized :
@@ -25,11 +26,15 @@ export default function InputArea() {
       return;
     }
     await axios
-      .post(`${BASE}/send`, {
-        user_id: data!.id,
-        channel_id: focus,
-        message: text,
-      })
+      .post(
+        `${BASE}/send`,
+        {
+          user_id: data!.id,
+          channel_id: focus,
+          message: text,
+        },
+        { headers: access_token_header() }
+      )
       .then((response) => dispatch(setFriendLatestMessage(response)))
       .catch((error) => console.log(error));
   }
@@ -46,6 +51,7 @@ export default function InputArea() {
           channel_id,
         },
         headers: {
+          ...access_token_header(),
           "Content-Type": "multipart/form-data",
         },
       })

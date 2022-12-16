@@ -5,6 +5,7 @@ import { BASE } from "@/constants/endpoints";
 import { setImportantMessages } from "@/states/user/userSlice";
 import BulletinContextMenu from "./BulletinContextMenu/BulletinContextMenu";
 import Message from "@/components/Message/Message";
+import { access_token_header } from "@/constants/access_token";
 
 export default function BulletinArea() {
   const important_messages = useAppSelector(
@@ -37,7 +38,9 @@ export default function BulletinArea() {
   React.useEffect(() => {
     async function fetch() {
       await axios
-        .get(`${BASE}/channel/important_msg/${user_id}`)
+        .get(`${BASE}/channel/important_msg/${user_id}`, {
+          headers: access_token_header(),
+        })
         .then((res) => {
           dispatch(setImportantMessages(res));
         })
