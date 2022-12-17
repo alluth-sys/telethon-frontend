@@ -19,6 +19,7 @@ import { BASE } from "@/constants/endpoints";
 
 // i18n
 import { useTranslation } from "react-i18next";
+import { access_token_header } from "@/constants/access_token";
 
 type SideBarIconProps = { icon: any; text: String; path: String };
 
@@ -31,9 +32,13 @@ export default function SideBar() {
 
   const SignOutHandler = async () => {
     try {
-      const response = await axios.post(`${BASE}/logout`, {
-        uid: UserData?.id,
-      });
+      const response = await axios.post(
+        `${BASE}/logout`,
+        {
+          uid: UserData?.id,
+        },
+        { headers: access_token_header() }
+      );
 
       if (response.data.code === 200) {
         console.log(response);

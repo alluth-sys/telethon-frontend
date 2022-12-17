@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import axios from "axios";
 import { BASE } from "@/constants/endpoints";
 import { removeImportantMessages } from "@/states/user/userSlice";
+import { access_token_header } from "@/constants/access_token";
 
 const removeImportantMessage = async (
   dispatch: Function,
@@ -15,6 +16,7 @@ const removeImportantMessage = async (
         channel_id: channel_id,
         important_msg_id: message_id,
       },
+      headers: access_token_header(),
     })
     .then((res) => {
       dispatch(

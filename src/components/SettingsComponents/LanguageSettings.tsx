@@ -23,6 +23,7 @@ import { set, setFont, setLang } from "@/states/user/settingSlice";
 import { BASE } from "@/constants/endpoints";
 import axios, { AxiosError } from "axios";
 import { useAppDispatch } from "@/app/hooks";
+import { access_token_header } from "@/constants/access_token";
 
 const client = axios.create({
   baseURL: BASE,
@@ -58,10 +59,14 @@ export default function LanguageSettings() {
 
     setSaveLoad(true);
     try {
-      const response = await client.post(`/setting/ui/${UserData?.id}`, {
-        language: language,
-        font_size: parseInt(fontSize!),
-      });
+      const response = await client.post(
+        `/setting/ui/${UserData?.id}`,
+        {
+          language: language,
+          font_size: parseInt(fontSize!),
+        },
+        { headers: access_token_header() }
+      );
 
       if (response.data.code === 200) {
         console.log(response.data);
@@ -82,7 +87,9 @@ export default function LanguageSettings() {
   const fetctUiSettings = async () => {
     setOnLoad(true);
     try {
-      const response = await client.get(`/setting/ui/${UserData?.id}`);
+      const response = await client.get(`/setting/ui/${UserData?.id}`, {
+        headers: access_token_header(),
+      });
       if (response.data.code == 200) {
         dispatch(
           set({

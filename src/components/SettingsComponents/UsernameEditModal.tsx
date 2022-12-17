@@ -19,6 +19,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 
 import axios, { AxiosError } from "axios";
 import { BASE } from "@/constants/endpoints";
+import { access_token_header } from "@/constants/access_token";
 
 const client = axios.create({
   baseURL: BASE,
@@ -71,9 +72,13 @@ export default function UsernameEditModal({
     setLoading(true);
     setHasError(false);
     try {
-      const response = await client.post(`/setting/username/${UserData?.id}`, {
-        name: uname,
-      });
+      const response = await client.post(
+        `/setting/username/${UserData?.id}`,
+        {
+          name: uname,
+        },
+        { headers: access_token_header() }
+      );
 
       if (response.data.code === 200) {
         console.log(response.data);

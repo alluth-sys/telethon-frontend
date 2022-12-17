@@ -41,6 +41,7 @@ import { BASE } from "@/constants/endpoints";
 import axios from "axios";
 import BulletinArea from "./BulletinArea/BulletinArea";
 import { CSSProperties } from "@material-ui/styles";
+import { access_token_header } from "@/constants/access_token";
 
 const getItemStyle = (
   isDragging: boolean,
@@ -136,10 +137,14 @@ export default function priority() {
       }
 
       await axios
-        .post(`${BASE}/channel/priority/${user_id}`, {
-          channel_id: channel_id,
-          priority: priMap.get(destination.droppableId),
-        })
+        .post(
+          `${BASE}/channel/priority/${user_id}`,
+          {
+            channel_id: channel_id,
+            priority: priMap.get(destination.droppableId),
+          },
+          { headers: access_token_header() }
+        )
         .then((response) => {
           dispatch(
             updateFriendPriority({

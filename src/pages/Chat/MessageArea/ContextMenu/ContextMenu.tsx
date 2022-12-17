@@ -10,6 +10,7 @@ import {
   setSelectedMessageId,
 } from "@/states/user/userSlice";
 import { Dictionary } from "@reduxjs/toolkit";
+import { access_token_header } from "@/constants/access_token";
 
 const handleImportantMessage = async (
   dispatch: Function,
@@ -18,10 +19,14 @@ const handleImportantMessage = async (
   channel_id: number
 ) => {
   await axios
-    .post(`${BASE}/channel/important_msg/${user_id}`, {
-      channel_id: channel_id,
-      important_msg_id: message_id,
-    })
+    .post(
+      `${BASE}/channel/important_msg/${user_id}`,
+      {
+        channel_id: channel_id,
+        important_msg_id: message_id,
+      },
+      { headers: access_token_header() }
+    )
     .then((res) => {
       const payload = {
         channel_id: channel_id,
@@ -45,6 +50,7 @@ const removeImportantMessage = async (
         channel_id: channel_id,
         important_msg_id: message_id,
       },
+      headers: access_token_header(),
     })
     .then((res) => {
       dispatch(
@@ -62,11 +68,15 @@ const pinMessage = async (
   context: string | undefined
 ) => {
   await axios
-    .post(`${BASE}/pin`, {
-      message_id: message_id,
-      user_id: user_id,
-      channel_id: channel_id,
-    })
+    .post(
+      `${BASE}/pin`,
+      {
+        message_id: message_id,
+        user_id: user_id,
+        channel_id: channel_id,
+      },
+      { headers: access_token_header() }
+    )
     .then(() => {
       if (context != undefined) {
         const payload = {
@@ -94,6 +104,7 @@ const deleteMessage = async (
         user_id: user_id,
         channel_id: channel_id,
       },
+      headers: access_token_header(),
     })
     .then((res) => {
       dispatch(

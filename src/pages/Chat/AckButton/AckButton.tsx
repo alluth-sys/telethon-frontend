@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from "@/app/hooks";
 
 import { clearUnreads } from "@/states/user/friendSlice";
 import { updateFriendUnreadCount } from "@/states/user/userSlice";
+import { access_token_header } from "@/constants/access_token";
 
 export default function AckButton() {
   const user_id = useAppSelector((state) => state.user.data!.id);
@@ -14,10 +15,14 @@ export default function AckButton() {
 
   const sendAck = async (user_id: number, target_channel_id: number) => {
     await axios
-      .post(`${BASE}/ack`, {
-        user_id: user_id,
-        channel_id: target_channel_id,
-      })
+      .post(
+        `${BASE}/ack`,
+        {
+          user_id: user_id,
+          channel_id: target_channel_id,
+        },
+        { headers: access_token_header() }
+      )
       .then((res) => {
         dispatch(clearUnreads(res));
         dispatch(updateFriendUnreadCount(res));
