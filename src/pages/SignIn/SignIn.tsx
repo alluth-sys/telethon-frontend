@@ -32,7 +32,7 @@ export default function SignIn() {
     setOpen(true);
     let uid = localStorage.getItem("uid");
     let access_token = localStorage.getItem("access_token");
-    if (uid) {
+    if (uid && access_token) {
       try {
         const response = await axios.post(
           `${BASE}/checkConnection`,

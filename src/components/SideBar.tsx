@@ -24,12 +24,10 @@ import { access_token_header } from "@/constants/access_token";
 type SideBarIconProps = { icon: any; text: String; path: String };
 
 export default function SideBar() {
-  const UserData = useAppSelector((state: RootState) => state.user.data);
   const { t } = useTranslation();
-
+  const UserData = useAppSelector((state: RootState) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
   const SignOutHandler = async () => {
     try {
       const response = await axios.post(
@@ -44,7 +42,7 @@ export default function SideBar() {
         console.log(response);
         dispatch(setUserLoggedOut());
         localStorage.clear();
-        navigate("/signin");
+        navigate("/");
       }
     } catch (error) {
       const errors = error as Error | AxiosError;

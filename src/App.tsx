@@ -20,6 +20,9 @@ import { useAppSelector } from "@/app/hooks";
 // Loading Components
 import Loading from "./components/Loading";
 
+// Signout Handler
+import AuthVerify from "./service/AuthVerify";
+
 function App() {
   const isLogin = useAppSelector((state) => state.user.isLogin);
   const data = useAppSelector((state) => state.user.data);
@@ -41,6 +44,7 @@ function App() {
           </Route>
         </Routes>
       </React.Suspense>
+      <AuthVerify />
     </Router>
   );
 }
