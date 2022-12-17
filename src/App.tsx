@@ -1,27 +1,24 @@
+import React from "react";
 // Router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Pages
-import Landing from "@/pages/Landing/Landing";
-import SignIn from "@/pages/SignIn/SignIn";
-import Home from "@/pages/Home/Home";
-import Chat from "@/pages/Chat/Chat";
-import Priority from "@/pages/Priority/Priority";
-import Settings from "@/pages/Settings/Settings";
+const Landing = React.lazy(() => import("@/pages/Landing/Landing"));
+const SignIn = React.lazy(() => import("@/pages/SignIn/SignIn"));
+const Home = React.lazy(() => import("@/pages/Home/Home"));
+const Chat = React.lazy(() => import("@/pages/Chat/Chat"));
+const Priority = React.lazy(() => import("@/pages/Priority/Priority"));
+const Settings = React.lazy(() => import("@/pages/Settings/Settings"));
 
 // Routes
 import PrivateRoute from "@/routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
 // State
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useAppSelector } from "@/app/hooks";
 
-import { setUserShowContextMenu } from "./states/user/userSlice";
-
-// Types
-import { RootState } from "@/app/store";
-
-import React from "react";
+// Loading Components
+import Loading from "./components/Loading";
 
 function App() {
   const isLogin = useAppSelector((state) => state.user.isLogin);
@@ -29,19 +26,21 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route element={<PublicRoute />}>
-          <Route path="/" element={<Landing />} />
-          <Route path="/signin" element={<SignIn />} />
-        </Route>
+      <React.Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<PublicRoute />}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/signin" element={<SignIn />} />
+          </Route>
 
-        <Route element={<PrivateRoute isLogin={isLogin} data={data} />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/priority" element={<Priority />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-      </Routes>
+          <Route element={<PrivateRoute isLogin={isLogin} data={data} />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/priority" element={<Priority />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </React.Suspense>
     </Router>
   );
 }
