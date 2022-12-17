@@ -165,11 +165,17 @@ export default function MessageArea({ focus }: any) {
 
       if (curr?.scrollTop === 0) {
         setLoading(true);
-        getChatHistory(focus, user_id, oldest_message_id).then((res) => {
-          dispatch(setFriendChatHistory(res));
-          scrollBarAnimation();
-          setLoading(false);
-        });
+        const fun = async () => {
+          for (let i = 0; i < 10; i++) {
+            await getChatHistory(focus, user_id, oldest_message_id - i).then(
+              (res) => {
+                dispatch(setFriendChatHistory(res));
+                scrollBarAnimation();
+              }
+            );
+          }
+        };
+        fun().then(() => setLoading(false));
       }
     }
   };
