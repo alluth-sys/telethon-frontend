@@ -43,12 +43,12 @@ export default function SignIn() {
         );
         if (response.data.code == 200) {
           dispatch(setUserAuthed(response.data.context));
-          if(response.data.context.access_token!==undefined){
+          if (response.data.context.access_token !== undefined) {
             localStorage.setItem(
               "access_token",
               JSON.stringify(response.data.context.access_token)
             );
-            }
+          }
           navigate("/home");
           socket.emit("conn", response.data.context.id);
         }

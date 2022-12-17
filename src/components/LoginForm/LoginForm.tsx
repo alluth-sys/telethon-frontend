@@ -58,11 +58,11 @@ export default function LoginForm() {
       } else if (response.data.code == 202) {
         setOnSuccess(true);
         dispatch(setUserAuthed(response.data.context));
-        if(response.data.context.access_token!==undefined){
-        localStorage.setItem(
-          "access_token",
-          JSON.stringify(response.data.context.access_token)
-        );
+        if (response.data.context.access_token !== undefined) {
+          localStorage.setItem(
+            "access_token",
+            JSON.stringify(response.data.context.access_token)
+          );
         }
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
         navigate("/home");
@@ -88,12 +88,12 @@ export default function LoginForm() {
       });
       if (response.data.code == 200) {
         dispatch(setUserAuthed(response.data.context));
-        if(response.data.context.access_token!==undefined){
+        if (response.data.context.access_token !== undefined) {
           localStorage.setItem(
             "access_token",
             JSON.stringify(response.data.context.access_token)
           );
-          }
+        }
         localStorage.setItem("uid", JSON.stringify(response.data.context.id));
         navigate("/home");
         socket.emit("conn", response.data.context.id);
