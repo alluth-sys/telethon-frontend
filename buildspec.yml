@@ -1,9 +1,9 @@
-version: 0.2
+version: 0.3
 
 phases:
   pre_build:
     commands:
-      - npm install
+      - npm install --legacy-peer-deps
   build:
     commands:
       - npm run build
