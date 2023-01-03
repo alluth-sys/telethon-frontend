@@ -40,7 +40,7 @@ export default function Message({ message, fromBulletin }: MessageBoxProps) {
     fetchSrc(message, user_id).then((res) => {
       setImgSrc(res);
     });
-  }, []);
+  }, [localStorage.getItem(message.sender_id)]);
 
   return (
     <>

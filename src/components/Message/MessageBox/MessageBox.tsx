@@ -223,7 +223,7 @@ export default function MessageBox({ message, fromBulletin }: MessageBoxProps) {
         >
           <div
             id={message.message_id.toString() + "canvas"}
-            style={{ width: "300px", height: "100px" }}
+            style={{ width: "320px", height: "100px" }}
             ref={ref}
           ></div>
           <div className="overlay">{messageTimeHandler(message.timestamp)}</div>

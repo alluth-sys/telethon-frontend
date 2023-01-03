@@ -542,8 +542,6 @@ export default function priority() {
                 width={320}
                 className="container-snap"
                 ref={(ref: any) => {
-                  // react-virtualized has no way to get the list's ref that I can so
-                  // So we use the `ReactDOM.findDOMNode(ref)` escape hatch to get the ref
                   if (ref) {
                     // eslint-disable-next-line react/no-find-dom-node
                     const whatHasMyLifeComeTo = ReactDOM.findDOMNode(ref);
