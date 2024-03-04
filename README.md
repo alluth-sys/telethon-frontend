@@ -18,4 +18,4 @@
 
 ## Backend
 
-- Needs to work with [Backend](https://github.com/b10815061/argumented-telegram)
+- Needs to work with [Backend](https://github.com/alluth-sys/telethon-backend)
