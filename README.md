@@ -6,7 +6,7 @@
 
 ## Introduction
 
-- This project is a chatting app that aims to eliminate the current chatting app's issues and is built on top of telegram api
+- A messaging application built on the Telegram API that solves the chat flooding problem through a smart ranking system. Users can assign importance levels to their contacts, ensuring priority conversations remain visible and preventing important messages from being buried under less relevant chats.
 
 ## Initialization of project
 
