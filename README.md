@@ -1,4 +1,4 @@
-# vite-telethon-frontend
+# telethon-frontend
 
 - This project is built using vite react typescript
 - Styled using Tailwind css
